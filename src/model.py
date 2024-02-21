@@ -13,10 +13,10 @@ import os
 
 class Model:
     
-    def initData(self, dataSet = mnist, classesNumber = 10):
+    def initData(self, dataSet, classesNumber = 10):
         self.classesNumber = classesNumber
         #load data
-        (self.xTrain, self.yTrain), (self.xTest, self.yTest) = dataSet.load_data()
+        (self.xTrain, self.yTrain), (self.xTest, self.yTest) = dataSet
         #normalizing e label encodig
         self.xTrain = self.xTrain/255
         self.xTest = self.xTest/255
@@ -45,7 +45,7 @@ class Model:
         self.model.compile(loss="categorical_crossentropy",optimizer="adam",metrics=["accuracy"])
         
         
-    def trainModel(self, batchSize, epochs):
+    def trainModel(self, batchSize = 130 , epochs = 10):
         self.batchSize = batchSize
         self.epochs = epochs
         #model training
