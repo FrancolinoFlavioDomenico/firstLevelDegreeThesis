@@ -1,79 +1,59 @@
-import matplotlib.pyplot as plt
-
 from keras.models import Sequential
-from keras.layers import Input, Conv2D, Dense, Flatten, Dropout
+from keras.layers import Conv2D, Dense, Flatten, Dropout
 from keras.layers import MaxPooling2D
+
 from keras.utils import to_categorical
 
-from keras.datasets import mnist
-
-import matplotlib.pyplot as plt
-import os
+from keras.datasets import cifar10
 
 
-class Model:
+class Model:        
     
-    def initData(self, dataSet, classesNumber = 10):
-        self.classesNumber = classesNumber
+    CLIENTS_NUM = 2
+    ROUNDS_NUM = 2
+    MODEL = None
+    CLASSESS_NUMBER = 10
+    DATASET = cifar10
+    KERNEL_SIZE = (4,4)
+    INPUT_SHAPE = (32,32,3)
+    
+    X_TRAIN = None
+    Y_TRAIN = None
+    X_TEST = None
+    Y_TEST = None
+    
+    
+    @classmethod
+    def setData(cls, dataSet = None, classes_number = None, kernel_size = None, input_shape = None):
+        if(dataSet is not None):
+            cls.DATASET = dataSet
+            cls.CLASSESS_NUMBER = classes_number
+            cls.KERNEL_SIZE = kernel_size
+            cls.INPUT_SHAPE = input_shape
+            cls.DATASET = dataSet
         #load data
-        (self.xTrain, self.yTrain), (self.xTest, self.yTest) = dataSet
+        (cls.X_TRAIN, cls.Y_TRAIN), (cls.X_TEST, cls.Y_TEST) = cls.DATASET.load_data()
         #normalizing e label encodig
-        self.xTrain = self.xTrain/255
-        self.xTest = self.xTest/255
-        self.yTrain = to_categorical(self.yTrain, self.classesNumber)
-        self.yTest = to_categorical(self.yTest, self.classesNumber)
+        cls.X_TRAIN = cls.X_TRAIN/255
+        cls.X_TEST = cls.X_TEST/255
+        cls.Y_TRAIN = to_categorical(cls.Y_TRAIN, classes_number)
+        cls.Y_TEST = to_categorical(cls.Y_TEST, classes_number)
         
-        
-    def buildModel(self,kernelSize,inputShape):
-        self.kernelSize = kernelSize
-        self.inputShape = inputShape
+    
+    @classmethod
+    def setModel(cls):
         #build the model
-        self.model = Sequential()
-        self.model.add(Conv2D(64,self.kernelSize,input_shape=self.inputShape,activation="relu"))
-        self.model.add(MaxPooling2D(pool_size=(2,2)))
-        self.model.add(Dropout(0.5))
-        self.model.add(Conv2D(64,self.kernelSize,input_shape=self.inputShape,activation="relu"))
-        self.model.add(MaxPooling2D(pool_size=(2,2)))
-        self.model.add(Dropout(0.25))
-        self.model.add(Flatten())
-        self.model.add(Dense(256,activation="relu"))
-        self.model.add(Dense(self.classesNumber,activation="softmax"))
+        cls.MODEL = Sequential()
+        cls.MODEL.add(Conv2D(64,cls.KERNEL_SIZE,input_shape=cls.INPUT_SHAPE,activation="relu"))
+        cls.MODEL.add(MaxPooling2D(pool_size=(2,2)))
+        cls.MODEL.add(Dropout(0.5))
+        cls.MODEL.add(Conv2D(64,cls.KERNEL_SIZE,input_shape=cls.INPUT_SHAPE,activation="relu"))
+        cls.MODEL.add(MaxPooling2D(pool_size=(2,2)))
+        cls.MODEL.add(Dropout(0.25))
+        cls.MODEL.add(Flatten())
+        cls.MODEL.add(Dense(256,activation="relu"))
+        cls.MODEL.add(Dense(cls.CLASSESS_NUMBER,activation="softmax"))
+            
+        cls.MODEL.compile(loss="sparse_softmax_cross_entropy",optimizer="adam",metrics=["accuracy"])
         
-        #print model overview
-        #self.model.summary()
-        
-        self.model.compile(loss="categorical_crossentropy",optimizer="adam",metrics=["accuracy"])
-        
-        
-    def trainModel(self, batchSize = 130 , epochs = 10):
-        self.batchSize = batchSize
-        self.epochs = epochs
-        #model training
-        self.history =  self.model.fit(self.xTrain, self.yTrain, batch_size=self.batchSize, epochs = self.epochs, verbose=1, validation_data=(self.xTest,self.yTest))
-        
-        
-    def plotChart(self, accuracyChartFileName, lossChartFileName):
-        # Accuracy chart print and save
-        plt.plot(self.history.history['accuracy'], label='Training Accuracy')
-        plt.plot(self.history.history['val_accuracy'], label='Validation Accuracy')
-        plt.title('Training and Validation Accuracy over Epochs')
-        plt.xlabel('Epochs')
-        plt.ylabel('Accuracy')
-        plt.legend()
-
-        accuracy_plot_path = os.path.join('outputPlot/myModelPlot/accuracy', accuracyChartFileName)
-        plt.savefig(accuracy_plot_path)
-        plt.close()
-
-        # Loss chart print adn save
-        plt.plot(self.history.history['loss'], label='Training Loss')
-        plt.plot(self.history.history['val_loss'], label='Validation Loss')
-        plt.title('Training and Validation Loss over Epochs')
-        plt.xlabel('Epochs')
-        plt.ylabel('Loss')
-        plt.legend()
-
-        # Save loss chart
-        loss_plot_path = os.path.join('outputPlot/myModelPlot/loss', lossChartFileName)
-        plt.savefig(loss_plot_path)
-        plt.close()
+       

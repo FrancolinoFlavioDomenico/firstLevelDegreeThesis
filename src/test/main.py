@@ -1,6 +1,6 @@
      
 from server import Server
-import model as m
+from model import *
 
 
 
@@ -14,6 +14,9 @@ from keras.datasets import cifar100
 enable_tf_gpu_growth()
 
 #Cifar10
-m.Model.setData(cifar10, 10, (4,4), (32, 32, 3))
-m.Model.setModel()
+from datasets import Dataset
+
+#print(Dataset)
+Model.setData(cifar10, 10, (4,4), (32, 32, 3))
+Model.setModel()
 server = Server()
