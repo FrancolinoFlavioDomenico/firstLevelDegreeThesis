@@ -6,6 +6,8 @@ from FlowerClient import get_client_fn
 
 from flwr.simulation.ray_transport.utils import enable_tf_gpu_growth
 
+import Plotter
+
 
 class Server:
 
@@ -16,11 +18,11 @@ class Server:
             min_available_clients=Model.Model.CLIENTS_NUM,
             evaluate_fn=self.get_eval_fn()
         )
-        #self.start_simulation()
+        self.plotter = Plotter.Plotter()
+        
 
     def start_simulation(self):
         client_resources = {"num_cpus": 2, "num_gpus": 0.25}
-        # print(Client.get_client_fn(Model.Model.X_TRAIN, Model.Model.Y_TRAIN, Model.Model.X_TEST, Model.Model.Y_TEST))
         fl.simulation.start_simulation(
             client_fn=get_client_fn(Model.Model.X_TRAIN, Model.Model.Y_TRAIN, Model.Model.X_TEST, Model.Model.Y_TEST),
             num_clients=Model.Model.CLIENTS_NUM,
@@ -28,7 +30,7 @@ class Server:
             strategy=self.strategy,
             client_resources=client_resources,
             actor_kwargs={
-                 "on_actor_init_fn": enable_tf_gpu_growth,
+                "on_actor_init_fn": enable_tf_gpu_growth,
             }
         )
 
@@ -52,9 +54,13 @@ class Server:
             model = Model.Model.get_model()
             model.set_weights(parameters)  # Update model with the latest parameters
             loss, accuracy = model.evaluate(Model.Model.X_TEST, Model.Model.Y_TEST)
-            print(f"After round {server_round}, Global accuracy = {accuracy}")
-            """results = {"round":server_round,"loss": loss, "accuracy": accuracy}
-            results_list.append(results) """
+            self.plotter.accuracy_data.append(accuracy)
+            self.plotter.loss_data.append(loss)
+            if server_round == Model.Model.ROUNDS_NUM:
+                self.plotter.plot()
+            # print(f"After round {server_round}, Global accuracy = {accuracy}")
+            # results = {"round":server_round,"loss": loss, "accuracy": accuracy}
+            # results_list.append(results)
             return loss, {"accuracy": accuracy}
 
         return evaluate

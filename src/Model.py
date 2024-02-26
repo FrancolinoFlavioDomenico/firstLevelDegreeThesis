@@ -8,9 +8,8 @@ from keras.datasets import cifar10
 
 
 class Model:
-    CLIENTS_NUM = 10
-    ROUNDS_NUM = 5
-    # MODEL = Sequential()
+    CLIENTS_NUM = 5
+    ROUNDS_NUM = 3
     CLASSES_NUMBER = 10
     DATASET = cifar10
     KERNEL_SIZE = (4, 4)
