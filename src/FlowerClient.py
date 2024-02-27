@@ -1,9 +1,5 @@
 import flwr as fl
-import Model
-
-from flwr.common import Metrics
-from  keras.callbacks import EarlyStopping
-from typing import Dict, List, Tuple
+import ModelConf
 
 
 class FlowerClient(fl.client.NumPyClient):
@@ -12,29 +8,29 @@ class FlowerClient(fl.client.NumPyClient):
     STEPS_FOR_EPOCHS = 3
     VERBOSE = 0
 
-    def __init__(self, x_train, y_train, x_test, y_test) -> None:
+    def __init__(self, x_train, y_train, x_test, y_test, model_conf: ModelConf.ModelConf) -> None:
         self.x_train = x_train
         self.y_train = y_train
         self.x_test = x_test
         self.y_test = y_test
-        self.model = Model.Model.get_model()
+        self.model = model_conf.get_model()
 
     def get_parameters(self, config):
         return self.model.get_weights()
 
     def fit(self, parameters, config):
         self.model.set_weights(parameters)
-        self.model.fit(self.x_train, self.y_train, epochs=self.EPOCHS, batch_size=self.BATCH_SIZE,
-                       steps_per_epoch=self.STEPS_FOR_EPOCHS)
+        self.model.fit(self.x_train, self.y_train, epochs=FlowerClient.EPOCHS, batch_size=FlowerClient.BATCH_SIZE,
+                       steps_per_epoch=FlowerClient.STEPS_FOR_EPOCHS)
         return self.model.get_weights(), len(self.x_train), {}
 
     def evaluate(self, parameters, config):
         self.model.set_weights(parameters)
-        loss, accuracy = self.model.evaluate(self.x_test, self.y_test, verbose=self.VERBOSE)
+        loss, accuracy = self.model.evaluate(self.x_test, self.y_test, verbose=FlowerClient.VERBOSE)
         return loss, len(self.x_test), {"accuracy": float(accuracy)}
 
 
-def get_client_fn(x_train, y_train, x_test, y_test):
+def get_client_fn(x_train, y_train, x_test, y_test, model_conf):
     """Return a function to construct a client.
 
     The VirtualClientEngine will execute this function whenever a client is sampled by
@@ -61,6 +57,6 @@ def get_client_fn(x_train, y_train, x_test, y_test):
         # Create and return client
 
         # print(Client(m.Model.X_TRAIN, m.Model.Y_TRAIN, m.Model.X_TEST, m.Model.Y_TEST))
-        return FlowerClient(x_train, y_train, x_test, y_test)
+        return FlowerClient(x_train, y_train, x_test, y_test, model_conf)
 
     return client_fn

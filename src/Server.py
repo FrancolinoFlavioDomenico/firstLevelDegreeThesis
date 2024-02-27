@@ -1,32 +1,36 @@
 from typing import Dict, Optional, Tuple
 
 import flwr as fl
-import Model
 from FlowerClient import get_client_fn
 
 from flwr.simulation.ray_transport.utils import enable_tf_gpu_growth
 
 import Plotter
 
+from src import CLIENTS_NUM
+from src import ROUNDS_NUM
+
+import ModelConf as mf
 
 class Server:
 
-    def __init__(self) -> None:
+    def __init__(self, model_conf: mf.ModelConf) -> None:
+        self.model_conf = model_conf
         self.strategy = fl.server.strategy.FedAvg(
-            min_fit_clients=Model.Model.CLIENTS_NUM,
-            min_evaluate_clients=Model.Model.CLIENTS_NUM,
-            min_available_clients=Model.Model.CLIENTS_NUM,
+            min_fit_clients= CLIENTS_NUM,
+            min_evaluate_clients=CLIENTS_NUM,
+            min_available_clients=CLIENTS_NUM,
             evaluate_fn=self.get_eval_fn()
         )
-        self.plotter = Plotter.Plotter()
+        self.plotter = Plotter.Plotter(self.model_conf.dataset_name)
         
 
     def start_simulation(self):
         client_resources = {"num_cpus": 2, "num_gpus": 0.25}
         fl.simulation.start_simulation(
-            client_fn=get_client_fn(Model.Model.X_TRAIN, Model.Model.Y_TRAIN, Model.Model.X_TEST, Model.Model.Y_TEST),
-            num_clients=Model.Model.CLIENTS_NUM,
-            config=fl.server.ServerConfig(num_rounds=Model.Model.ROUNDS_NUM),
+            client_fn=get_client_fn(self.model_conf.x_train, self.model_conf.y_train, self.model_conf.x_test, self.model_conf.y_test, self.model_conf),
+            num_clients=CLIENTS_NUM,
+            config=fl.server.ServerConfig(num_rounds=ROUNDS_NUM),
             strategy=self.strategy,
             client_resources=client_resources,
             actor_kwargs={
@@ -46,17 +50,18 @@ class Server:
         # (x_train, y_train), (x_test, y_test) = ModelClass.getData()
 
         # The `evaluate` function will be called after every round
+        model_conf = self.model_conf
         def evaluate(
                 server_round: int,
                 parameters: fl.common.NDArrays,
                 config: Dict[str, fl.common.Scalar],
         ) -> Optional[Tuple[float, Dict[str, fl.common.Scalar]]]:
-            model = Model.Model.get_model()
+            model = model_conf.get_model()
             model.set_weights(parameters)  # Update model with the latest parameters
-            loss, accuracy = model.evaluate(Model.Model.X_TEST, Model.Model.Y_TEST)
+            loss, accuracy = model.evaluate(model_conf.x_test, model_conf.y_test)
             self.plotter.accuracy_data.append(accuracy)
             self.plotter.loss_data.append(loss)
-            if server_round == Model.Model.ROUNDS_NUM:
+            if server_round == ROUNDS_NUM:
                 self.plotter.plot()
             # print(f"After round {server_round}, Global accuracy = {accuracy}")
             # results = {"round":server_round,"loss": loss, "accuracy": accuracy}
