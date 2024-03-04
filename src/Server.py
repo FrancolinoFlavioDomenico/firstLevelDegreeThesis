@@ -26,9 +26,9 @@ class Server:
         
 
     def start_simulation(self):
-        client_resources = {"num_cpus": 2, "num_gpus": 0.25}
+        client_resources = {"num_cpus": 3, "num_gpus": 0.50}
         fl.simulation.start_simulation(
-            client_fn=get_client_fn(self.model_conf.x_train, self.model_conf.y_train, self.model_conf.x_test, self.model_conf.y_test, self.model_conf),
+            client_fn=get_client_fn(self.model_conf),
             num_clients=CLIENTS_NUM,
             config=fl.server.ServerConfig(num_rounds=ROUNDS_NUM),
             strategy=self.strategy,
