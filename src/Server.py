@@ -19,14 +19,14 @@ class Server:
         self.strategy = fl.server.strategy.FedAvg(
             min_fit_clients= CLIENTS_NUM,
             min_evaluate_clients=CLIENTS_NUM,
-            min_available_clients=CLIENTS_NUM,
+            min_available_clients=((CLIENTS_NUM * 50)/100),
             evaluate_fn=self.get_eval_fn()
         )
         self.plotter = Plotter.Plotter(self.model_conf.dataset_name)
         
 
     def start_simulation(self):
-        client_resources = {"num_cpus": 3, "num_gpus": 0.50}
+        client_resources = {"num_cpus": 4, "num_gpus": 1}
         fl.simulation.start_simulation(
             client_fn=get_client_fn(self.model_conf),
             num_clients=CLIENTS_NUM,

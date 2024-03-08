@@ -22,7 +22,7 @@ del server_cifar10
 del cifar10_model_conf
 print("finish cifar10")
 
-time.sleep(10)
+time.sleep(20)
 print("starting mnist dataset")
 
 # # mnist
@@ -33,7 +33,7 @@ del server_mnist
 del mnist_model_conf
 print("finish mnist")
 
-time.sleep(10)
+time.sleep(20)
 print("starting cifar100 dataset")
 
 # cifar100
