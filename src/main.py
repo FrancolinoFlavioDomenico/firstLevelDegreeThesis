@@ -25,7 +25,7 @@ print("finish cifar10")
 time.sleep(20)
 print("starting mnist dataset")
 
-# # mnist
+# mnist
 mnist_model_conf = mf.ModelConf('mnist', mnist, 10, (3, 3), (28, 28, 1))
 server_mnist = Server.Server(mnist_model_conf)
 server_mnist.start_simulation()

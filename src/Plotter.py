@@ -21,8 +21,8 @@ class Plotter:
         self.ay_loss.set_title('Loss over round')
         self.ay_loss.set_ylabel("Loss")
 
-        self.accuracy_data = []  # np.array()
-        self.loss_data = []  # np.array()
+        self.accuracy_data = []
+        self.loss_data = []
 
     def plot(self):
         self.ay_accuracy.plot(self.x_axis, self.accuracy_data)

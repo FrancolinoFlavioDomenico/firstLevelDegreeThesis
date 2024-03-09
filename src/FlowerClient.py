@@ -30,35 +30,8 @@ class FlowerClient(fl.client.NumPyClient):
 
 
 def get_client_fn(model_conf):
-    """Return a function to construct a client.
 
-    The VirtualClientEngine will execute this function whenever a client is sampled by
-    the strategy to participate.
-    """
-    # x_train, y_train, x_test, y_test = model_conf.get_data(False)
-    # x_train, y_train = model_conf.partitions
-    # x_test, y_test = model_conf.get_test_data()
     def client_fn(cid: str) -> fl.client.Client:
-        print(f"client whit cid {cid}")
-        """Construct a FlowerClient with its own dataset partition."""
-        # Extract partition for client with id = cid
-        # client_dataset = dataset.load_partition(int(cid), "train")
-
-        # # Now let's split it into train (90%) and validation (10%)
-        # client_dataset_splits = client_dataset.train_test_split(test_size=0.1)
-
-        # trainset = client_dataset_splits["train"].to_tf_dataset(
-        #     columns="image", label_cols="label", batch_size = Cifar10Client.BATCH_SIZE
-        # )
-        # valset = client_dataset_splits["test"].to_tf_dataset(
-        #     columns="image", label_cols="label", batch_size = Cifar10Client.BATCH_SIZE
-        # )
-
-        # trainset, valset = ModelClass.getData()
-
-        # Create and return client
-
-        # print(Client(m.Model.X_TRAIN, m.Model.Y_TRAIN, m.Model.X_TEST, m.Model.Y_TEST))
         return FlowerClient(model_conf.get_client_training_partitions_of(int(cid)), model_conf)
 
     return client_fn

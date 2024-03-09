@@ -39,18 +39,8 @@ class Server:
         )
 
     def get_eval_fn(self):
-        """Return an evaluation function for server-side evaluation."""
-        # x_train, y_train, x_test, y_test = self.dataset
-
-        """ x_train = self.xTrain
-        y_train = self.yTrain """
-        """ x_test = self.x_test
-        y_test = self.y_test """
-
-        # (x_train, y_train), (x_test, y_test) = ModelClass.getData()
-
-        # The `evaluate` function will be called after every round
         model_conf = self.model_conf
+        
         def evaluate(
                 server_round: int,
                 parameters: fl.common.NDArrays,
