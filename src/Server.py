@@ -1,15 +1,10 @@
 from typing import Dict, Optional, Tuple
-
 import flwr as fl
 from FlowerClient import get_client_fn
-
 from flwr.simulation.ray_transport.utils import enable_tf_gpu_growth
 
 import Plotter
-
-from src import CLIENTS_NUM
-from src import ROUNDS_NUM
-
+import globalVariable as gv
 import ModelConf as mf
 
 class Server:
@@ -17,20 +12,20 @@ class Server:
     def __init__(self, model_conf: mf.ModelConf) -> None:
         self.model_conf = model_conf
         self.strategy = fl.server.strategy.FedAvg(
-            min_fit_clients= CLIENTS_NUM,
-            min_evaluate_clients=CLIENTS_NUM,
-            min_available_clients=((CLIENTS_NUM * 50)/100),
+            min_fit_clients= gv.CLIENTS_NUM,
+            min_evaluate_clients=gv.CLIENTS_NUM,
+            min_available_clients=((gv.CLIENTS_NUM * 50)/100),
             evaluate_fn=self.get_eval_fn()
         )
-        self.plotter = Plotter.Plotter(self.model_conf.dataset_name)
+        self.plotter = Plotter.Plotter(self.model_conf.dataset_name, model_conf.poisoning)
         
 
     def start_simulation(self):
         client_resources = {"num_cpus": 4, "num_gpus": 1}
         fl.simulation.start_simulation(
             client_fn=get_client_fn(self.model_conf),
-            num_clients=CLIENTS_NUM,
-            config=fl.server.ServerConfig(num_rounds=ROUNDS_NUM),
+            num_clients=gv.CLIENTS_NUM,
+            config=fl.server.ServerConfig(num_rounds=gv.ROUNDS_NUM),
             strategy=self.strategy,
             client_resources=client_resources,
             actor_kwargs={
@@ -51,7 +46,7 @@ class Server:
             loss, accuracy = model.evaluate(model_conf.x_test, model_conf.y_test)
             self.plotter.accuracy_data.append(accuracy)
             self.plotter.loss_data.append(loss)
-            if server_round == ROUNDS_NUM:
+            if server_round == gv.ROUNDS_NUM:
                 self.plotter.plot()
             # print(f"After round {server_round}, Global accuracy = {accuracy}")
             # results = {"round":server_round,"loss": loss, "accuracy": accuracy}

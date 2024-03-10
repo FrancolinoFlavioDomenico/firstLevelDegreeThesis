@@ -1,6 +1,12 @@
 import flwr as fl
-import ModelConf
+import numpy as np
+import gc
 
+
+import ModelConf
+import globalVariable as gv
+
+from src import logger
 
 class FlowerClient(fl.client.NumPyClient):
     EPOCHS = 10
@@ -8,9 +14,20 @@ class FlowerClient(fl.client.NumPyClient):
     STEPS_FOR_EPOCHS = 3
     VERBOSE = 0
 
-    def __init__(self, client_partition_training_data, model_conf: ModelConf.ModelConf) -> None:
+    def __init__(self, client_partition_training_data, model_conf: ModelConf.ModelConf, cid) -> None:
         self.model_conf = model_conf
-        (self.x_train, self.y_train) = client_partition_training_data
+        
+        (self.x_train, y_train) = client_partition_training_data
+        if model_conf.poisoning and gv.POISONER_CLIENT_CID == cid:
+            print(f'client {cid} starting label flipping poisoning')
+            logger.info(f'client {cid} starting label flipping poisoning')
+            self.y_train = np.random.permutation(y_train)
+        else:
+            self.y_train = y_train
+            
+        del y_train
+        gc.collect()
+        
         self.model = self.model_conf.get_model()
 
 
@@ -32,6 +49,6 @@ class FlowerClient(fl.client.NumPyClient):
 def get_client_fn(model_conf):
 
     def client_fn(cid: str) -> fl.client.Client:
-        return FlowerClient(model_conf.get_client_training_partitions_of(int(cid)), model_conf)
+        return FlowerClient(model_conf.get_client_training_partitions_of(int(cid)), model_conf, int(cid))
 
     return client_fn

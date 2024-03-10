@@ -1,29 +1,31 @@
 from keras.models import Sequential
 from keras.layers import Conv2D, Dense, Flatten, Dropout
 from keras.layers import MaxPooling2D
-
 from keras.utils import to_categorical
-
-import matplotlib.pyplot as plt
-
-from src import CLIENTS_NUM
-
 import numpy as np
+import gc
+
+
+import globalVariable as gv
 
 
 class ModelConf:
 
-    def __init__(self, dataset_name, dataset, classes_number, kernel_size, input_shape):
+    def __init__(self, dataset_name, dataset, classes_number, kernel_size, input_shape,poisoning = False):
         self.dataset_name = dataset_name
         self.dataset = dataset
         self.classes_number = classes_number
         self.kernel_size = kernel_size
         self.input_shape = input_shape
+        self.poisoning = poisoning
         # load data
         (self.x_train, self.y_train), (self.x_test, self.y_test) = self.dataset.load_data()
         self.set_dataset()
 
         self.partitions = self.generate_dataset_client_partition()
+        
+        del (self.x_train, self.y_train)
+        gc.collect()
 
         # # test code.....print image with relative label
         # for itemIndex in range(len(self.partitions[0][1])):
@@ -41,8 +43,8 @@ class ModelConf:
         self.y_test = to_categorical(self.y_test, self.classes_number)
 
     def generate_dataset_client_partition(self):
-        x_train_partitions = np.array(np.array_split(self.x_train, CLIENTS_NUM))
-        y_train_partitions = np.array(np.array_split(self.y_train, CLIENTS_NUM))
+        x_train_partitions = np.array(np.array_split(self.x_train, gv.CLIENTS_NUM))
+        y_train_partitions = np.array(np.array_split(self.y_train, gv.CLIENTS_NUM))
         return x_train_partitions, y_train_partitions
 
     def get_client_training_partitions_of(self, client_partition_index):

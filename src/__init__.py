@@ -1,2 +1,3 @@
-CLIENTS_NUM = 10
-ROUNDS_NUM = 5
+import logging
+logging.basicConfig(filename='logs.log',filemode='w',format='%(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger()
