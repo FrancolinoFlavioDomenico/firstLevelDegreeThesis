@@ -68,8 +68,8 @@ def clear_ram():
 #       whitout poisoning
 #
 #####################################
-start_cifa10(False)
-clear_ram()
+# start_cifa10(False)
+# clear_ram()
 
 # start_mnist(False)
 # clear_ram()
