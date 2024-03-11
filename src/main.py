@@ -71,11 +71,11 @@ def clear_ram():
 start_cifa10(False)
 clear_ram()
 
-start_mnist(False)
-clear_ram()
+# start_mnist(False)
+# clear_ram()
 
-start_cifar100(False)
-clear_ram()
+# start_cifar100(False)
+# clear_ram()
 
 
 
@@ -87,10 +87,10 @@ clear_ram()
 start_cifa10(True)
 clear_ram()
 
-start_mnist(True)
-clear_ram()
+# start_mnist(True)
+# clear_ram()
 
-start_cifar100(True)
-clear_ram()
+# start_cifar100(True)
+# clear_ram()
 
 

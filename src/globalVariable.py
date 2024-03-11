@@ -1,5 +1,5 @@
-import random
+import numpy as np
 
 CLIENTS_NUM = 10
 ROUNDS_NUM = 5
-POISONER_CLIENT_CID = random.randint(0, CLIENTS_NUM)
+POISONERS_CLIENTS_CID =  np.random.randint(0, CLIENTS_NUM, round((CLIENTS_NUM * 20) / 100))

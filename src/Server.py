@@ -21,7 +21,7 @@ class Server:
         
 
     def start_simulation(self):
-        client_resources = {"num_cpus": 4, "num_gpus": 1}
+        client_resources = {"num_cpus": 4, "num_gpus": 0.5}
         fl.simulation.start_simulation(
             client_fn=get_client_fn(self.model_conf),
             num_clients=gv.CLIENTS_NUM,
