@@ -43,7 +43,7 @@ class Server:
         ) -> Optional[Tuple[float, Dict[str, fl.common.Scalar]]]:
             model = model_conf.get_model()
             model.set_weights(parameters)  # Update model with the latest parameters
-            loss, accuracy = model.evaluate(model_conf.x_test, model_conf.y_test)
+            loss, accuracy = model.evaluate(self.model_conf.x_test,self.model_conf.y_test)
             self.plotter.accuracy_data.append(accuracy)
             self.plotter.loss_data.append(loss)
             if server_round == gv.ROUNDS_NUM:

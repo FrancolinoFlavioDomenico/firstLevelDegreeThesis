@@ -3,7 +3,10 @@ from keras.layers import Conv2D, Dense, Flatten, Dropout
 from keras.layers import MaxPooling2D
 from keras.utils import to_categorical
 import numpy as np
+import pickle
+import os
 import gc
+import matplotlib.pyplot as plt
 
 
 import globalVariable as gv
@@ -22,7 +25,7 @@ class ModelConf:
         (self.x_train, self.y_train), (self.x_test, self.y_test) = self.dataset.load_data()
         self.set_dataset()
 
-        self.partitions = self.generate_dataset_client_partition()
+        self.generate_dataset_client_partition()
         
         del (self.x_train, self.y_train)
         gc.collect()
@@ -45,10 +48,31 @@ class ModelConf:
     def generate_dataset_client_partition(self):
         x_train_partitions = np.array(np.array_split(self.x_train, gv.CLIENTS_NUM))
         y_train_partitions = np.array(np.array_split(self.y_train, gv.CLIENTS_NUM))
-        return x_train_partitions, y_train_partitions
+        dataset_partition_dir = f"dataset/{self.dataset_name}_partitions"
+        
+        if not os.path.exists(dataset_partition_dir):
+            os.makedirs(dataset_partition_dir)                
+                
+        #save train partitions on file 
+        for i in np.arange(len(x_train_partitions)):
+            with open(os.path.join(dataset_partition_dir, f"x_train_partition_of_{i}.pickle"), "wb") as f:
+                pickle.dump(x_train_partitions[i],f)
+            with open(os.path.join(dataset_partition_dir, f"y_train_partition_of_{i}.pickle"), "wb") as f:
+                pickle.dump(y_train_partitions[i],f)
+        
+        
+        del x_train_partitions
+        del y_train_partitions
+        gc.collect()
 
     def get_client_training_partitions_of(self, client_partition_index):
-        return self.partitions[0][client_partition_index], self.partitions[1][client_partition_index]
+        with open(os.path.join(f"dataset/{self.dataset_name}_partitions", f"x_train_partition_of_{client_partition_index}.pickle"), "rb") as f:
+            x_train = pickle.load(f)
+            
+        with open(os.path.join(f"dataset/{self.dataset_name}_partitions", f"y_train_partition_of_{client_partition_index}.pickle"), "rb") as f:
+            y_train = pickle.load(f)
+            
+        return (x_train, y_train)
 
     def get_test_data(self):
         return self.x_test, self.y_test

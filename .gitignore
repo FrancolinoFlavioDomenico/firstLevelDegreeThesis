@@ -162,3 +162,6 @@ cython_debug/
 
 .idea/
 .vscode/
+
+# splitted dataset e saved on file
+dataset/
