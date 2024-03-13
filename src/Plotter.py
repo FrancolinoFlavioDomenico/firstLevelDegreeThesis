@@ -41,5 +41,5 @@ class Plotter:
         output_plot_dir = f"outputPlot/{'whitPoisoning' if self.poisoning else 'whitoutPoisoning'}/"
         print(f'output dir is : {output_plot_dir}')
         logger.debug(f'output dir is : {output_plot_dir}')
-        output_plot_dir = os.path.join(output_plot_dir, f'{self.dataset_name}_accuracy_and_loss.png')
+        output_plot_dir = os.path.join(output_plot_dir, f"{self.dataset_name}_accuracy_and_loss_{'poisoned' if self.poisoning else ''}.png")
         plt.savefig(output_plot_dir)

@@ -2,7 +2,9 @@ import flwr as fl
 import numpy as np
 import gc
 from secml.adv.attacks import CAttackPoisoning
+from secml.array.c_array import CArray
 from secml.data import CDataset
+from secml.data.loader import CDataLoaderPyTorch, CDataLoader
 import copy
 
 import ModelConf
@@ -26,7 +28,7 @@ class FlowerClient(fl.client.NumPyClient):
             print(f'client {cid} starting label flipping poisoning')
             logger.info(f'client {cid} starting label flipping poisoning')
             self.y_train = np.random.permutation(y_train)
-            #self.run_secml_poisoning()
+            self.run_secml_poisoning()
         else:
             self.y_train = copy.deepcopy(y_train)
 
@@ -35,45 +37,28 @@ class FlowerClient(fl.client.NumPyClient):
         gc.collect()
 
         self.model = self.model_conf.get_model()
-
+    
     def run_secml_poisoning(self):
-        solver_params = {
-            'eta': 0.05,
-            'eta_min': 0.05,
-            'eta_max': None,
-            'max_iter': 100,
-            'eps': 1e-6
-        }
+        for item in self.x_train:
+            item = self.add_perturbation(item)
 
-        model_to_poisonig = self.model_conf.get_model()
-        x_train_for_poisong = copy.deepcopy(self.x_train)
-        y_train_for_poisong = copy.deepcopy(self.y_train)
-        trainingset_for_pooisoning = CDataset(x_train_for_poisong, y_train_for_poisong)
-        print(" xtrain pois",x_train_for_poisong.shape)
-        print(" ytrain pois",y_train_for_poisong.shape)
 
-        x_test_for_poisong = copy.deepcopy(self.model_conf.x_test)
-        y_test_for_poisong = copy.deepcopy(self.model_conf.y_test)
-        testset_for_pooisoning = CDataset(x_test_for_poisong, y_test_for_poisong)
+    def add_perturbation(self,img, noise_type="random", scale=0.8):
 
-        seed_value = 5
-        pois_attack = CAttackPoisoning(
-            classifier=model_to_poisonig,
-            training_data=trainingset_for_pooisoning,
-            val=testset_for_pooisoning,
-            solver_params=solver_params,
-            random_seed=seed_value
-        )
+        rows, cols, channels = img.shape
+        # Create noise array with the same shape as the image
+        noise = np.zeros_like(img)
 
-        xc = trainingset_for_pooisoning[0:].X
-        yc = trainingset_for_pooisoning[0:].Y
-        pois_attack.x0 = xc
-        pois_attack.xc = xc
-        pois_attack.yc = yc
+        if noise_type == "random":
+            noise += np.random.rand(rows, cols, channels) * scale
+        elif noise_type == "gaussian":
+            noise += np.random.normal(0, scale, size=img.shape)
 
-        pois_attack.n_points = len(self.x_train) * 0.2
-        pois_attack.run(self.model_conf.x_test, self.model_conf.y_test)
-
+        # Clip noise values to be within image value range (usually 0-255)
+        perturbed_img = np.clip(img + noise, 0, 255)
+        return perturbed_img
+            
+            
     def get_parameters(self, config):
         return self.model.get_weights()
 
