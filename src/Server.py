@@ -3,6 +3,8 @@ import flwr as fl
 from FlowerClient import get_client_fn
 from flwr.simulation.ray_transport.utils import enable_tf_gpu_growth
 from flwr.common import Metrics
+import numpy as np
+from sklearn.metrics import confusion_matrix
 
 import Plotter
 import globalVariable as gv
@@ -20,6 +22,9 @@ class Server:
             evaluate_fn=self.get_eval_fn(),
             evaluate_metrics_aggregation_fn=Server.weighted_average
         )
+        self.accuracy_data = []
+        self.loss_data = []
+        
         self.plotter = Plotter.Plotter(self.model_conf.dataset_name, model_conf.poisoning)
 
     def start_simulation(self):
@@ -57,10 +62,31 @@ class Server:
             model = model_conf.get_model()
             model.set_weights(parameters)  # Update model with the latest parameters
             loss, accuracy = model.evaluate(model_conf.x_test, model_conf.y_test)
-            self.plotter.accuracy_data.append(accuracy)
-            self.plotter.loss_data.append(loss)
+            self.accuracy_data.append(accuracy)
+            self.loss_data.append(loss)
             if server_round == gv.ROUNDS_NUM:
-                self.plotter.plot()
+                self.plotter.line_chart_plot(self.accuracy_data, self.loss_data)
+                
+
+                y_predict = model.predict(self.model_conf.x_test)
+                y_predict = np.argmax(y_predict, axis=1)
+                y_test =np.argmax(self.model_conf.y_test,axis=1)
+                result = confusion_matrix(y_test,y_predict)
+                self.plotter.confusion_matrix_chart_plot(result)
+                # # Get the predicted labels from the model (predicted_classes)
+                # predicted_classes = np.argmax(model.predict(self.model_conf.x_test), axis=1)
+
+                # # Get the true labels (true_classes)
+                # true_classes = np.argmax(self.model_conf.y_test, axis=1)
+
+                # # Create the confusion matrix
+                # confusion_matrix = np.zeros((self,model_conf.classes_number, self,model_conf.classes_number))
+                # for i, true_label in enumerate(true_classes):
+                #     predicted_label = predicted_classes[i]
+                #     confusion_matrix[true_label, predicted_label] += 1
+                    
+                # print(confusion_matrix)
+
             # print(f"After round {server_round}, Global accuracy = {accuracy}")
             # results = {"round":server_round,"loss": loss, "accuracy": accuracy}
             # results_list.append(results)

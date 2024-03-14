@@ -43,16 +43,16 @@ class FlowerClient(fl.client.NumPyClient):
             item = self.add_perturbation(item)
 
 
-    def add_perturbation(self,img, noise_type="random", scale=0.8):
-
+    def add_perturbation(self,img):
+        scale = 0.8
         rows, cols, channels = img.shape
         # Create noise array with the same shape as the image
         noise = np.zeros_like(img)
 
-        if noise_type == "random":
-            noise += np.random.rand(rows, cols, channels) * scale
-        elif noise_type == "gaussian":
-            noise += np.random.normal(0, scale, size=img.shape)
+        #if noise_type == "random":
+        noise += np.random.rand(rows, cols, channels) * scale
+        #elif noise_type == "gaussian":
+        #noise += np.random.normal(0, scale, size=img.shape)
 
         # Clip noise values to be within image value range (usually 0-255)
         perturbed_img = np.clip(img + noise, 0, 255)
