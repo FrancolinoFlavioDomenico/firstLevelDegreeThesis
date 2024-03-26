@@ -6,7 +6,7 @@ import os
 
 import globalVariable as gv
 from src import logger
-
+import datasetLabelMapping
 
 class Plotter:
 
@@ -36,9 +36,20 @@ class Plotter:
 
     def confusion_matrix_chart_plot(self, data):
         confusion_matrix_fig, confusion_matrix_chart = plt.subplots()
+        confusion_matrix_fig.set_figwidth(10)
+        confusion_matrix_fig.set_figheight(10)
+        if 'cifar100' in self.dataset_name:
+            confusion_matrix_fig.set_figwidth(50)
+            confusion_matrix_fig.set_figheight(50)
         confusion_matrix_chart.set_xlabel("correct class")
         confusion_matrix_chart.set_ylabel("predicted class")
         sns.heatmap(data, annot=True, cmap="Blues_r", linewidths=2, square=True)
+        if 'cifar10' == self.dataset_name:
+            confusion_matrix_chart.xaxis.set_ticklabels(datasetLabelMapping.cifar10Label)
+            confusion_matrix_chart.yaxis.set_ticklabels(datasetLabelMapping.cifar10Label)
+        if 'cifar100' == self.dataset_name:
+            confusion_matrix_chart.xaxis.set_ticklabels(datasetLabelMapping.cifar100FineLabel)
+            confusion_matrix_chart.yaxis.set_ticklabels(datasetLabelMapping.cifar100FineLabel)
         self.set_save_fig_path('confusionMatrix')
 
     def set_save_fig_path(self, chart_name):

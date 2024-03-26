@@ -66,30 +66,17 @@ class Server:
             self.loss_data.append(loss)
             if server_round == gv.ROUNDS_NUM:
                 self.plotter.line_chart_plot(self.accuracy_data, self.loss_data)
-                
+                Server.set_confusion_matrix(model, model_conf, self.plotter)
+               
 
-                y_predict = model.predict(self.model_conf.x_test)
-                y_predict = np.argmax(y_predict, axis=1)
-                y_test =np.argmax(self.model_conf.y_test,axis=1)
-                result = confusion_matrix(y_test,y_predict)
-                self.plotter.confusion_matrix_chart_plot(result)
-                # # Get the predicted labels from the model (predicted_classes)
-                # predicted_classes = np.argmax(model.predict(self.model_conf.x_test), axis=1)
-
-                # # Get the true labels (true_classes)
-                # true_classes = np.argmax(self.model_conf.y_test, axis=1)
-
-                # # Create the confusion matrix
-                # confusion_matrix = np.zeros((self,model_conf.classes_number, self,model_conf.classes_number))
-                # for i, true_label in enumerate(true_classes):
-                #     predicted_label = predicted_classes[i]
-                #     confusion_matrix[true_label, predicted_label] += 1
-                    
-                # print(confusion_matrix)
-
-            # print(f"After round {server_round}, Global accuracy = {accuracy}")
-            # results = {"round":server_round,"loss": loss, "accuracy": accuracy}
-            # results_list.append(results)
             return loss, {"accuracy": accuracy}
 
         return evaluate
+    
+    @staticmethod
+    def set_confusion_matrix(model, model_conf,plotter):
+            y_predict = model.predict(model_conf.x_test)
+            y_predict = np.argmax(y_predict, axis=1)
+            y_test = np.argmax(model_conf.y_test,axis=1)
+            result = confusion_matrix(y_test,y_predict)
+            plotter.confusion_matrix_chart_plot(result)

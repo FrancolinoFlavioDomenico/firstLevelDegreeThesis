@@ -1,10 +1,6 @@
 import flwr as fl
 import numpy as np
 import gc
-from secml.adv.attacks import CAttackPoisoning
-from secml.array.c_array import CArray
-from secml.data import CDataset
-from secml.data.loader import CDataLoaderPyTorch, CDataLoader
 import copy
 
 import ModelConf
@@ -14,21 +10,20 @@ from src import logger
 
 
 class FlowerClient(fl.client.NumPyClient):
-    EPOCHS = 10
-    BATCH_SIZE = 20
-    STEPS_FOR_EPOCHS = 3
+    EPOCHS = 15
+    BATCH_SIZE = 100
+    STEPS_FOR_EPOCHS = 5
     VERBOSE = 0
 
     def __init__(self, model_conf: ModelConf.ModelConf, cid, client_partition_training_data=None) -> None:
         self.model_conf = model_conf
         (x_train, y_train) = client_partition_training_data
         self.x_train = copy.deepcopy(x_train)
-
+        print(self.x_train.shape)
         if model_conf.poisoning and (cid in gv.POISONERS_CLIENTS_CID):
             print(f'client {cid} starting label flipping poisoning')
             logger.info(f'client {cid} starting label flipping poisoning')
-            self.y_train = np.random.permutation(y_train)
-            self.run_secml_poisoning()
+            self.run_poisoning(y_train)
         else:
             self.y_train = copy.deepcopy(y_train)
 
@@ -38,7 +33,8 @@ class FlowerClient(fl.client.NumPyClient):
 
         self.model = self.model_conf.get_model()
     
-    def run_secml_poisoning(self):
+    def run_poisoning(self,y_train):
+        self.y_train = np.random.permutation(y_train)
         for item in self.x_train:
             item = self.add_perturbation(item)
 

@@ -25,7 +25,7 @@ enable_tf_gpu_growth()
 def start_cifa10(poisoning=False):
     print(f"starting cifar10 dataset {'poisoned' if poisoning else ''}")
     logger.info(f"starting cifar10 dataset {'poisoned' if poisoning else ''}")
-    cifar10_model_conf = mf.ModelConf('cifar10', cifar10, 10, (4, 4), (32, 32, 3), poisoning)
+    cifar10_model_conf = mf.ModelConf('cifar10', cifar10, 10, (3, 3), (32, 32, 3), poisoning)
     server_cifar10 = Server.Server(cifar10_model_conf)
     server_cifar10.start_simulation()
     del server_cifar10
@@ -51,7 +51,7 @@ def start_mnist(poisoning=False):
 def start_cifar100(poisoning=False):
     print(f"starting cifar100 dataset {'poisoned' if poisoning else ''}")
     logger.info(f"starting cifar100 dataset {'poisoned' if poisoning else ''}")
-    cifar100_model_conf = mf.ModelConf('cifar100', cifar100, 100, (4, 4), (32, 32, 3), poisoning)
+    cifar100_model_conf = mf.ModelConf('cifar100', cifar100, 100, (3, 3), (32, 32, 3), poisoning)
     server_cifar100 = Server.Server(cifar100_model_conf)
     server_cifar100.start_simulation()
     del server_cifar100
@@ -61,9 +61,9 @@ def start_cifar100(poisoning=False):
 
 
 def clear_ram():
-    time.sleep(20)
+    time.sleep(10)
     gc.collect()
-    time.sleep(20)
+    time.sleep(10)
 
 
 #####################################
@@ -76,6 +76,7 @@ clear_ram()
 
 start_mnist(False)
 clear_ram()
+
 
 start_cifar100(False)
 clear_ram()
