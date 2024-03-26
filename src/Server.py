@@ -18,7 +18,7 @@ class Server:
         self.strategy = fl.server.strategy.FedAvg(
             min_fit_clients=gv.CLIENTS_NUM,
             min_evaluate_clients=gv.CLIENTS_NUM,
-            min_available_clients=((gv.CLIENTS_NUM * 50) / 100),
+            min_available_clients=gv.CLIENTS_NUM,
             evaluate_fn=self.get_eval_fn(),
             evaluate_metrics_aggregation_fn=Server.weighted_average
         )

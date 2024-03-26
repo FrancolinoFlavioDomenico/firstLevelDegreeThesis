@@ -7,7 +7,7 @@ import pickle
 import os
 import gc
 import matplotlib.pyplot as plt
-
+import globalVariable
 
 import globalVariable as gv
 
@@ -44,25 +44,35 @@ class ModelConf:
         self.x_test = self.x_test / 255
         self.y_train = to_categorical(self.y_train, self.classes_number)
         self.y_test = to_categorical(self.y_test, self.classes_number)
+        if self.dataset_name == 'mnist':
+            self.x_train = self.x_train.reshape(self.x_train.shape[0],self.x_train.shape[1], self.x_train.shape[2],1)
+            self.x_test = self.x_test.reshape(self.x_test.shape[0],self.x_test.shape[1], self.x_test.shape[2],1)
 
     def generate_dataset_client_partition(self):
-        x_train_partitions = np.array(np.array_split(self.x_train, gv.CLIENTS_NUM))
-        y_train_partitions = np.array(np.array_split(self.y_train, gv.CLIENTS_NUM))
+        #random_numbers = np.sort(np.random.multinomial(self.x_train.shape[0], np.ones(globalVariable.CLIENTS_NUM)/globalVariable.CLIENTS_NUM))
+       
+        #print( random_numbers)
         dataset_partition_dir = f"dataset/{self.dataset_name}_partitions"
-        
         if not os.path.exists(dataset_partition_dir):
-            os.makedirs(dataset_partition_dir)                
-                
-        #save train partitions on file 
-        for i in np.arange(len(x_train_partitions)):
+            os.makedirs(dataset_partition_dir)   
+                        
+        # x_train_splitted = np.array_split(self.x_train, random_numbers) 
+        # y_train_splitted = np.array_split(self.y_train, random_numbers) 
+        x_train_splitted = np.array_split(self.x_train, globalVariable.CLIENTS_NUM) 
+        y_train_splitted = np.array_split(self.y_train, globalVariable.CLIENTS_NUM) 
+        for i in range(globalVariable.CLIENTS_NUM):
+            # print("----------------------------")
+            # print(x_train_splitted[i].shape)
+            # print(y_train_splitted[i].shape)
+            # print("----------------------------")
             with open(os.path.join(dataset_partition_dir, f"x_train_partition_of_{i}.pickle"), "wb") as f:
-                pickle.dump(x_train_partitions[i],f)
+                pickle.dump(x_train_splitted[i],f)
+                print(x_train_splitted[i].shape)
             with open(os.path.join(dataset_partition_dir, f"y_train_partition_of_{i}.pickle"), "wb") as f:
-                pickle.dump(y_train_partitions[i],f)
-        
-        
-        del x_train_partitions
-        del y_train_partitions
+                pickle.dump(y_train_splitted[i],f)
+                        
+        del x_train_splitted
+        del y_train_splitted
         gc.collect()
 
     def get_client_training_partitions_of(self, client_partition_index):
