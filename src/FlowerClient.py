@@ -2,6 +2,8 @@ import flwr as fl
 import numpy as np
 import gc
 import copy
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.callbacks import EarlyStopping
 
 import ModelConf
 import globalVariable as gv
@@ -10,31 +12,42 @@ from src import logger
 
 
 class FlowerClient(fl.client.NumPyClient):
-    EPOCHS = 15
-    BATCH_SIZE = 100
-    STEPS_FOR_EPOCHS = 5
-    VERBOSE = 0
+
 
     def __init__(self, model_conf: ModelConf.ModelConf, cid, client_partition_training_data=None) -> None:
+        self.cid = cid
+        print(f'initializing client{self.cid}')
         self.model_conf = model_conf
-        (x_train, y_train) = client_partition_training_data
-        self.x_train = copy.deepcopy(x_train)
-        print(self.x_train.shape)
-        if model_conf.poisoning and (cid in gv.POISONERS_CLIENTS_CID):
-            print(f'client {cid} starting label flipping poisoning')
-            logger.info(f'client {cid} starting label flipping poisoning')
-            self.run_poisoning(y_train)
-        else:
-            self.y_train = copy.deepcopy(y_train)
-
-        del x_train
-        del y_train
-        gc.collect()
-
         self.model = self.model_conf.get_model()
+        self.x_train, self.y_train = client_partition_training_data
+        
+        self.epochs = 25 if self.model_conf.dataset_name != 'mnist' else 5
+        self.batch_size = 250 if self.model_conf.dataset_name != 'mnist' else 50
+        self.steps_for_epoch = self.x_train.shape[0] // self.batch_size
+        self.verbose = 0
     
-    def run_poisoning(self,y_train):
-        self.y_train = np.random.permutation(y_train)
+        print(self.x_train.shape)
+
+        
+        if model_conf.poisoning and (self.cid in gv.POISONERS_CLIENTS_CID):
+            self.run_poisoning()
+
+        self.generate_data()
+
+        
+    def generate_data(self):
+        self.data_generator = ImageDataGenerator(rotation_range=15,
+            width_shift_range=0.1,
+            height_shift_range=0.1,
+            horizontal_flip=True
+            )
+        self.train_set_increased = self.data_generator.flow(self.x_train, self.y_train,self.batch_size)
+        
+        
+        
+    def run_poisoning(self):
+        print(f'client {self.cid} starting label flipping poisoning')
+        self.y_train = np.random.permutation(self.y_train)
         for item in self.x_train:
             item = self.add_perturbation(item)
 
@@ -59,15 +72,24 @@ class FlowerClient(fl.client.NumPyClient):
         return self.model.get_weights()
 
     def fit(self, parameters, config):
-        self.model.set_weights(parameters)
-        self.model.fit(self.x_train, self.y_train, epochs=FlowerClient.EPOCHS, batch_size=FlowerClient.BATCH_SIZE,
-                       steps_per_epoch=FlowerClient.STEPS_FOR_EPOCHS)
+        print(f'client {self.cid} fitting model')
+        self.model.set_weights(parameters)        
+        
+       # early_stop = EarlyStopping(monitor='val_loss', patience=2)
+        self.model.fit(self.train_set_increased,
+            epochs=self.epochs,
+            steps_per_epoch=self.steps_for_epoch,
+            validation_data=(self.model_conf.x_test,self.model_conf.y_test), 
+            #callbacks=[early_stop],
+            #batch_size=batch_size,
+            )
         return self.model.get_weights(), len(self.x_train), {}
 
     def evaluate(self, parameters, config):
+        print(f'client {self.cid} evaluating model')
         self.model.set_weights(parameters)
         loss, accuracy = self.model.evaluate(self.model_conf.x_test, self.model_conf.y_test,
-                                             verbose=FlowerClient.VERBOSE)
+                                             verbose=self.verbose)
         return loss, len(self.model_conf.x_test), {"accuracy": float(accuracy)}
 
 

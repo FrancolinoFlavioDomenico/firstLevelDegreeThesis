@@ -59,6 +59,7 @@ class Server:
                 parameters: fl.common.NDArrays,
                 config: Dict[str, fl.common.Scalar],
         ) -> Optional[Tuple[float, Dict[str, fl.common.Scalar]]]:
+            print(f'round {server_round} of dataset {self.model_conf.dataset_name}')
             model = model_conf.get_model()
             model.set_weights(parameters)  # Update model with the latest parameters
             loss, accuracy = model.evaluate(model_conf.x_test, model_conf.y_test)
