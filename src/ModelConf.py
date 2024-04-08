@@ -16,13 +16,14 @@ import globalVariable as gv
 
 class ModelConf:
 
-    def __init__(self, dataset_name, dataset, classes_number, kernel_size, input_shape,poisoning = False):
+    def __init__(self, dataset_name, dataset, classes_number, kernel_size, input_shape,poisoning = False, blockchain = False):
         self.dataset_name = dataset_name
         self.dataset = dataset
         self.classes_number = classes_number
         self.kernel_size = kernel_size
         self.input_shape = input_shape
         self.poisoning = poisoning
+        self.blockchain = blockchain
         # load data
         (self.x_train, self.y_train), (self.x_test, self.y_test) = self.dataset.load_data()
         self.set_dataset()

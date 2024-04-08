@@ -25,7 +25,7 @@ class Server:
         self.accuracy_data = []
         self.loss_data = []
         
-        self.plotter = Plotter.Plotter(self.model_conf.dataset_name, model_conf.poisoning)
+        self.plotter = Plotter.Plotter(self.model_conf.dataset_name, model_conf.poisoning,model_conf.blockchain)
 
     def start_simulation(self):
         client_resources = {"num_cpus": 4, "num_gpus": 1}

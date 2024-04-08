@@ -10,8 +10,9 @@ import datasetLabelMapping
 
 class Plotter:
 
-    def __init__(self, dataset_name, poisoning):
+    def __init__(self, dataset_name, poisoning, blockchain):
         self.poisoning = poisoning
+        self.blockchain = blockchain
         self.dataset_name = dataset_name
 
     def line_chart_plot(self, accuracy_data, loss_data):
@@ -53,7 +54,7 @@ class Plotter:
         self.set_save_fig_path('confusionMatrix')
 
     def set_save_fig_path(self, chart_name):
-        output_plot_dir = f"outputPlot/{'whitPoisoning' if self.poisoning else 'whitoutPoisoning'}/"
+        output_plot_dir = f"outputPlot/{'blockchain' if self.blockchain else 'noBlockchain'}/{'poisoning' if self.poisoning else 'noPoisoning'}/"
         print(f'output dir is : {output_plot_dir}')
         logger.debug(f'output dir is : {output_plot_dir}')
         output_plot_dir = os.path.join(output_plot_dir,

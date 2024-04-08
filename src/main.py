@@ -21,10 +21,10 @@ enable_tf_gpu_growth()
 #####################################
 
 # mnist
-def start_mnist(poisoning=False):
+def start_mnist(poisoning=False,blockchain=False):
     print(f"starting mnist dataset {'poisoned' if poisoning else ''}")
     logger.info(f"starting mnist dataset {'poisoned' if poisoning else ''}")
-    mnist_model_conf = mf.ModelConf('mnist', mnist, 10, (3, 3), (28, 28, 1), poisoning)
+    mnist_model_conf = mf.ModelConf('mnist', mnist, 10, (3, 3), (28, 28, 1), poisoning,blockchain)
     server_mnist = Server.Server(mnist_model_conf)
     server_mnist.start_simulation()
     del server_mnist
@@ -34,10 +34,10 @@ def start_mnist(poisoning=False):
     
     
 # cifar10
-def start_cifa10(poisoning=False):
+def start_cifa10(poisoning=False,blockchain=False):
     print(f"starting cifar10 dataset {'poisoned' if poisoning else ''}")
     logger.info(f"starting cifar10 dataset {'poisoned' if poisoning else ''}")
-    cifar10_model_conf = mf.ModelConf('cifar10', cifar10, 10, (5, 5), (32, 32, 3), poisoning)
+    cifar10_model_conf = mf.ModelConf('cifar10', cifar10, 10, (5, 5), (32, 32, 3), poisoning,blockchain)
     server_cifar10 = Server.Server(cifar10_model_conf)
     server_cifar10.start_simulation()
     del server_cifar10
@@ -47,10 +47,10 @@ def start_cifa10(poisoning=False):
 
 
 # cifar100
-def start_cifar100(poisoning=False):
+def start_cifar100(poisoning=False,blockchain=False):
     print(f"starting cifar100 dataset {'poisoned' if poisoning else ''}")
     logger.info(f"starting cifar100 dataset {'poisoned' if poisoning else ''}")
-    cifar100_model_conf = mf.ModelConf('cifar100', cifar100, 100, (5, 5), (32, 32, 3), poisoning)
+    cifar100_model_conf = mf.ModelConf('cifar100', cifar100, 100, (5, 5), (32, 32, 3), poisoning,blockchain)
     server_cifar100 = Server.Server(cifar100_model_conf)
     server_cifar100.start_simulation()
     del server_cifar100
@@ -67,7 +67,7 @@ def clear_ram():
 
 #####################################
 #
-#       whitout poisoning
+#       no poisoning
 #
 #####################################
 start_mnist(False)
@@ -82,7 +82,7 @@ clear_ram()
 
 #####################################
 #
-#       whit poisoning
+#        poisoning
 #
 #####################################
 start_mnist(True)
@@ -92,4 +92,34 @@ clear_ram()
 # clear_ram()
 
 # start_cifar100(True)
+# clear_ram()
+
+
+#####################################
+#
+#       no poisoning blockchian
+#
+#####################################
+start_mnist(False,True)
+clear_ram()
+
+# start_cifa10(False, True)
+# clear_ram()
+
+# start_cifar100(False, True)
+# clear_ram()
+
+
+#####################################
+#
+#       poisoning blockchian
+#
+#####################################
+start_mnist(True, True)
+clear_ram()
+
+# start_cifa10(True, True)
+# clear_ram()
+
+# start_cifar100(True, True)
 # clear_ram()
