@@ -58,7 +58,7 @@ class FlowerClient(fl.client.NumPyClient):
         #if noise_type == "random":
         noise += np.random.rand(rows, cols, channels) * scale
         #elif noise_type == "gaussian":
-        #noise += np.random.normal(0, scale, size=img.shape)
+        noise += np.random.normal(0, scale, size=img.shape)
 
         # Clip noise values to be within image value range (usually 0-255)
         perturbed_img = np.clip(img + noise, 0, 255)
