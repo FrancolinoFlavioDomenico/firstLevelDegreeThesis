@@ -1,14 +1,11 @@
 import flwr as fl
 import numpy as np
-import gc
-import copy
+import logging
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.callbacks import EarlyStopping
 
 import ModelConf
 import globalVariable as gv
-
-from src import logger
 
 
 class FlowerClient(fl.client.NumPyClient):
@@ -16,7 +13,7 @@ class FlowerClient(fl.client.NumPyClient):
 
     def __init__(self, model_conf: ModelConf.ModelConf, cid, client_partition_training_data=None) -> None:
         self.cid = cid
-        print(f'initializing client{self.cid}')
+        gv.printLog(f'initializing client{self.cid}')
         self.model_conf = model_conf
         self.model = self.model_conf.get_model()
         self.x_train, self.y_train = client_partition_training_data
@@ -46,7 +43,7 @@ class FlowerClient(fl.client.NumPyClient):
         
         
     def run_poisoning(self):
-        print(f'client {self.cid} starting label flipping poisoning')
+        gv.printLog(f'client {self.cid} starting label flipping poisoning')
         self.y_train = np.random.permutation(self.y_train)
         for item in self.x_train:
             item = self.add_perturbation(item)
@@ -72,7 +69,7 @@ class FlowerClient(fl.client.NumPyClient):
         return self.model.get_weights()
 
     def fit(self, parameters, config):
-        print(f'client {self.cid} fitting model')
+        gv.printLog(f'client {self.cid} fitting model')
         self.model.set_weights(parameters)        
         
        # early_stop = EarlyStopping(monitor='val_loss', patience=2)
@@ -86,7 +83,7 @@ class FlowerClient(fl.client.NumPyClient):
         return self.model.get_weights(), len(self.x_train), {}
 
     def evaluate(self, parameters, config):
-        print(f'client {self.cid} evaluating model')
+        gv.printLog(f'client {self.cid} evaluating model')
         self.model.set_weights(parameters)
         loss, accuracy = self.model.evaluate(self.model_conf.x_test, self.model_conf.y_test,
                                              verbose=self.verbose)
