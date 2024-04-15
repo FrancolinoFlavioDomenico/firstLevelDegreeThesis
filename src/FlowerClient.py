@@ -3,6 +3,7 @@ import numpy as np
 import logging
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.callbacks import EarlyStopping
+import random
 
 import ModelConf
 import globalVariable as gv
@@ -92,6 +93,14 @@ class FlowerClient(fl.client.NumPyClient):
 
 def get_client_fn(model_conf):
     def client_fn(cid: str) -> fl.client.Client:
-        return FlowerClient(model_conf, int(cid), model_conf.get_client_training_partitions_of(int(cid)))
+        gv.printLog(f'partion index before.............................................................{gv.partitions_index_list}')
+        if(gv.partitions_index_list.size <= 0):
+            gv.partitions_index_list = np.arange(0,gv.CLIENTS_NUM)
+        min = np.min(gv.partitions_index_list)
+        max = np.max(gv.partitions_index_list)
+        partition_index = random.randint(min,max)
+        gv.partitions_index_list = np.delete(gv.partitions_index_list,np.where(gv.partitions_index_list == partition_index))
+        gv.printLog(f'partion index after.............................................................{gv.partitions_index_list}')
+        return FlowerClient(model_conf, int(cid), model_conf.get_client_training_partitions_of(partition_index))
 
     return client_fn
