@@ -21,25 +21,22 @@ class FlowerClient(fl.client.NumPyClient):
         
         self.epochs = 25 if self.model_conf.dataset_name != 'mnist' else 5
         self.batch_size = 250 if self.model_conf.dataset_name != 'mnist' else 50
-        self.steps_for_epoch = self.x_train.shape[0] // self.batch_size
+        self.steps_for_epoch = len(self.x_train) // self.batch_size
         self.verbose = 0
-    
-        print(self.x_train.shape)
-
         
         if model_conf.poisoning and (self.cid in gv.POISONERS_CLIENTS_CID):
             self.run_poisoning()
 
-        self.generate_data()
+        self.train_set_increased = self.generate_data()
 
         
     def generate_data(self):
-        self.data_generator = ImageDataGenerator(rotation_range=15,
+        data_generator = ImageDataGenerator(rotation_range=15,
             width_shift_range=0.1,
             height_shift_range=0.1,
             horizontal_flip=True
             )
-        self.train_set_increased = self.data_generator.flow(self.x_train, self.y_train,self.batch_size)
+        return data_generator.flow(self.x_train, self.y_train,self.batch_size)
         
         
         
@@ -53,14 +50,13 @@ class FlowerClient(fl.client.NumPyClient):
     def add_perturbation(self,img):
         scale = 0.8
         rows, cols, channels = img.shape
+        
         # Create noise array with the same shape as the image
         noise = np.zeros_like(img)
-
         #if noise_type == "random":
         noise += np.random.rand(rows, cols, channels) * scale
         #elif noise_type == "gaussian":
         noise += np.random.normal(0, scale, size=img.shape)
-
         # Clip noise values to be within image value range (usually 0-255)
         perturbed_img = np.clip(img + noise, 0, 255)
         return perturbed_img
@@ -93,14 +89,6 @@ class FlowerClient(fl.client.NumPyClient):
 
 def get_client_fn(model_conf):
     def client_fn(cid: str) -> fl.client.Client:
-        gv.printLog(f'partion index before.............................................................{gv.partitions_index_list}')
-        if(gv.partitions_index_list.size <= 0):
-            gv.partitions_index_list = np.arange(0,gv.CLIENTS_NUM)
-        min = np.min(gv.partitions_index_list)
-        max = np.max(gv.partitions_index_list)
-        partition_index = random.randint(min,max)
-        gv.partitions_index_list = np.delete(gv.partitions_index_list,np.where(gv.partitions_index_list == partition_index))
-        gv.printLog(f'partion index after.............................................................{gv.partitions_index_list}')
-        return FlowerClient(model_conf, int(cid), model_conf.get_client_training_partitions_of(partition_index))
+       return FlowerClient(model_conf, int(cid), model_conf.get_client_training_partitions_of(int(cid)))
 
     return client_fn

@@ -58,9 +58,9 @@ def start_cifar100(poisoning=False,blockchain=False):
 
 
 def clear_ram():
-    time.sleep(10)
+    time.sleep(1)
     gc.collect()
-    time.sleep(10)
+    time.sleep(1)
 
 
 #####################################
@@ -68,11 +68,11 @@ def clear_ram():
 #       no poisoning
 #
 #####################################
-start_mnist(False)
-clear_ram()
+# start_mnist(False)
+# clear_ram()
 
-start_cifa10(False)
-clear_ram()
+# start_cifa10(False)
+# clear_ram()
 
 start_cifar100(False)
 clear_ram()
@@ -83,14 +83,14 @@ clear_ram()
 #        poisoning
 #
 #####################################
-start_mnist(True)
-clear_ram()
+# start_mnist(True)
+# clear_ram()
 
-start_cifa10(True)
-clear_ram()
+# start_cifa10(True)
+# clear_ram()
 
-start_cifar100(True)
-clear_ram()
+# start_cifar100(True)
+# clear_ram()
 
 
 #####################################
