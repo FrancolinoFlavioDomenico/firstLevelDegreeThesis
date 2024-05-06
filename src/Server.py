@@ -20,7 +20,8 @@ class Server:
             min_evaluate_clients=gv.CLIENTS_NUM,
             min_available_clients=gv.CLIENTS_NUM,
             evaluate_fn=self.get_eval_fn(),
-            evaluate_metrics_aggregation_fn=Server.weighted_average
+            evaluate_metrics_aggregation_fn=Server.weighted_average,
+            # initial_parameters=fl.common.ndarrays_to_parameters(self.model_conf.resnet_model.get_weights())
         )
         self.accuracy_data = []
         self.loss_data = []
@@ -28,7 +29,7 @@ class Server:
         self.plotter = Plotter.Plotter(self.model_conf.dataset_name, model_conf.poisoning,model_conf.blockchain)
 
     def start_simulation(self):
-        client_resources = {"num_cpus": 4, "num_gpus": 1}
+        client_resources = {"num_cpus": 2, "num_gpus": 0.5}
         fl.simulation.start_simulation(
             client_fn=get_client_fn(self.model_conf),
             num_clients=gv.CLIENTS_NUM,

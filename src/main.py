@@ -1,3 +1,4 @@
+import sys
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.datasets import cifar10
 from tensorflow.keras.datasets import cifar100
@@ -16,7 +17,6 @@ DEFAULT_FORMATTER = logging.Formatter(
 )
 fl.common.logger.configure(identifier="executionLog", filename="log.txt")
 enable_tf_gpu_growth()
-
 
 #####################################
 #
@@ -38,7 +38,7 @@ def start_mnist(poisoning=False,blockchain=False):
 # cifar10
 def start_cifa10(poisoning=False,blockchain=False):
     gv.printLog(f"starting cifar10 dataset {'poisoned' if poisoning else ''}")
-    cifar10_model_conf = mf.ModelConf('cifar10', cifar10, 10, (5, 5), (32, 32, 3), poisoning,blockchain)
+    cifar10_model_conf = mf.ModelConf('cifar10', cifar10, 10, (3, 3), (32, 32, 3), poisoning,blockchain)
     server_cifar10 = Server.Server(cifar10_model_conf)
     server_cifar10.start_simulation()
     del server_cifar10
@@ -49,7 +49,7 @@ def start_cifa10(poisoning=False,blockchain=False):
 # cifar100
 def start_cifar100(poisoning=False,blockchain=False):
     gv.printLog(f"starting cifar100 dataset {'poisoned' if poisoning else ''}")
-    cifar100_model_conf = mf.ModelConf('cifar100', cifar100, 100, (5, 5), (32, 32, 3), poisoning,blockchain)
+    cifar100_model_conf = mf.ModelConf('cifar100', cifar100, 100, (3, 3), (32, 32, 3), poisoning,blockchain)
     server_cifar100 = Server.Server(cifar100_model_conf)
     server_cifar100.start_simulation()
     del server_cifar100
@@ -57,7 +57,7 @@ def start_cifar100(poisoning=False,blockchain=False):
     gv.printLog(f"finish cifar100 {'poisoned' if poisoning else ''}")     
 
 
-def clear_ram():
+def clear_ram(): 
     time.sleep(1)
     gc.collect()
     time.sleep(1)

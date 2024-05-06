@@ -4,6 +4,9 @@ from tensorflow.keras.layers import MaxPooling2D
 from tensorflow.keras.layers import MaxPool2D
 from tensorflow.keras.layers import BatchNormalization
 from tensorflow.keras.utils import to_categorical
+from tensorflow.keras.applications.resnet50 import ResNet50, preprocess_input
+from tensorflow.keras.layers import GlobalAveragePooling2D, Input, UpSampling2D
+from tensorflow.keras import Model
 import numpy as np
 import pickle
 import os
@@ -43,14 +46,17 @@ class ModelConf:
 
     def set_dataset(self):
         # normalizing e label encodig
-        self.x_train = self.x_train / 255
-        self.x_test = self.x_test / 255
-        self.y_train = to_categorical(self.y_train, self.classes_number)
-        self.y_test = to_categorical(self.y_test, self.classes_number)
-        
         if self.dataset_name == 'mnist':
+            self.x_train = self.x_train / 255
+            self.x_test = self.x_test / 255
             self.x_train = self.x_train.reshape(self.x_train.shape[0],self.x_train.shape[1], self.x_train.shape[2],1)
             self.x_test = self.x_test.reshape(self.x_test.shape[0],self.x_test.shape[1], self.x_test.shape[2],1)
+        else:
+            self.x_train = preprocess_input(self.x_train)
+            self.x_test = preprocess_input(self.x_test)
+
+        self.y_train = to_categorical(self.y_train, self.classes_number)
+        self.y_test = to_categorical(self.y_test, self.classes_number)
 
     def generate_dataset_client_partition(self):
        
@@ -86,39 +92,94 @@ class ModelConf:
 
     def get_model(self):
         # build the model
-        model = Sequential()
-        
-        #initial arch
         if(self.dataset_name == 'mnist'):
-            model.add(Conv2D(64, self.kernel_size, input_shape=self.input_shape, activation="relu"))
-            model.add(MaxPooling2D(pool_size=(2, 2)))
-            model.add(Dropout(0.5))
-            model.add(Conv2D(64, self.kernel_size, input_shape=self.input_shape, activation="relu"))
-            model.add(MaxPooling2D(pool_size=(2, 2)))
-            model.add(Dropout(0.25))
-            model.add(Flatten())
-            model.add(Dense(256, activation="relu"))
-            model.add(Dense(self.classes_number, activation="softmax"))
+            model = self.get_mnist_arch()
         else:
-            model.add(Conv2D(filters=32, kernel_size=self.kernel_size, input_shape=self.input_shape, activation='relu', padding='same'))
-            model.add(BatchNormalization())
-            model.add(MaxPool2D(pool_size=(2, 2)))
-            model.add(Dropout(0.25))
+            model = self.get_cifar_arch()
+            
+        model.summary()
+        return model
+    
+    def get_cifar_arch(self):
+        # model = Sequential()
+        # model.add(Conv2D(filters=32, kernel_size=self.kernel_size, input_shape=self.input_shape, activation='relu', padding='same'))
+        # model.add(BatchNormalization())
+        # model.add(MaxPool2D(pool_size=(2, 2)))
+        # model.add(Dropout(0.25))
 
-            model.add(Conv2D(filters=64, kernel_size=self.kernel_size, input_shape=self.input_shape, activation='relu', padding='same'))
-            model.add(BatchNormalization())
-            model.add(MaxPool2D(pool_size=(2, 2)))
-            model.add(Dropout(0.25))
+        # model.add(Conv2D(filters=64, kernel_size=self.kernel_size, input_shape=self.input_shape, activation='relu', padding='same'))
+        # model.add(BatchNormalization())
+        # model.add(MaxPool2D(pool_size=(2, 2)))
+        # model.add(Dropout(0.25))
 
-            model.add(Conv2D(filters=128, kernel_size=self.kernel_size, input_shape=self.input_shape, activation='relu', padding='same'))
-            model.add(BatchNormalization())
-            model.add(MaxPool2D(pool_size=(2, 2)))
-            model.add(Dropout(0.25))
+        # model.add(Conv2D(filters=128, kernel_size=self.kernel_size, input_shape=self.input_shape, activation='relu', padding='same'))
+        # model.add(BatchNormalization())
+        # model.add(MaxPool2D(pool_size=(2, 2)))
+        # model.add(Dropout(0.25))
 
-            model.add(Flatten())
-            model.add(Dense(128, activation='relu'))
-            model.add(Dropout(0.25))
-            model.add(Dense(self.classes_number, activation='softmax'))
+        # model.add(Flatten())
+        # model.add(Dense(128, activation='relu'))
+        # model.add(Dropout(0.25))
+        # model.add(Dense(self.classes_number, activation='softmax'))
+        model = self.define_compile_model()
+        return model
         
+    # Feature Extraction is performed by ResNet50 pretrained on imagenet weights. 
+    # Input size is 224 x 224.
+    def feature_extractor(self,inputs):
+
+        feature_extractor = ResNet50(input_shape=(224, 224, 3),
+                                                    include_top=False,
+                                                    weights='imagenet')(inputs)
+        return feature_extractor
+
+
+    # Defines final dense layers and subsequent softmax layer for classification.
+    def classifier(self,inputs):
+        x = GlobalAveragePooling2D()(inputs)
+        x = Flatten()(x)
+        x = Dense(1024, activation="relu")(x)
+        x = Dense(512, activation="relu")(x)
+        x = Dense(self.classes_number, activation="softmax", name="classification")(x)
+        return x
+
+    # Since input image size is (32 x 32), first upsample the image by factor of (7x7) to transform it to (224 x 224)
+    # Connect the feature extraction and "classifier" layers to build the model.
+    def final_model(self,inputs):
+
+        resize = UpSampling2D(size=(7,7))(inputs)
+
+        resnet_feature_extractor = self.feature_extractor(resize)
+        classification_output = self.classifier(resnet_feature_extractor)
+
+        return classification_output
+
+    # Define the model and compile it. 
+    # Use Stochastic Gradient Descent as the optimizer.
+    # Use Sparse Categorical CrossEntropy as the loss function.
+    def define_compile_model(self):
+        inputs = Input(shape=(32,32,3))
+        
+        classification_output = self.final_model(inputs) 
+        model = Model(inputs=inputs, outputs = classification_output)
+        
+        model.compile(optimizer='SGD', 
+                        loss='categorical_crossentropy',
+                        metrics = ['accuracy'])
+        
+        return model
+    
+    
+    def get_mnist_arch(self):
+        model = Sequential()
+        model.add(Conv2D(64, self.kernel_size, input_shape=self.input_shape, activation="relu"))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
+        model.add(Dropout(0.5))
+        model.add(Conv2D(64, self.kernel_size, input_shape=self.input_shape, activation="relu"))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
+        model.add(Dropout(0.25))
+        model.add(Flatten())
+        model.add(Dense(256, activation="relu"))
+        model.add(Dense(self.classes_number, activation="softmax"))
         model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
         return model

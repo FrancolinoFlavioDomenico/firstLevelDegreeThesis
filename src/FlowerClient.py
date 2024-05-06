@@ -4,6 +4,8 @@ import logging
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.callbacks import EarlyStopping
 import random
+from keras.applications.resnet50 import preprocess_input
+
 
 import ModelConf
 import globalVariable as gv
@@ -19,8 +21,8 @@ class FlowerClient(fl.client.NumPyClient):
         self.model = self.model_conf.get_model()
         self.x_train, self.y_train = client_partition_training_data
         
-        self.epochs = 25 if self.model_conf.dataset_name != 'mnist' else 5
-        self.batch_size = 250 if self.model_conf.dataset_name != 'mnist' else 50
+        self.epochs = 10 if self.model_conf.dataset_name != 'mnist' else 5
+        self.batch_size = 64 
         self.steps_for_epoch = len(self.x_train) // self.batch_size
         self.verbose = 0
         
