@@ -1,19 +1,17 @@
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv2D, Dense, Flatten, Dropout
-from tensorflow.keras.layers import MaxPooling2D
-from tensorflow.keras.layers import MaxPool2D
-from tensorflow.keras.layers import BatchNormalization
-from tensorflow.keras.utils import to_categorical
-from tensorflow.keras.applications.resnet50 import ResNet50, preprocess_input
-from tensorflow.keras.layers import GlobalAveragePooling2D, Input, UpSampling2D
-from tensorflow.keras import Model
+import tensorflow as tf
+# from keras.models import Sequential
+# from keras.layers import Conv2D, Dense, Flatten, Dropout
+# from keras.layers import MaxPooling2D
+# from keras.layers import MaxPool2D
+# from keras.layers import BatchNormalization
+# from keras.utils import to_categorical
+# from keras.applications.resnet import ResNet50, preprocess_input
+# from keras.layers import GlobalAveragePooling2D, Input, UpSampling2D
+# from keras import Model
 import numpy as np
 import pickle
 import os
 import gc
-import matplotlib.pyplot as plt
-import globalVariable
-
 import globalVariable as gv
 
 
@@ -52,11 +50,11 @@ class ModelConf:
             self.x_train = self.x_train.reshape(self.x_train.shape[0],self.x_train.shape[1], self.x_train.shape[2],1)
             self.x_test = self.x_test.reshape(self.x_test.shape[0],self.x_test.shape[1], self.x_test.shape[2],1)
         else:
-            self.x_train = preprocess_input(self.x_train)
-            self.x_test = preprocess_input(self.x_test)
+            self.x_train = tf.keras.applications.resnet50.preprocess_input(self.x_train)
+            self.x_test = tf.keras.applications.resnet50.preprocess_input(self.x_test)
 
-        self.y_train = to_categorical(self.y_train, self.classes_number)
-        self.y_test = to_categorical(self.y_test, self.classes_number)
+        self.y_train = tf.keras.utils.to_categorical(self.y_train, self.classes_number)
+        self.y_test = tf.keras.utils.to_categorical(self.y_test, self.classes_number)
 
     def generate_dataset_client_partition(self):
        
@@ -64,10 +62,10 @@ class ModelConf:
         if not os.path.exists(dataset_partition_dir):
             os.makedirs(dataset_partition_dir)   
             
-        x_train_splitted = np.array_split(self.x_train, globalVariable.CLIENTS_NUM) 
-        y_train_splitted = np.array_split(self.y_train, globalVariable.CLIENTS_NUM)
+        x_train_splitted = np.array_split(self.x_train, gv.CLIENTS_NUM) 
+        y_train_splitted = np.array_split(self.y_train, gv.CLIENTS_NUM)
 
-        for i in range(globalVariable.CLIENTS_NUM):
+        for i in range(gv.CLIENTS_NUM):
             with open(os.path.join(dataset_partition_dir, f"x_train_partition_of_{i}.pickle"), "wb") as f:
                 pickle.dump(x_train_splitted[i],f)
                 print(x_train_splitted[i].shape)
@@ -128,26 +126,33 @@ class ModelConf:
     # Input size is 224 x 224.
     def feature_extractor(self,inputs):
 
-        feature_extractor = ResNet50(input_shape=(224, 224, 3),
+        feature_extractor = tf.keras.applications.resnet50.ResNet50(input_shape=(224, 224, 3),
                                                     include_top=False,
                                                     weights='imagenet')(inputs)
+        
+        feature_extractor.trainable = False
+        # for layer in feature_extractor.layers:
+        #     # if isinstance(layer, BatchNormalization):
+        #     #     layer.trainable = True
+        #     # else:
+        #         layer.trainable = False
         return feature_extractor
 
 
     # Defines final dense layers and subsequent softmax layer for classification.
     def classifier(self,inputs):
-        x = GlobalAveragePooling2D()(inputs)
-        x = Flatten()(x)
-        x = Dense(1024, activation="relu")(x)
-        x = Dense(512, activation="relu")(x)
-        x = Dense(self.classes_number, activation="softmax", name="classification")(x)
+        x = tf.keras.layers.GlobalAveragePooling2D()(inputs)
+        x = tf.keras.layers.Flatten()(x)
+        x = tf.keras.layers.Dense(1024, activation="relu")(x)
+        x = tf.keras.layers.Dense(512, activation="relu")(x)
+        x = tf.keras.layers.Dense(self.classes_number, activation="softmax", name="classification")(x)
         return x
 
     # Since input image size is (32 x 32), first upsample the image by factor of (7x7) to transform it to (224 x 224)
     # Connect the feature extraction and "classifier" layers to build the model.
     def final_model(self,inputs):
 
-        resize = UpSampling2D(size=(7,7))(inputs)
+        resize = tf.keras.layers.UpSampling2D(size=(7,7))(inputs)
 
         resnet_feature_extractor = self.feature_extractor(resize)
         classification_output = self.classifier(resnet_feature_extractor)
@@ -158,10 +163,10 @@ class ModelConf:
     # Use Stochastic Gradient Descent as the optimizer.
     # Use Sparse Categorical CrossEntropy as the loss function.
     def define_compile_model(self):
-        inputs = Input(shape=(32,32,3))
+        inputs = tf.keras.layers.Input(shape=(32,32,3))
         
         classification_output = self.final_model(inputs) 
-        model = Model(inputs=inputs, outputs = classification_output)
+        model = tf.keras.Model(inputs=inputs, outputs = classification_output)
         
         model.compile(optimizer='SGD', 
                         loss='categorical_crossentropy',
@@ -171,15 +176,15 @@ class ModelConf:
     
     
     def get_mnist_arch(self):
-        model = Sequential()
-        model.add(Conv2D(64, self.kernel_size, input_shape=self.input_shape, activation="relu"))
-        model.add(MaxPooling2D(pool_size=(2, 2)))
-        model.add(Dropout(0.5))
-        model.add(Conv2D(64, self.kernel_size, input_shape=self.input_shape, activation="relu"))
-        model.add(MaxPooling2D(pool_size=(2, 2)))
-        model.add(Dropout(0.25))
-        model.add(Flatten())
-        model.add(Dense(256, activation="relu"))
-        model.add(Dense(self.classes_number, activation="softmax"))
+        model = tf.keras.models.Sequential()
+        model.add(tf.keras.layers.Conv2D(64, self.kernel_size, input_shape=self.input_shape, activation="relu"))
+        model.add(tf.keras.layers.MaxPooling2D(pool_size=(2, 2)))
+        model.add(tf.keras.layers.Dropout(0.5))
+        model.add(tf.keras.layers.Conv2D(64, self.kernel_size, input_shape=self.input_shape, activation="relu"))
+        model.add(tf.keras.layers.MaxPooling2D(pool_size=(2, 2)))
+        model.add(tf.keras.layers.Dropout(0.25))
+        model.add(tf.keras.layers.Flatten())
+        model.add(tf.keras.layers.Dense(256, activation="relu"))
+        model.add(tf.keras.layers.Dense(self.classes_number, activation="softmax"))
         model.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
         return model

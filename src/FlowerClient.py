@@ -1,20 +1,22 @@
 import flwr as fl
 import numpy as np
 import logging
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras.callbacks import EarlyStopping
+import tensorflow as tf
+
 import random
-from keras.applications.resnet50 import preprocess_input
 
 
 import ModelConf
 import globalVariable as gv
+
+from flwr.simulation.ray_transport.utils import enable_tf_gpu_growth
 
 
 class FlowerClient(fl.client.NumPyClient):
 
 
     def __init__(self, model_conf: ModelConf.ModelConf, cid, client_partition_training_data=None) -> None:
+        enable_tf_gpu_growth()
         self.cid = cid
         gv.printLog(f'initializing client{self.cid}')
         self.model_conf = model_conf
@@ -22,7 +24,7 @@ class FlowerClient(fl.client.NumPyClient):
         self.x_train, self.y_train = client_partition_training_data
         
         self.epochs = 10 if self.model_conf.dataset_name != 'mnist' else 5
-        self.batch_size = 64 
+        self.batch_size = 125 
         self.steps_for_epoch = len(self.x_train) // self.batch_size
         self.verbose = 0
         
@@ -33,7 +35,7 @@ class FlowerClient(fl.client.NumPyClient):
 
         
     def generate_data(self):
-        data_generator = ImageDataGenerator(rotation_range=15,
+        data_generator = tf.keras.preprocessing.image.ImageDataGenerator(rotation_range=15,
             width_shift_range=0.1,
             height_shift_range=0.1,
             horizontal_flip=True
@@ -71,13 +73,13 @@ class FlowerClient(fl.client.NumPyClient):
         gv.printLog(f'client {self.cid} fitting model')
         self.model.set_weights(parameters)        
         
-       # early_stop = EarlyStopping(monitor='val_loss', patience=2)
+        early_stop = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=2)
         self.model.fit(self.train_set_increased,
             epochs=self.epochs,
             steps_per_epoch=self.steps_for_epoch,
             validation_data=(self.model_conf.x_test,self.model_conf.y_test), 
-            #callbacks=[early_stop],
-            #batch_size=batch_size,
+            callbacks=[early_stop],
+            batch_size=self.batch_size,
             )
         return self.model.get_weights(), len(self.x_train), {}
 
