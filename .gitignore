@@ -165,4 +165,4 @@ cython_debug/
 .vscode/
 
 # splitted dataset e saved on file
-dataset/
+data/
