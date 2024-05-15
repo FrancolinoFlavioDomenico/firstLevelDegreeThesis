@@ -1,15 +1,10 @@
 import flwr as fl
-
 from torch.utils.data import DataLoader
-
-# import Utils
-
 from Utils import Utils
 import pickle
 import os
 import torch
 from torch.utils.data.dataset import Subset
-
 from collections import OrderedDict
 from tqdm import tqdm
 
@@ -25,7 +20,7 @@ class FlowerClient(fl.client.NumPyClient):
         )
 
         self.model = self.utils.get_model()
-        self.epochs = 1 if self.utils.dataset_name != 'mnist' else 1
+        self.epochs = 10 if self.utils.dataset_name != 'mnist' else 1
         self.batch_size = 100
         self.client_partition_data: Subset
         with open(os.path.join(f"../data/partitions/{self.utils.dataset_name}",
@@ -49,7 +44,6 @@ class FlowerClient(fl.client.NumPyClient):
 
     def run_poisoning(self):
         self.utils.printLog(f'client {self.cid} starting poisoning')
-        # self.y_train = np.random.permutation(self.y_train)
         for batch in self.train_data_loader:
             img, labels = batch
             labels = labels[torch.randperm(labels.size(0))]  # label flipping
@@ -103,7 +97,6 @@ class FlowerClient(fl.client.NumPyClient):
 
             progress_bar = tqdm(enumerate(self.train_data_loader), total=len(self.test_data_loader))
             for batch_idx, (images, labels) in progress_bar:
-                # images, labels = batch["img"], batch["label"]
                 images, labels = images.to(self.device), labels.to(self.device)
                 optimizer.zero_grad()
                 loss = criterion(self.model(images), labels)
@@ -133,7 +126,7 @@ class FlowerClient(fl.client.NumPyClient):
 
     def test(self,data_loader):
         """Validate the network on the entire test set."""
-        print(f"Starting evalutation client{self.cid}...")
+        Utils.printLog(f"Starting evalutation client{self.cid}...")
         device: torch.device = torch.device("cpu")
         self.model.to(device)  # move model to GPU if available
         criterion = torch.nn.CrossEntropyLoss()
@@ -148,10 +141,7 @@ class FlowerClient(fl.client.NumPyClient):
                 _, predicted = torch.max(outputs.data, 1)
                 correct += (predicted == labels).sum().item()
         accuracy = correct / len(data_loader.dataset)
-        # print(
-        #     f'Epoch [{self.epochs + 1}/{self.epochs}], Train Loss: {loss:.4f}, Train Acc: {100. * correct / total:.2f}%, Val Loss: {val_loss:.4f}, Val Acc: {accuracy:.2f}%')
-        print(f'Val Loss: {loss:.4f}, Val Acc: {accuracy:.2f}%')
-        # self.model.to("cpu")  # move model back to CPU
+        Utils.printLog(f'Val Loss: {loss:.4f}, Val Acc: {accuracy:.2f}%')
         return loss, accuracy
 
     def get_model_params(self):
@@ -172,8 +162,6 @@ class FlowerClient(fl.client.NumPyClient):
 
         loss, accuracy = self.test(self.test_data_loader)
 
-        # print(
-        #     f'Epoch [{self.epochs + 1}/{self.epochs}], Train Loss: {loss:.4f}, Train Acc: {100. * correct / total:.2f}%, Val Loss: {val_loss:.4f}, Val Acc: {accuracy:.2f}%')
         Utils.printLog(
             f'Val Loss: {loss:.4f}, Val Acc: {accuracy:.2f}%')
 

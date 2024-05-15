@@ -1,0 +1,1112 @@
+executionLog | INFO flwr 2024-05-15 20:13:33,074 | app.py:150 | Starting Flower server, config: num_rounds=5, no round_timeout
+executionLog | INFO flwr 2024-05-15 20:13:33,532 | app.py:163 | Flower ECE: gRPC server running (5 rounds), SSL is disabled
+executionLog | INFO flwr 2024-05-15 20:13:33,533 | server.py:92 | [INIT]
+executionLog | INFO flwr 2024-05-15 20:13:33,533 | server.py:275 | Using initial global parameters provided by strategy
+executionLog | INFO flwr 2024-05-15 20:13:33,533 | server.py:94 | Evaluating initial global parameters
+executionLog | DEBUG flwr 2024-05-15 20:14:20,546 | grpc.py:52 | Opened insecure gRPC connection (no certificates were passed)
+executionLog | DEBUG flwr 2024-05-15 20:14:20,552 | connection.py:55 | ChannelConnectivity.IDLE
+executionLog | DEBUG flwr 2024-05-15 20:14:20,553 | connection.py:55 | ChannelConnectivity.CONNECTING
+executionLog | DEBUG flwr 2024-05-15 20:14:20,554 | connection.py:55 | ChannelConnectivity.READY
+executionLog | INFO flwr 2024-05-15 20:14:28,486 | server.py:97 | initial parameters (loss, other metrics): 461.9535436630249, {'accuracy': 0.0058}
+executionLog | INFO flwr 2024-05-15 20:14:28,487 | server.py:110 | 
+executionLog | INFO flwr 2024-05-15 20:14:28,487 | server.py:111 | [ROUND 1]
+executionLog | DEBUG flwr 2024-05-15 20:14:56,972 | connection.py:231 | gRPC channel closed
+executionLog | INFO flwr 2024-05-15 20:17:27,281 | app.py:150 | Starting Flower server, config: num_rounds=5, no round_timeout
+executionLog | INFO flwr 2024-05-15 20:17:27,304 | app.py:163 | Flower ECE: gRPC server running (5 rounds), SSL is disabled
+executionLog | INFO flwr 2024-05-15 20:17:27,305 | server.py:92 | [INIT]
+executionLog | INFO flwr 2024-05-15 20:17:27,305 | server.py:275 | Using initial global parameters provided by strategy
+executionLog | INFO flwr 2024-05-15 20:17:27,305 | server.py:94 | Evaluating initial global parameters
+executionLog | INFO flwr 2024-05-15 20:18:10,960 | server.py:97 | initial parameters (loss, other metrics): 462.6278762817383, {'accuracy': 0.0117}
+executionLog | INFO flwr 2024-05-15 20:18:10,961 | server.py:110 | 
+executionLog | INFO flwr 2024-05-15 20:18:10,961 | server.py:111 | [ROUND 1]
+executionLog | DEBUG flwr 2024-05-15 20:18:57,972 | grpc.py:52 | Opened insecure gRPC connection (no certificates were passed)
+executionLog | DEBUG flwr 2024-05-15 20:18:57,978 | connection.py:55 | ChannelConnectivity.IDLE
+executionLog | DEBUG flwr 2024-05-15 20:18:57,980 | connection.py:55 | ChannelConnectivity.CONNECTING
+executionLog | DEBUG flwr 2024-05-15 20:18:57,980 | connection.py:55 | ChannelConnectivity.READY
+executionLog | DEBUG flwr 2024-05-15 20:19:06,966 | grpc.py:52 | Opened insecure gRPC connection (no certificates were passed)
+executionLog | DEBUG flwr 2024-05-15 20:19:06,966 | grpc.py:52 | Opened insecure gRPC connection (no certificates were passed)
+executionLog | DEBUG flwr 2024-05-15 20:19:06,976 | connection.py:55 | ChannelConnectivity.IDLE
+executionLog | DEBUG flwr 2024-05-15 20:19:06,976 | connection.py:55 | ChannelConnectivity.CONNECTING
+executionLog | DEBUG flwr 2024-05-15 20:19:06,985 | connection.py:55 | ChannelConnectivity.IDLE
+executionLog | DEBUG flwr 2024-05-15 20:19:06,985 | connection.py:55 | ChannelConnectivity.CONNECTING
+executionLog | DEBUG flwr 2024-05-15 20:19:06,987 | connection.py:55 | ChannelConnectivity.READY
+executionLog | DEBUG flwr 2024-05-15 20:19:06,989 | connection.py:55 | ChannelConnectivity.READY
+executionLog | DEBUG flwr 2024-05-15 20:19:09,035 | grpc.py:52 | Opened insecure gRPC connection (no certificates were passed)
+executionLog | DEBUG flwr 2024-05-15 20:19:09,036 | grpc.py:52 | Opened insecure gRPC connection (no certificates were passed)
+executionLog | DEBUG flwr 2024-05-15 20:19:09,037 | grpc.py:52 | Opened insecure gRPC connection (no certificates were passed)
+executionLog | DEBUG flwr 2024-05-15 20:19:09,039 | grpc.py:52 | Opened insecure gRPC connection (no certificates were passed)
+executionLog | DEBUG flwr 2024-05-15 20:19:09,056 | connection.py:55 | ChannelConnectivity.IDLE
+executionLog | DEBUG flwr 2024-05-15 20:19:09,057 | connection.py:55 | ChannelConnectivity.CONNECTING
+executionLog | DEBUG flwr 2024-05-15 20:19:09,057 | connection.py:55 | ChannelConnectivity.IDLE
+executionLog | DEBUG flwr 2024-05-15 20:19:09,059 | connection.py:55 | ChannelConnectivity.IDLE
+executionLog | DEBUG flwr 2024-05-15 20:19:09,059 | connection.py:55 | ChannelConnectivity.READY
+executionLog | DEBUG flwr 2024-05-15 20:19:09,064 | connection.py:55 | ChannelConnectivity.CONNECTING
+executionLog | DEBUG flwr 2024-05-15 20:19:09,065 | connection.py:55 | ChannelConnectivity.READY
+executionLog | DEBUG flwr 2024-05-15 20:19:09,073 | connection.py:55 | ChannelConnectivity.READY
+executionLog | DEBUG flwr 2024-05-15 20:19:09,076 | connection.py:55 | ChannelConnectivity.IDLE
+executionLog | DEBUG flwr 2024-05-15 20:19:09,077 | connection.py:55 | ChannelConnectivity.READY
+executionLog | DEBUG flwr 2024-05-15 20:19:09,480 | grpc.py:52 | Opened insecure gRPC connection (no certificates were passed)
+executionLog | DEBUG flwr 2024-05-15 20:19:09,482 | grpc.py:52 | Opened insecure gRPC connection (no certificates were passed)
+executionLog | DEBUG flwr 2024-05-15 20:19:09,483 | grpc.py:52 | Opened insecure gRPC connection (no certificates were passed)
+executionLog | DEBUG flwr 2024-05-15 20:19:09,491 | connection.py:55 | ChannelConnectivity.IDLE
+executionLog | DEBUG flwr 2024-05-15 20:19:09,491 | connection.py:55 | ChannelConnectivity.READY
+executionLog | DEBUG flwr 2024-05-15 20:19:09,491 | connection.py:55 | ChannelConnectivity.IDLE
+executionLog | DEBUG flwr 2024-05-15 20:19:09,492 | connection.py:55 | ChannelConnectivity.READY
+executionLog | DEBUG flwr 2024-05-15 20:19:09,502 | connection.py:55 | ChannelConnectivity.IDLE
+executionLog | DEBUG flwr 2024-05-15 20:19:09,503 | connection.py:55 | ChannelConnectivity.CONNECTING
+executionLog | DEBUG flwr 2024-05-15 20:19:09,503 | connection.py:55 | ChannelConnectivity.READY
+executionLog | INFO flwr 2024-05-15 20:19:09,504 | server.py:224 | configure_fit: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-05-15 20:19:09,781 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:19:09,782 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:19:09,782 | app.py:465 | Received: train message 46931dbf-31a9-45b1-90a4-2ad727f5c705
+executionLog | INFO flwr 2024-05-15 20:19:09,863 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:19:09,863 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:19:09,863 | app.py:465 | Received: train message 23827639-af79-44d1-9b18-6e548a069cd6
+executionLog | INFO flwr 2024-05-15 20:19:09,953 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:19:09,953 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:19:09,953 | app.py:465 | Received: train message b334c6e3-b9f2-4548-a700-59ace83ec215
+executionLog | INFO flwr 2024-05-15 20:19:10,137 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:19:10,137 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:19:10,137 | app.py:465 | Received: train message fcaf19b8-2134-47df-a029-d34528525a32
+executionLog | INFO flwr 2024-05-15 20:19:10,230 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:19:10,230 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:19:10,231 | app.py:465 | Received: train message e7e88361-e6e0-44e6-a1ac-a91e1cdf6204
+executionLog | INFO flwr 2024-05-15 20:19:10,316 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:19:10,316 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:19:10,317 | app.py:465 | Received: train message e388860b-3732-4216-a858-2c1118f6d9ff
+executionLog | INFO flwr 2024-05-15 20:19:10,339 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:19:10,340 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:19:10,340 | app.py:465 | Received: train message a3682544-2b04-448a-bd10-7744c8396db5
+executionLog | INFO flwr 2024-05-15 20:19:10,541 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:19:10,542 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:19:10,542 | app.py:465 | Received: train message d391256c-7ad3-40a9-903e-36b52f266dfa
+executionLog | INFO flwr 2024-05-15 20:19:10,545 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:19:10,546 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:19:10,546 | app.py:465 | Received: train message fbef67e4-2216-43ef-ac38-bdb0c8e0015b
+executionLog | INFO flwr 2024-05-15 20:19:10,680 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:19:10,680 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:19:10,680 | app.py:465 | Received: train message 8fadd5bd-5ce2-499e-8c24-2fc85d0a7295
+executionLog | INFO flwr 2024-05-15 20:31:03,466 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:31:06,945 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:31:08,133 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:31:09,179 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:31:10,967 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:31:12,206 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:31:12,899 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:31:13,447 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:31:14,654 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:31:15,751 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:31:16,095 | server.py:238 | aggregate_fit: received 10 results and 0 failures
+executionLog | WARNING flwr 2024-05-15 20:31:16,760 | fedavg.py:252 | No fit_metrics_aggregation_fn provided
+executionLog | INFO flwr 2024-05-15 20:32:03,259 | server.py:129 | fit progress: (1, 466.102650642395, {'accuracy': 0.014}, 832.2979932000162)
+executionLog | INFO flwr 2024-05-15 20:32:03,260 | server.py:176 | configure_evaluate: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-05-15 20:32:03,687 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:32:03,687 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:32:03,687 | app.py:465 | Received: evaluate message 2700cf20-0062-4290-823d-565e634ac10b
+executionLog | INFO flwr 2024-05-15 20:32:03,711 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:32:03,712 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:32:03,712 | app.py:465 | Received: evaluate message d9bdf355-b346-49cb-99de-793d74c28edf
+executionLog | INFO flwr 2024-05-15 20:32:03,924 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:32:03,924 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:32:03,924 | app.py:465 | Received: evaluate message 60fbe3ab-9384-4afc-9324-6316690beb30
+executionLog | INFO flwr 2024-05-15 20:32:04,170 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:32:04,171 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:32:04,171 | app.py:465 | Received: evaluate message 5b00be65-70d4-4352-a6ab-99cf52e271f4
+executionLog | INFO flwr 2024-05-15 20:32:04,315 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:32:04,316 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:32:04,316 | app.py:465 | Received: evaluate message 3352ae10-9298-48eb-93d7-4be1d9f3f7a8
+executionLog | INFO flwr 2024-05-15 20:32:04,321 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:32:04,321 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:32:04,321 | app.py:465 | Received: evaluate message 07800060-dc3f-4cb5-ab10-89672e6fae24
+executionLog | INFO flwr 2024-05-15 20:32:04,393 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:32:04,393 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:32:04,394 | app.py:465 | Received: evaluate message de926f04-5494-4ee6-972e-06df09cca200
+executionLog | INFO flwr 2024-05-15 20:32:04,650 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:32:04,650 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:32:04,650 | app.py:465 | Received: evaluate message 284c38a4-fbcb-47b3-8d6e-e62a3ee75576
+executionLog | INFO flwr 2024-05-15 20:32:04,857 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:32:04,857 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:32:04,857 | app.py:465 | Received: evaluate message 9d24c875-7da1-4a98-922e-75aa9d7f55a7
+executionLog | INFO flwr 2024-05-15 20:32:04,949 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:32:04,950 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:32:04,950 | app.py:465 | Received: evaluate message 7ee710f5-30e0-4216-aa76-1028422aabb6
+executionLog | INFO flwr 2024-05-15 20:32:18,361 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:32:18,552 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:32:18,911 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:32:18,941 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:32:18,982 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:32:19,003 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:32:19,016 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:32:19,291 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:32:19,323 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:32:19,362 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:32:19,373 | server.py:190 | aggregate_evaluate: received 10 results and 0 failures
+executionLog | WARNING flwr 2024-05-15 20:32:19,373 | fedavg.py:283 | No evaluate_metrics_aggregation_fn provided
+executionLog | INFO flwr 2024-05-15 20:32:19,374 | server.py:110 | 
+executionLog | INFO flwr 2024-05-15 20:32:19,374 | server.py:111 | [ROUND 2]
+executionLog | INFO flwr 2024-05-15 20:32:19,374 | server.py:224 | configure_fit: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-05-15 20:32:19,841 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:32:19,841 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:32:19,842 | app.py:465 | Received: train message d53720eb-42c4-49af-a76a-648d7fe3faf4
+executionLog | INFO flwr 2024-05-15 20:32:20,197 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:32:20,197 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:32:20,199 | app.py:465 | Received: train message 22416170-17ae-4f9d-b8a8-eae2a886faa7
+executionLog | INFO flwr 2024-05-15 20:32:20,207 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:32:20,207 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:32:20,207 | app.py:465 | Received: train message c827d543-de31-4b97-8ddf-0a4ca18b68ad
+executionLog | INFO flwr 2024-05-15 20:32:20,209 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:32:20,210 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:32:20,210 | app.py:465 | Received: train message 2dd59aba-9c20-45ed-88be-3d72da5904fd
+executionLog | INFO flwr 2024-05-15 20:32:20,221 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:32:20,221 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:32:20,222 | app.py:465 | Received: train message fad1e359-7f27-4f90-b1c2-c632aa3c43ba
+executionLog | INFO flwr 2024-05-15 20:32:20,525 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:32:20,525 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:32:20,525 | app.py:465 | Received: train message 6b455265-f3f4-4383-982c-75ae5a76ea9d
+executionLog | INFO flwr 2024-05-15 20:32:20,756 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:32:20,756 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:32:20,756 | app.py:465 | Received: train message 72149a3f-2bf3-4ad0-82b6-e33fe7589e17
+executionLog | INFO flwr 2024-05-15 20:32:20,852 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:32:20,853 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:32:20,853 | app.py:465 | Received: train message 44ac1b43-e615-4d56-90d3-6b9d9324c801
+executionLog | INFO flwr 2024-05-15 20:32:20,863 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:32:20,863 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:32:20,863 | app.py:465 | Received: train message 30c82f4c-0e4d-49bc-8029-c5ad45317546
+executionLog | INFO flwr 2024-05-15 20:32:21,035 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:32:21,036 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:32:21,036 | app.py:465 | Received: train message c447e171-df84-40e2-9a14-0a46e56d7215
+executionLog | INFO flwr 2024-05-15 20:42:31,397 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:42:33,920 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:42:35,073 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:42:36,032 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:42:36,480 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:42:38,152 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:42:38,721 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:42:39,077 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:42:39,554 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:42:40,567 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:42:40,750 | server.py:238 | aggregate_fit: received 10 results and 0 failures
+executionLog | INFO flwr 2024-05-15 20:43:29,714 | server.py:129 | fit progress: (2, 461.16742515563965, {'accuracy': 0.0201}, 1518.7527063000016)
+executionLog | INFO flwr 2024-05-15 20:43:29,714 | server.py:176 | configure_evaluate: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-05-15 20:43:30,263 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:43:30,264 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:43:30,264 | app.py:465 | Received: evaluate message c3d36970-5cde-4cb4-897a-117e60e09225
+executionLog | INFO flwr 2024-05-15 20:43:30,304 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:43:30,305 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:43:30,305 | app.py:465 | Received: evaluate message f260104b-e8f0-4932-85e7-d3fd4c95ddd4
+executionLog | INFO flwr 2024-05-15 20:43:30,449 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:43:30,449 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:43:30,449 | app.py:465 | Received: evaluate message 6e1f38e6-99c6-4aba-8471-6675073908cb
+executionLog | INFO flwr 2024-05-15 20:43:30,678 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:43:30,678 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:43:30,679 | app.py:465 | Received: evaluate message 4e1b285b-0792-46bc-abc4-168b22972fd6
+executionLog | INFO flwr 2024-05-15 20:43:31,270 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:43:31,271 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:43:31,271 | app.py:465 | Received: evaluate message 03878142-522b-4fed-9474-aaa38022758b
+executionLog | INFO flwr 2024-05-15 20:43:31,361 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:43:31,362 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:43:31,362 | app.py:465 | Received: evaluate message 58f7623e-bd4b-4837-99d9-e3deff923ff5
+executionLog | INFO flwr 2024-05-15 20:43:31,508 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:43:31,508 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:43:31,509 | app.py:465 | Received: evaluate message e9ebecd6-afc6-4f38-9851-5f1bdd23746d
+executionLog | INFO flwr 2024-05-15 20:43:31,562 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:43:31,562 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:43:31,563 | app.py:465 | Received: evaluate message 3a352d36-8395-4309-8bae-d12e85dc5511
+executionLog | INFO flwr 2024-05-15 20:43:31,946 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:43:31,947 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:43:31,947 | app.py:465 | Received: evaluate message 6c9614d3-5d3d-4ee5-aeff-b876929225a1
+executionLog | INFO flwr 2024-05-15 20:43:31,950 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:43:31,951 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:43:31,951 | app.py:465 | Received: evaluate message fed06009-b052-4ea9-95dc-3aab2560caa5
+executionLog | INFO flwr 2024-05-15 20:43:44,150 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:43:44,396 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:43:44,416 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:43:44,521 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:43:44,657 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:43:44,735 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:43:44,797 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:43:44,819 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:43:45,040 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:43:45,063 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:43:45,073 | server.py:190 | aggregate_evaluate: received 10 results and 0 failures
+executionLog | INFO flwr 2024-05-15 20:43:45,074 | server.py:110 | 
+executionLog | INFO flwr 2024-05-15 20:43:45,074 | server.py:111 | [ROUND 3]
+executionLog | INFO flwr 2024-05-15 20:43:45,074 | server.py:224 | configure_fit: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-05-15 20:43:45,474 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:43:45,474 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:43:45,474 | app.py:465 | Received: train message 5808c47b-7d7b-4fa1-816c-eb2aa89b57d2
+executionLog | INFO flwr 2024-05-15 20:43:45,520 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:43:45,520 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:43:45,520 | app.py:465 | Received: train message c7af3756-56e9-4a46-8fcd-24685e7dcac7
+executionLog | INFO flwr 2024-05-15 20:43:45,705 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:43:45,705 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:43:45,705 | app.py:465 | Received: train message fd70dd93-7bb1-4363-8d2d-17958dd45243
+executionLog | INFO flwr 2024-05-15 20:43:45,886 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:43:45,887 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:43:45,887 | app.py:465 | Received: train message ab44d787-eb5a-47ec-b0a0-617c8485dcd7
+executionLog | INFO flwr 2024-05-15 20:43:46,140 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:43:46,141 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:43:46,141 | app.py:465 | Received: train message de13dde1-fb17-480b-a68e-7b512e407ab4
+executionLog | INFO flwr 2024-05-15 20:43:46,244 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:43:46,245 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:43:46,245 | app.py:465 | Received: train message 9ee366d6-157a-406f-bc6e-0cac980b52f0
+executionLog | INFO flwr 2024-05-15 20:43:46,339 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:43:46,339 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:43:46,340 | app.py:465 | Received: train message c74370ce-08e1-46b4-b140-b10187039da3
+executionLog | INFO flwr 2024-05-15 20:43:46,409 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:43:46,409 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:43:46,409 | app.py:465 | Received: train message 30e3e427-bc2e-4ecc-b4a4-764ac89671a4
+executionLog | INFO flwr 2024-05-15 20:43:46,590 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:43:46,591 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:43:46,591 | app.py:465 | Received: train message df249e46-ef16-472c-9f13-5add6335abeb
+executionLog | INFO flwr 2024-05-15 20:43:46,769 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:43:46,770 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:43:46,770 | app.py:465 | Received: train message 311bdbca-3490-4be0-b914-86702fdffadf
+executionLog | INFO flwr 2024-05-15 20:54:03,749 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:54:11,203 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:54:11,556 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:54:14,392 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:54:15,028 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:54:15,213 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:54:15,915 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:54:17,635 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:54:18,062 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:54:19,053 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:54:19,247 | server.py:238 | aggregate_fit: received 10 results and 0 failures
+executionLog | INFO flwr 2024-05-15 20:55:10,873 | server.py:129 | fit progress: (3, 456.2295298576355, {'accuracy': 0.031}, 2219.911932100018)
+executionLog | INFO flwr 2024-05-15 20:55:10,874 | server.py:176 | configure_evaluate: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-05-15 20:55:11,271 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:55:11,271 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:55:11,271 | app.py:465 | Received: evaluate message 9f4c006a-82f8-494b-ac27-61f061f340cf
+executionLog | INFO flwr 2024-05-15 20:55:11,277 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:55:11,277 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:55:11,277 | app.py:465 | Received: evaluate message f817c13d-53b3-4237-b21c-12eeba474c94
+executionLog | INFO flwr 2024-05-15 20:55:11,559 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:55:11,559 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:55:11,559 | app.py:465 | Received: evaluate message 8cfc35a1-1b8b-462f-b0c2-12916bf16980
+executionLog | INFO flwr 2024-05-15 20:55:11,665 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:55:11,666 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:55:11,666 | app.py:465 | Received: evaluate message 03160faf-4697-40ea-b50b-f23de44c6359
+executionLog | INFO flwr 2024-05-15 20:55:12,023 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:55:12,023 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:55:12,023 | app.py:465 | Received: evaluate message 23a00d00-e04e-40c4-8924-0e284ee19cbf
+executionLog | INFO flwr 2024-05-15 20:55:12,111 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:55:12,111 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:55:12,112 | app.py:465 | Received: evaluate message 324153da-9f5f-4421-aed1-f73f4dfc1cb8
+executionLog | INFO flwr 2024-05-15 20:55:12,140 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:55:12,141 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:55:12,141 | app.py:465 | Received: evaluate message f0c75ca0-9ec8-48ad-864e-74255deece03
+executionLog | INFO flwr 2024-05-15 20:55:12,541 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:55:12,541 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:55:12,542 | app.py:465 | Received: evaluate message 1b5606d3-acba-47f9-b9ff-5c7f328b6f64
+executionLog | INFO flwr 2024-05-15 20:55:12,586 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:55:12,587 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:55:12,587 | app.py:465 | Received: evaluate message b4f2148d-f96d-46f9-ac65-e7687100551b
+executionLog | INFO flwr 2024-05-15 20:55:12,659 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:55:12,660 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:55:12,660 | app.py:465 | Received: evaluate message 18938354-df55-45d8-a5b4-0af0c5f2e5dd
+executionLog | INFO flwr 2024-05-15 20:55:23,546 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:55:23,560 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:55:24,077 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:55:24,156 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:55:24,406 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:55:24,438 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:55:24,523 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:55:24,743 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:55:24,743 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:55:24,816 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 20:55:24,826 | server.py:190 | aggregate_evaluate: received 10 results and 0 failures
+executionLog | INFO flwr 2024-05-15 20:55:24,827 | server.py:110 | 
+executionLog | INFO flwr 2024-05-15 20:55:24,827 | server.py:111 | [ROUND 4]
+executionLog | INFO flwr 2024-05-15 20:55:24,827 | server.py:224 | configure_fit: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-05-15 20:55:25,261 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:55:25,261 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:55:25,262 | app.py:465 | Received: train message f0100471-4f33-472a-a592-fb259dcc6392
+executionLog | INFO flwr 2024-05-15 20:55:25,333 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:55:25,333 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:55:25,333 | app.py:465 | Received: train message c9ff5c95-b91b-4791-98b8-3aa3bd412a4a
+executionLog | INFO flwr 2024-05-15 20:55:25,412 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:55:25,412 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:55:25,413 | app.py:465 | Received: train message 886db317-1cc0-4aa2-8673-fa20fdc5e609
+executionLog | INFO flwr 2024-05-15 20:55:25,567 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:55:25,567 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:55:25,568 | app.py:465 | Received: train message 84c5f3a4-68f5-42a6-b8f6-73b81afbe0e6
+executionLog | INFO flwr 2024-05-15 20:55:25,770 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:55:25,770 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:55:25,770 | app.py:465 | Received: train message 6ed58a98-9158-442b-9ebd-7aab358ede1e
+executionLog | INFO flwr 2024-05-15 20:55:26,034 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:55:26,034 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:55:26,035 | app.py:465 | Received: train message def9684f-d5b4-4386-8e9a-f177c9c770a7
+executionLog | INFO flwr 2024-05-15 20:55:26,138 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:55:26,138 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:55:26,138 | app.py:465 | Received: train message b664185c-644c-4b3a-86b9-acf82f3622ac
+executionLog | INFO flwr 2024-05-15 20:55:26,177 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:55:26,178 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:55:26,178 | app.py:465 | Received: train message 5a4c0836-b138-4178-98ee-5a7ac4c3226f
+executionLog | INFO flwr 2024-05-15 20:55:26,440 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:55:26,441 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:55:26,441 | app.py:465 | Received: train message 7a964b4f-413a-47c4-bc04-7c421773eb28
+executionLog | INFO flwr 2024-05-15 20:55:26,501 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 20:55:26,502 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 20:55:26,502 | app.py:465 | Received: train message 18ed3ee9-e742-4840-bd0f-388e8aad9948
+executionLog | INFO flwr 2024-05-15 21:05:41,186 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:05:48,061 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:05:50,849 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:05:51,512 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:05:51,696 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:05:52,433 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:05:54,221 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:05:55,032 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:05:55,074 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:05:55,462 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:05:55,850 | server.py:238 | aggregate_fit: received 10 results and 0 failures
+executionLog | INFO flwr 2024-05-15 21:06:48,017 | server.py:129 | fit progress: (4, 451.5052967071533, {'accuracy': 0.0414}, 2917.056162299996)
+executionLog | INFO flwr 2024-05-15 21:06:48,018 | server.py:176 | configure_evaluate: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-05-15 21:06:48,441 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:06:48,441 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:06:48,442 | app.py:465 | Received: evaluate message e5f06eee-9df9-43f6-adbe-d2f80c74ccda
+executionLog | INFO flwr 2024-05-15 21:06:48,586 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:06:48,586 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:06:48,586 | app.py:465 | Received: evaluate message aa9c771b-d8c9-483f-91b2-098f57eadecb
+executionLog | INFO flwr 2024-05-15 21:06:48,626 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:06:48,626 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:06:48,626 | app.py:465 | Received: evaluate message 1b8b49e6-4371-49b0-875f-627c9f819798
+executionLog | INFO flwr 2024-05-15 21:06:48,827 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:06:48,827 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:06:48,827 | app.py:465 | Received: evaluate message 24fc5951-e3ab-4ad2-8ec2-a6e4572d54f6
+executionLog | INFO flwr 2024-05-15 21:06:49,106 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:06:49,106 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:06:49,106 | app.py:465 | Received: evaluate message 7ff665dc-4014-4399-9d58-bd576f00171e
+executionLog | INFO flwr 2024-05-15 21:06:49,237 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:06:49,238 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:06:49,238 | app.py:465 | Received: evaluate message 49e8140a-cd19-4195-9b90-f81a34996287
+executionLog | INFO flwr 2024-05-15 21:06:49,309 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:06:49,309 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:06:49,309 | app.py:465 | Received: evaluate message 78717008-dbdb-4f2a-90da-c71e4a66bba6
+executionLog | INFO flwr 2024-05-15 21:06:49,313 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:06:49,313 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:06:49,314 | app.py:465 | Received: evaluate message 6d8f5ab6-d692-4312-92e8-5dd514c9c18e
+executionLog | INFO flwr 2024-05-15 21:06:49,600 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:06:49,601 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:06:49,601 | app.py:465 | Received: evaluate message 8f2361de-3bfd-49d5-b851-c6af739cc55e
+executionLog | INFO flwr 2024-05-15 21:06:49,649 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:06:49,650 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:06:49,650 | app.py:465 | Received: evaluate message 4c463e37-7e56-4bed-afb5-43055f4e14ca
+executionLog | INFO flwr 2024-05-15 21:06:59,766 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:07:00,093 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:07:00,183 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:07:00,262 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:07:00,594 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:07:00,612 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:07:00,640 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:07:00,660 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:07:00,941 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:07:00,954 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:07:00,965 | server.py:190 | aggregate_evaluate: received 10 results and 0 failures
+executionLog | INFO flwr 2024-05-15 21:07:00,965 | server.py:110 | 
+executionLog | INFO flwr 2024-05-15 21:07:00,965 | server.py:111 | [ROUND 5]
+executionLog | INFO flwr 2024-05-15 21:07:00,966 | server.py:224 | configure_fit: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-05-15 21:07:01,338 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:07:01,338 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:07:01,339 | app.py:465 | Received: train message d8c9e3da-2667-4bd0-acc6-94b11560167b
+executionLog | INFO flwr 2024-05-15 21:07:01,430 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:07:01,430 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:07:01,431 | app.py:465 | Received: train message cd5b3be6-fdff-477f-b276-216c89de19fa
+executionLog | INFO flwr 2024-05-15 21:07:01,679 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:07:01,679 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:07:01,679 | app.py:465 | Received: train message 0db7957a-7844-4b53-994f-f9d645f6c3c7
+executionLog | INFO flwr 2024-05-15 21:07:01,747 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:07:01,747 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:07:01,747 | app.py:465 | Received: train message c9340514-b110-4d45-8cd8-10f88cce102c
+executionLog | INFO flwr 2024-05-15 21:07:02,092 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:07:02,092 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:07:02,092 | app.py:465 | Received: train message 7c82e786-cdd0-4aca-bbf2-847fbc9b969d
+executionLog | INFO flwr 2024-05-15 21:07:02,092 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:07:02,093 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:07:02,093 | app.py:465 | Received: train message fd349892-44e1-41f6-a93a-9d46ae3f0d76
+executionLog | INFO flwr 2024-05-15 21:07:02,140 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:07:02,141 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:07:02,141 | app.py:465 | Received: train message 4ea55fdb-028d-4ee8-9bfb-a37a1daa9def
+executionLog | INFO flwr 2024-05-15 21:07:02,404 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:07:02,404 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:07:02,405 | app.py:465 | Received: train message 247d4617-ac73-4a1a-bea5-14b17a54b184
+executionLog | INFO flwr 2024-05-15 21:07:02,508 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:07:02,509 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:07:02,509 | app.py:465 | Received: train message 5dcb8fac-0a77-4ac6-b6db-c477dbf5eeea
+executionLog | INFO flwr 2024-05-15 21:07:02,516 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:07:02,516 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:07:02,516 | app.py:465 | Received: train message 08f312af-8a4c-4616-9466-ccce6c3cfc8a
+executionLog | INFO flwr 2024-05-15 21:17:21,317 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:17:25,621 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:17:26,081 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:17:26,773 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:17:27,275 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:17:28,104 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:17:28,191 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:17:30,191 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:17:30,622 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:17:32,624 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:17:32,966 | server.py:238 | aggregate_fit: received 10 results and 0 failures
+executionLog | INFO flwr 2024-05-15 21:19:15,387 | server.py:129 | fit progress: (5, 446.1393527984619, {'accuracy': 0.0542}, 3664.4257426999975)
+executionLog | INFO flwr 2024-05-15 21:19:15,387 | server.py:176 | configure_evaluate: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-05-15 21:19:15,671 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:19:15,671 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:19:15,671 | app.py:465 | Received: evaluate message eab2acdd-c8c0-41f8-a6b7-eefe639c7720
+executionLog | INFO flwr 2024-05-15 21:19:15,911 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:19:15,911 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:19:15,912 | app.py:465 | Received: evaluate message c59cb603-9b0b-48b8-9d58-41f2f498add6
+executionLog | INFO flwr 2024-05-15 21:19:16,002 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:19:16,002 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:19:16,003 | app.py:465 | Received: evaluate message 9638e9f4-6fa6-41df-b8a8-264b2f50ebd4
+executionLog | INFO flwr 2024-05-15 21:19:16,127 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:19:16,127 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:19:16,127 | app.py:465 | Received: evaluate message ff91c937-52ac-46f9-bfb5-e056b0a13e86
+executionLog | INFO flwr 2024-05-15 21:19:16,211 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:19:16,211 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:19:16,212 | app.py:465 | Received: evaluate message b6de574a-37ef-418d-af0b-9675f854728d
+executionLog | INFO flwr 2024-05-15 21:19:16,563 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:19:16,563 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:19:16,563 | app.py:465 | Received: evaluate message b0e1ea6d-4498-4e0f-bbb1-d262529e652a
+executionLog | INFO flwr 2024-05-15 21:19:16,633 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:19:16,633 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:19:16,633 | app.py:465 | Received: evaluate message ea5c94f4-4169-4724-b4a9-4501502585b5
+executionLog | INFO flwr 2024-05-15 21:19:16,705 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:19:16,706 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:19:16,706 | app.py:465 | Received: evaluate message 58f3ada3-7fab-45fa-b4c2-a83ccffd7d99
+executionLog | INFO flwr 2024-05-15 21:19:16,905 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:19:16,906 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:19:16,906 | app.py:465 | Received: evaluate message 5e279722-7457-4ec5-adbc-56fc5b3ff86a
+executionLog | INFO flwr 2024-05-15 21:19:16,966 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:19:16,966 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:19:16,967 | app.py:465 | Received: evaluate message 4e6892b9-5201-4f90-8435-e5943fff0f73
+executionLog | INFO flwr 2024-05-15 21:19:27,835 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:19:28,278 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:19:28,286 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:19:28,292 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:19:28,301 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:19:28,735 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:19:28,756 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:19:28,882 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:19:28,887 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:19:28,907 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:19:28,918 | server.py:190 | aggregate_evaluate: received 10 results and 0 failures
+executionLog | INFO flwr 2024-05-15 21:19:28,948 | server.py:487 | 
+executionLog | INFO flwr 2024-05-15 21:19:28,949 | server.py:488 | [SUMMARY]
+executionLog | INFO flwr 2024-05-15 21:19:28,949 | server.py:489 | Run finished 5 rounds in 3677.96s
+executionLog | INFO flwr 2024-05-15 21:19:28,950 | server.py:492 | History (loss, distributed):
+executionLog | INFO flwr 2024-05-15 21:19:28,950 | server.py:494 | 	('\tround 1: 23.11209030151367\n'
+executionLog | INFO flwr 2024-05-15 21:19:28,950 | server.py:494 | 	 '\tround 2: 22.699604415893553\n'
+executionLog | INFO flwr 2024-05-15 21:19:28,951 | server.py:494 | 	 '\tround 3: 22.310091400146483\n'
+executionLog | INFO flwr 2024-05-15 21:19:28,951 | server.py:494 | 	 '\tround 4: 21.872242164611816\n'
+executionLog | INFO flwr 2024-05-15 21:19:28,951 | server.py:494 | 	 '\tround 5: 21.436026191711427\n')History (loss, centralized):
+executionLog | INFO flwr 2024-05-15 21:19:28,951 | server.py:494 | 	('\tround 0: 462.6278762817383\n'
+executionLog | INFO flwr 2024-05-15 21:19:28,951 | server.py:494 | 	 '\tround 1: 466.102650642395\n'
+executionLog | INFO flwr 2024-05-15 21:19:28,951 | server.py:494 | 	 '\tround 2: 461.16742515563965\n'
+executionLog | INFO flwr 2024-05-15 21:19:28,952 | server.py:494 | 	 '\tround 3: 456.2295298576355\n'
+executionLog | INFO flwr 2024-05-15 21:19:28,952 | server.py:494 | 	 '\tround 4: 451.5052967071533\n'
+executionLog | INFO flwr 2024-05-15 21:19:28,952 | server.py:494 | 	 '\tround 5: 446.1393527984619\n')History (metrics, centralized):
+executionLog | INFO flwr 2024-05-15 21:19:28,952 | server.py:494 | 	{'accuracy': [(0, 0.0117),
+executionLog | INFO flwr 2024-05-15 21:19:28,952 | server.py:494 | 	              (1, 0.014),
+executionLog | INFO flwr 2024-05-15 21:19:28,952 | server.py:494 | 	              (2, 0.0201),
+executionLog | INFO flwr 2024-05-15 21:19:28,953 | server.py:494 | 	              (3, 0.031),
+executionLog | INFO flwr 2024-05-15 21:19:28,953 | server.py:494 | 	              (4, 0.0414),
+executionLog | INFO flwr 2024-05-15 21:19:28,953 | server.py:494 | 	              (5, 0.0542)]}
+executionLog | INFO flwr 2024-05-15 21:19:28,953 | server.py:495 | 
+executionLog | INFO flwr 2024-05-15 21:19:28,965 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:19:28,965 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:19:28,965 | app.py:465 | Received: reconnect message 3bf20d78-f71a-4086-bfde-9a4c3dc8842f
+executionLog | INFO flwr 2024-05-15 21:19:28,969 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:19:28,970 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:19:28,970 | app.py:465 | Received: reconnect message 5d5f66d1-3555-40ba-b6f4-f88cc96233fb
+executionLog | INFO flwr 2024-05-15 21:19:28,971 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:19:28,972 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:19:28,972 | app.py:465 | Received: reconnect message a7f9f2a7-5fe0-4844-976c-d9456e38b167
+executionLog | INFO flwr 2024-05-15 21:19:28,976 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:19:28,976 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:19:28,980 | app.py:465 | Received: reconnect message ae70dd5f-b131-48d6-9da1-97ad205780a5
+executionLog | INFO flwr 2024-05-15 21:19:28,981 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:19:28,982 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:19:28,982 | app.py:465 | Received: reconnect message 6f1a5ea9-aa4d-46ce-994d-1e70c08cb7a8
+executionLog | INFO flwr 2024-05-15 21:19:29,030 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:19:29,030 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:19:29,031 | app.py:465 | Received: reconnect message 6fd083ed-a515-4fce-a7c2-679287df9fb6
+executionLog | INFO flwr 2024-05-15 21:19:29,032 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:19:29,032 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:19:29,033 | app.py:465 | Received: reconnect message f204c6e4-c4bb-4393-abe4-13bb3f4fe6db
+executionLog | INFO flwr 2024-05-15 21:19:29,061 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:19:29,062 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:19:29,062 | app.py:465 | Received: reconnect message f973f223-5130-4d84-816e-fa1d7c08ada5
+executionLog | INFO flwr 2024-05-15 21:19:29,072 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:19:29,072 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:19:29,072 | app.py:465 | Received: reconnect message 5a46889a-41a4-434d-ab9f-a3c163fbadba
+executionLog | INFO flwr 2024-05-15 21:19:29,076 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:19:29,076 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:19:29,076 | app.py:465 | Received: reconnect message 8553eeb3-eb32-4c9b-bdd7-847f0d62f142
+executionLog | DEBUG flwr 2024-05-15 21:19:29,104 | connection.py:231 | gRPC channel closed
+executionLog | INFO flwr 2024-05-15 21:19:29,105 | app.py:541 | Disconnect and shut down
+executionLog | DEBUG flwr 2024-05-15 21:19:29,110 | connection.py:231 | gRPC channel closed
+executionLog | INFO flwr 2024-05-15 21:19:29,111 | app.py:541 | Disconnect and shut down
+executionLog | DEBUG flwr 2024-05-15 21:19:29,175 | connection.py:231 | gRPC channel closed
+executionLog | INFO flwr 2024-05-15 21:19:29,178 | app.py:541 | Disconnect and shut down
+executionLog | DEBUG flwr 2024-05-15 21:19:29,204 | connection.py:231 | gRPC channel closed
+executionLog | INFO flwr 2024-05-15 21:19:29,205 | app.py:541 | Disconnect and shut down
+executionLog | DEBUG flwr 2024-05-15 21:19:29,211 | connection.py:231 | gRPC channel closed
+executionLog | INFO flwr 2024-05-15 21:19:29,213 | app.py:541 | Disconnect and shut down
+executionLog | DEBUG flwr 2024-05-15 21:19:29,248 | connection.py:231 | gRPC channel closed
+executionLog | INFO flwr 2024-05-15 21:19:29,250 | app.py:541 | Disconnect and shut down
+executionLog | DEBUG flwr 2024-05-15 21:19:29,254 | connection.py:231 | gRPC channel closed
+executionLog | INFO flwr 2024-05-15 21:19:29,256 | app.py:541 | Disconnect and shut down
+executionLog | DEBUG flwr 2024-05-15 21:19:29,285 | connection.py:231 | gRPC channel closed
+executionLog | INFO flwr 2024-05-15 21:19:29,286 | app.py:541 | Disconnect and shut down
+executionLog | DEBUG flwr 2024-05-15 21:19:29,291 | connection.py:231 | gRPC channel closed
+executionLog | INFO flwr 2024-05-15 21:19:29,292 | app.py:541 | Disconnect and shut down
+executionLog | DEBUG flwr 2024-05-15 21:19:29,296 | connection.py:231 | gRPC channel closed
+executionLog | INFO flwr 2024-05-15 21:19:29,297 | app.py:541 | Disconnect and shut down
+executionLog | INFO flwr 2024-05-15 21:36:07,138 | app.py:150 | Starting Flower server, config: num_rounds=5, no round_timeout
+executionLog | INFO flwr 2024-05-15 21:36:07,158 | app.py:163 | Flower ECE: gRPC server running (5 rounds), SSL is disabled
+executionLog | INFO flwr 2024-05-15 21:36:07,158 | server.py:92 | [INIT]
+executionLog | INFO flwr 2024-05-15 21:36:07,158 | server.py:275 | Using initial global parameters provided by strategy
+executionLog | INFO flwr 2024-05-15 21:36:07,158 | server.py:94 | Evaluating initial global parameters
+executionLog | INFO flwr 2024-05-15 21:36:50,670 | server.py:97 | initial parameters (loss, other metrics): 462.703067779541, {'accuracy': 0.0072}
+executionLog | INFO flwr 2024-05-15 21:36:50,671 | server.py:110 | 
+executionLog | INFO flwr 2024-05-15 21:36:50,671 | server.py:111 | [ROUND 1]
+executionLog | DEBUG flwr 2024-05-15 21:37:23,147 | grpc.py:52 | Opened insecure gRPC connection (no certificates were passed)
+executionLog | DEBUG flwr 2024-05-15 21:37:23,153 | connection.py:55 | ChannelConnectivity.IDLE
+executionLog | DEBUG flwr 2024-05-15 21:37:23,166 | connection.py:55 | ChannelConnectivity.READY
+executionLog | DEBUG flwr 2024-05-15 21:37:27,011 | grpc.py:52 | Opened insecure gRPC connection (no certificates were passed)
+executionLog | DEBUG flwr 2024-05-15 21:37:27,036 | connection.py:55 | ChannelConnectivity.IDLE
+executionLog | DEBUG flwr 2024-05-15 21:37:27,037 | connection.py:55 | ChannelConnectivity.CONNECTING
+executionLog | DEBUG flwr 2024-05-15 21:37:27,037 | connection.py:55 | ChannelConnectivity.READY
+executionLog | DEBUG flwr 2024-05-15 21:37:27,268 | grpc.py:52 | Opened insecure gRPC connection (no certificates were passed)
+executionLog | DEBUG flwr 2024-05-15 21:37:27,272 | connection.py:55 | ChannelConnectivity.IDLE
+executionLog | DEBUG flwr 2024-05-15 21:37:27,273 | connection.py:55 | ChannelConnectivity.READY
+executionLog | DEBUG flwr 2024-05-15 21:37:27,311 | grpc.py:52 | Opened insecure gRPC connection (no certificates were passed)
+executionLog | DEBUG flwr 2024-05-15 21:37:27,313 | grpc.py:52 | Opened insecure gRPC connection (no certificates were passed)
+executionLog | DEBUG flwr 2024-05-15 21:37:27,315 | grpc.py:52 | Opened insecure gRPC connection (no certificates were passed)
+executionLog | DEBUG flwr 2024-05-15 21:37:27,316 | grpc.py:52 | Opened insecure gRPC connection (no certificates were passed)
+executionLog | DEBUG flwr 2024-05-15 21:37:27,317 | grpc.py:52 | Opened insecure gRPC connection (no certificates were passed)
+executionLog | DEBUG flwr 2024-05-15 21:37:27,321 | grpc.py:52 | Opened insecure gRPC connection (no certificates were passed)
+executionLog | DEBUG flwr 2024-05-15 21:37:27,322 | grpc.py:52 | Opened insecure gRPC connection (no certificates were passed)
+executionLog | DEBUG flwr 2024-05-15 21:37:27,340 | connection.py:55 | ChannelConnectivity.IDLE
+executionLog | DEBUG flwr 2024-05-15 21:37:27,341 | connection.py:55 | ChannelConnectivity.CONNECTING
+executionLog | DEBUG flwr 2024-05-15 21:37:27,351 | connection.py:55 | ChannelConnectivity.READY
+executionLog | DEBUG flwr 2024-05-15 21:37:27,353 | connection.py:55 | ChannelConnectivity.IDLE
+executionLog | DEBUG flwr 2024-05-15 21:37:27,355 | connection.py:55 | ChannelConnectivity.IDLE
+executionLog | DEBUG flwr 2024-05-15 21:37:27,356 | connection.py:55 | ChannelConnectivity.READY
+executionLog | DEBUG flwr 2024-05-15 21:37:27,357 | connection.py:55 | ChannelConnectivity.IDLE
+executionLog | DEBUG flwr 2024-05-15 21:37:27,359 | connection.py:55 | ChannelConnectivity.READY
+executionLog | DEBUG flwr 2024-05-15 21:37:27,359 | connection.py:55 | ChannelConnectivity.IDLE
+executionLog | DEBUG flwr 2024-05-15 21:37:27,361 | connection.py:55 | ChannelConnectivity.IDLE
+executionLog | DEBUG flwr 2024-05-15 21:37:27,362 | connection.py:55 | ChannelConnectivity.CONNECTING
+executionLog | DEBUG flwr 2024-05-15 21:37:27,362 | connection.py:55 | ChannelConnectivity.READY
+executionLog | DEBUG flwr 2024-05-15 21:37:27,362 | connection.py:55 | ChannelConnectivity.READY
+executionLog | DEBUG flwr 2024-05-15 21:37:27,363 | connection.py:55 | ChannelConnectivity.READY
+executionLog | DEBUG flwr 2024-05-15 21:37:27,365 | connection.py:55 | ChannelConnectivity.IDLE
+executionLog | DEBUG flwr 2024-05-15 21:37:27,368 | connection.py:55 | ChannelConnectivity.READY
+executionLog | INFO flwr 2024-05-15 21:37:27,369 | server.py:224 | configure_fit: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-05-15 21:37:27,710 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:37:27,710 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:37:27,710 | app.py:465 | Received: train message 2d37ff4c-a42d-45eb-a631-9d70e540ce33
+executionLog | INFO flwr 2024-05-15 21:37:27,746 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:37:27,747 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:37:27,747 | app.py:465 | Received: train message 1dcfd9b2-a44d-4f72-b449-9aba5c68dc24
+executionLog | INFO flwr 2024-05-15 21:37:27,859 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:37:27,859 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:37:27,859 | app.py:465 | Received: train message 433132f8-c04a-4c77-9c9f-290c0974a33c
+executionLog | INFO flwr 2024-05-15 21:37:28,062 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:37:28,063 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:37:28,063 | app.py:465 | Received: train message 7d3463d4-37a0-4f93-b642-4b0422ef4f5c
+executionLog | INFO flwr 2024-05-15 21:37:28,152 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:37:28,153 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:37:28,153 | app.py:465 | Received: train message f4975417-abb1-416a-9061-389816909497
+executionLog | INFO flwr 2024-05-15 21:37:28,215 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:37:28,215 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:37:28,215 | app.py:465 | Received: train message ef27c9df-c5bf-4968-a380-2fef11ab15bb
+executionLog | INFO flwr 2024-05-15 21:37:28,540 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:37:28,540 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:37:28,540 | app.py:465 | Received: train message 925c5373-ea27-4d38-8e58-14f06f6408c8
+executionLog | INFO flwr 2024-05-15 21:37:28,574 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:37:28,575 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:37:28,575 | app.py:465 | Received: train message e0115464-fde7-4800-9620-3a7fff0c90ba
+executionLog | INFO flwr 2024-05-15 21:37:28,589 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:37:28,590 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:37:28,590 | app.py:465 | Received: train message 739f5be4-666a-4faa-a9f4-ebbc174ebbcb
+executionLog | INFO flwr 2024-05-15 21:37:28,648 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:37:28,648 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:37:28,648 | app.py:465 | Received: train message e6c8dda6-fcc6-4ee8-b028-2aaabd07c90d
+executionLog | INFO flwr 2024-05-15 21:48:40,141 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:48:42,778 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:48:44,096 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:48:44,964 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:48:46,008 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:48:46,016 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:48:46,622 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:48:50,517 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:48:56,487 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:48:58,336 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:48:58,520 | server.py:238 | aggregate_fit: received 10 results and 0 failures
+executionLog | WARNING flwr 2024-05-15 21:48:58,972 | fedavg.py:252 | No fit_metrics_aggregation_fn provided
+executionLog | INFO flwr 2024-05-15 21:49:38,690 | server.py:129 | fit progress: (1, 466.50464630126953, {'accuracy': 0.0157}, 768.0194334000116)
+executionLog | INFO flwr 2024-05-15 21:49:38,690 | server.py:176 | configure_evaluate: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-05-15 21:49:39,450 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:49:39,450 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:49:39,450 | app.py:465 | Received: evaluate message 0b0d1184-521b-44ce-a8ec-f4024337808f
+executionLog | INFO flwr 2024-05-15 21:49:39,468 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:49:39,469 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:49:39,469 | app.py:465 | Received: evaluate message a22b469d-ee47-4b88-a276-59f50a2dd21d
+executionLog | INFO flwr 2024-05-15 21:49:39,806 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:49:39,807 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:49:39,807 | app.py:465 | Received: evaluate message 0f41c2a0-b8b4-45b7-b079-2356a8166b5f
+executionLog | INFO flwr 2024-05-15 21:49:39,972 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:49:39,973 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:49:39,973 | app.py:465 | Received: evaluate message ad0b6386-38ae-4a2a-bec0-79f14179e732
+executionLog | INFO flwr 2024-05-15 21:49:40,093 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:49:40,094 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:49:40,094 | app.py:465 | Received: evaluate message c33dcd89-b751-4990-921e-23ea575f67fc
+executionLog | INFO flwr 2024-05-15 21:49:40,314 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:49:40,315 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:49:40,315 | app.py:465 | Received: evaluate message 6ed37693-73a8-4eab-97c1-060dd258346a
+executionLog | INFO flwr 2024-05-15 21:49:40,498 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:49:40,498 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:49:40,498 | app.py:465 | Received: evaluate message 1ea4522f-bc2b-481a-87ad-b8ada3225136
+executionLog | INFO flwr 2024-05-15 21:49:40,760 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:49:40,760 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:49:40,760 | app.py:465 | Received: evaluate message 7a35762b-9406-47fd-8cd9-9be3f408bb92
+executionLog | INFO flwr 2024-05-15 21:49:40,899 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:49:40,900 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:49:40,900 | app.py:465 | Received: evaluate message 06be1f41-1ac7-4ea7-91fd-c6781f96e9ba
+executionLog | INFO flwr 2024-05-15 21:49:40,970 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:49:40,971 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:49:40,971 | app.py:465 | Received: evaluate message ddad988f-9fd5-4667-938f-e8fd2812e32b
+executionLog | INFO flwr 2024-05-15 21:49:51,728 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:49:51,827 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:49:52,595 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:49:52,688 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:49:52,713 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:49:52,925 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:49:52,935 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:49:52,978 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:49:53,108 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:49:53,148 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:49:53,161 | server.py:190 | aggregate_evaluate: received 10 results and 0 failures
+executionLog | WARNING flwr 2024-05-15 21:49:53,162 | fedavg.py:283 | No evaluate_metrics_aggregation_fn provided
+executionLog | INFO flwr 2024-05-15 21:49:53,162 | server.py:110 | 
+executionLog | INFO flwr 2024-05-15 21:49:53,162 | server.py:111 | [ROUND 2]
+executionLog | INFO flwr 2024-05-15 21:49:53,162 | server.py:224 | configure_fit: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-05-15 21:49:53,615 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:49:53,615 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:49:53,615 | app.py:465 | Received: train message e89c7cb3-d729-4c51-8dd9-b1fd95253325
+executionLog | INFO flwr 2024-05-15 21:49:53,816 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:49:53,817 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:49:53,817 | app.py:465 | Received: train message 417349d1-dbe1-4e50-95fb-4ff82fe624c7
+executionLog | INFO flwr 2024-05-15 21:49:53,881 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:49:53,882 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:49:53,882 | app.py:465 | Received: train message c4bee3e7-93a4-4962-a8a0-a62eccc53bcc
+executionLog | INFO flwr 2024-05-15 21:49:54,122 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:49:54,122 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:49:54,123 | app.py:465 | Received: train message dbe3bb3a-6b5c-4f44-953d-b0072edf403d
+executionLog | INFO flwr 2024-05-15 21:49:54,139 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:49:54,140 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:49:54,140 | app.py:465 | Received: train message 645d0144-675e-41f4-ad13-04ee03d8ae20
+executionLog | INFO flwr 2024-05-15 21:49:54,325 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:49:54,326 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:49:54,326 | app.py:465 | Received: train message 4fb15478-43ae-44df-b997-53a67df7bd81
+executionLog | INFO flwr 2024-05-15 21:49:54,622 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:49:54,624 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:49:54,624 | app.py:465 | Received: train message b3868974-3d1f-44c0-9be1-4bc11f936114
+executionLog | INFO flwr 2024-05-15 21:49:54,627 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:49:54,627 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:49:54,628 | app.py:465 | Received: train message 266f8eb2-e8e1-40e9-b42c-8df8cc0016cf
+executionLog | INFO flwr 2024-05-15 21:49:55,003 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:49:55,003 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:49:55,003 | app.py:465 | Received: train message 096cc5da-101a-4dbc-bad9-bb973e9ecdc5
+executionLog | INFO flwr 2024-05-15 21:49:55,015 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 21:49:55,015 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 21:49:55,016 | app.py:465 | Received: train message 1e315d3f-13d6-47c5-b927-132915e787b5
+executionLog | INFO flwr 2024-05-15 21:59:53,353 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:59:55,586 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:59:56,528 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:59:56,585 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:59:58,201 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:59:59,133 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 21:59:59,176 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:00:00,846 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:00:01,804 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:00:03,593 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:00:03,752 | server.py:238 | aggregate_fit: received 10 results and 0 failures
+executionLog | INFO flwr 2024-05-15 22:00:45,926 | server.py:129 | fit progress: (2, 461.5417776107788, {'accuracy': 0.0185}, 1435.25575510005)
+executionLog | INFO flwr 2024-05-15 22:00:45,927 | server.py:176 | configure_evaluate: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-05-15 22:00:46,360 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:00:46,361 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:00:46,361 | app.py:465 | Received: evaluate message bdb81503-590b-477d-9754-937586bbd027
+executionLog | INFO flwr 2024-05-15 22:00:46,399 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:00:46,399 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:00:46,399 | app.py:465 | Received: evaluate message 62c4ba06-9a1f-4ea5-b46f-0a4fa374ed8f
+executionLog | INFO flwr 2024-05-15 22:00:46,761 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:00:46,762 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:00:46,762 | app.py:465 | Received: evaluate message 3a695666-c0e7-4a96-a846-90579b58b770
+executionLog | INFO flwr 2024-05-15 22:00:47,173 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:00:47,173 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:00:47,174 | app.py:465 | Received: evaluate message e67f099d-e579-433c-b2cf-7844f4374285
+executionLog | INFO flwr 2024-05-15 22:00:47,218 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:00:47,218 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:00:47,219 | app.py:465 | Received: evaluate message 1c206172-02bf-4f8e-a0a0-1043c23ab610
+executionLog | INFO flwr 2024-05-15 22:00:47,264 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:00:47,265 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:00:47,265 | app.py:465 | Received: evaluate message 2462eb80-927a-48b5-8a8f-0d21d557f35e
+executionLog | INFO flwr 2024-05-15 22:00:47,347 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:00:47,347 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:00:47,348 | app.py:465 | Received: evaluate message 4e7c835d-5208-4672-9aa6-3f2f794ccda8
+executionLog | INFO flwr 2024-05-15 22:00:47,714 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:00:47,714 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:00:47,714 | app.py:465 | Received: evaluate message 64b96567-d8c1-4351-9553-846bcd2d7e47
+executionLog | INFO flwr 2024-05-15 22:00:47,801 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:00:47,801 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:00:47,802 | app.py:465 | Received: evaluate message 0f35b8b3-a51a-4867-b906-eec36a7431b1
+executionLog | INFO flwr 2024-05-15 22:00:47,999 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:00:47,999 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:00:47,999 | app.py:465 | Received: evaluate message 3c916b61-dfe1-44bd-805e-c56c1d329cc5
+executionLog | INFO flwr 2024-05-15 22:00:59,005 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:00:59,501 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:01:00,010 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:01:00,114 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:01:00,134 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:01:00,147 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:01:00,339 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:01:00,341 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:01:00,371 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:01:00,473 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:01:00,484 | server.py:190 | aggregate_evaluate: received 10 results and 0 failures
+executionLog | INFO flwr 2024-05-15 22:01:00,484 | server.py:110 | 
+executionLog | INFO flwr 2024-05-15 22:01:00,485 | server.py:111 | [ROUND 3]
+executionLog | INFO flwr 2024-05-15 22:01:00,485 | server.py:224 | configure_fit: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-05-15 22:01:00,831 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:01:00,831 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:01:00,831 | app.py:465 | Received: train message 570244ac-e6c0-4aa2-9ed9-81dd50c0e70a
+executionLog | INFO flwr 2024-05-15 22:01:00,897 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:01:00,897 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:01:00,898 | app.py:465 | Received: train message 0ff85e89-e737-4e32-8742-5f274c265e8d
+executionLog | INFO flwr 2024-05-15 22:01:01,083 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:01:01,083 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:01:01,084 | app.py:465 | Received: train message 18d803c1-aede-4b8a-bde9-4a7d14faada8
+executionLog | INFO flwr 2024-05-15 22:01:01,464 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:01:01,464 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:01:01,465 | app.py:465 | Received: train message a090ff4a-ec98-48b4-8c19-2ccb0cbbfacb
+executionLog | INFO flwr 2024-05-15 22:01:01,476 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:01:01,476 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:01:01,477 | app.py:465 | Received: train message 4c4fa0d3-a073-44f6-8023-28424897dc6b
+executionLog | INFO flwr 2024-05-15 22:01:01,598 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:01:01,599 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:01:01,599 | app.py:465 | Received: train message 1cc0b053-1bd7-400d-a52d-01dae9cb0a8a
+executionLog | INFO flwr 2024-05-15 22:01:01,673 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:01:01,673 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:01:01,674 | app.py:465 | Received: train message 8208e808-4d7b-40f2-9c5e-1ebe29700a31
+executionLog | INFO flwr 2024-05-15 22:01:01,702 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:01:01,702 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:01:01,702 | app.py:465 | Received: train message 5cb250aa-b5f0-40dd-ae85-0668b3f66ed0
+executionLog | INFO flwr 2024-05-15 22:01:01,973 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:01:01,973 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:01:01,974 | app.py:465 | Received: train message 881a3827-f641-4584-ab41-44cdaf03eabf
+executionLog | INFO flwr 2024-05-15 22:01:02,017 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:01:02,017 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:01:02,018 | app.py:465 | Received: train message fbb3f88d-3710-479b-8862-1f6ed6514171
+executionLog | INFO flwr 2024-05-15 22:11:25,470 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:11:27,882 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:11:30,111 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:11:30,500 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:11:30,539 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:11:31,186 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:11:32,566 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:11:33,942 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:11:34,326 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:11:35,723 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:11:36,084 | server.py:238 | aggregate_fit: received 10 results and 0 failures
+executionLog | INFO flwr 2024-05-15 22:12:22,948 | server.py:129 | fit progress: (3, 456.6953868865967, {'accuracy': 0.0266}, 2132.277693100041)
+executionLog | INFO flwr 2024-05-15 22:12:22,948 | server.py:176 | configure_evaluate: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-05-15 22:12:23,364 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:12:23,364 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:12:23,364 | app.py:465 | Received: evaluate message 35e5d78a-65ff-41b3-8fef-1390436e8aa3
+executionLog | INFO flwr 2024-05-15 22:12:23,432 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:12:23,433 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:12:23,433 | app.py:465 | Received: evaluate message 8dd84031-6a0e-4eb3-9f83-37f557e2b781
+executionLog | INFO flwr 2024-05-15 22:12:23,773 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:12:23,774 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:12:23,774 | app.py:465 | Received: evaluate message c6a530ba-79d6-451b-a5f6-b9e11fddb753
+executionLog | INFO flwr 2024-05-15 22:12:23,809 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:12:23,810 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:12:23,810 | app.py:465 | Received: evaluate message ef706f7e-c1c3-4222-a355-1abd2c757c6f
+executionLog | INFO flwr 2024-05-15 22:12:23,826 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:12:23,827 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:12:23,827 | app.py:465 | Received: evaluate message c1224509-68e6-46a8-8e0c-7726409557ad
+executionLog | INFO flwr 2024-05-15 22:12:24,254 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:12:24,254 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:12:24,254 | app.py:465 | Received: evaluate message d9a650bf-2ceb-4fb4-b0c7-76af95a307ba
+executionLog | INFO flwr 2024-05-15 22:12:24,309 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:12:24,310 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:12:24,310 | app.py:465 | Received: evaluate message 43881d44-5144-477f-86a9-6f421d3d5f30
+executionLog | INFO flwr 2024-05-15 22:12:24,393 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:12:24,393 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:12:24,394 | app.py:465 | Received: evaluate message ca374d08-a83a-488d-97ea-5546c55ce8ac
+executionLog | INFO flwr 2024-05-15 22:12:24,664 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:12:24,665 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:12:24,665 | app.py:465 | Received: evaluate message e052462f-2818-4ee1-8a06-d97a4865e1ae
+executionLog | INFO flwr 2024-05-15 22:12:24,704 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:12:24,705 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:12:24,705 | app.py:465 | Received: evaluate message cf1131c7-6431-4c29-9a38-993ad00535a3
+executionLog | INFO flwr 2024-05-15 22:12:34,267 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:12:34,342 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:12:34,706 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:12:34,739 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:12:34,774 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:12:35,020 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:12:35,073 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:12:35,189 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:12:35,215 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:12:35,224 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:12:35,234 | server.py:190 | aggregate_evaluate: received 10 results and 0 failures
+executionLog | INFO flwr 2024-05-15 22:12:35,234 | server.py:110 | 
+executionLog | INFO flwr 2024-05-15 22:12:35,234 | server.py:111 | [ROUND 4]
+executionLog | INFO flwr 2024-05-15 22:12:35,235 | server.py:224 | configure_fit: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-05-15 22:12:35,681 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:12:35,681 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:12:35,681 | app.py:465 | Received: train message 03fd8cbf-27f2-42e8-a5d6-8e3084551506
+executionLog | INFO flwr 2024-05-15 22:12:35,735 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:12:35,736 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:12:35,736 | app.py:465 | Received: train message 21b61c83-78c9-4872-94d4-edb1dbf23fc4
+executionLog | INFO flwr 2024-05-15 22:12:35,777 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:12:35,777 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:12:35,777 | app.py:465 | Received: train message dbd8d698-f3c6-48bc-a023-5676ae487a11
+executionLog | INFO flwr 2024-05-15 22:12:36,055 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:12:36,055 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:12:36,055 | app.py:465 | Received: train message c1485b07-844a-4a68-8624-4c2113389978
+executionLog | INFO flwr 2024-05-15 22:12:36,103 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:12:36,104 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:12:36,104 | app.py:465 | Received: train message 92893603-2a63-4253-97f5-d20f3dad4cf5
+executionLog | INFO flwr 2024-05-15 22:12:36,170 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:12:36,170 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:12:36,171 | app.py:465 | Received: train message 2b0ac3df-c392-43c8-b33b-8903dcca44be
+executionLog | INFO flwr 2024-05-15 22:12:36,425 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:12:36,425 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:12:36,426 | app.py:465 | Received: train message a763b816-8704-48a7-8f53-5d73d68478e3
+executionLog | INFO flwr 2024-05-15 22:12:36,509 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:12:36,509 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:12:36,509 | app.py:465 | Received: train message e77224c4-62b8-4c4d-b11e-e84e062543fa
+executionLog | INFO flwr 2024-05-15 22:12:36,639 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:12:36,640 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:12:36,640 | app.py:465 | Received: train message c131f849-7073-4719-a90e-3b85c841c427
+executionLog | INFO flwr 2024-05-15 22:12:36,877 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:12:36,877 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:12:36,877 | app.py:465 | Received: train message f37f0210-7350-4615-91ac-d3fc83f8f0d3
+executionLog | INFO flwr 2024-05-15 22:26:20,284 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:26:21,609 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:26:22,152 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:26:22,574 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:26:22,941 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:26:23,396 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:26:24,280 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:26:26,495 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:26:26,528 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:26:28,872 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:26:29,198 | server.py:238 | aggregate_fit: received 10 results and 0 failures
+executionLog | INFO flwr 2024-05-15 22:27:12,421 | server.py:129 | fit progress: (4, 451.84565782546997, {'accuracy': 0.0349}, 3021.7604077000287)
+executionLog | INFO flwr 2024-05-15 22:27:12,421 | server.py:176 | configure_evaluate: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-05-15 22:27:12,836 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:27:12,837 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:27:12,837 | app.py:465 | Received: evaluate message 4a8124d5-99b7-4797-b72a-05ee0ea63068
+executionLog | INFO flwr 2024-05-15 22:27:12,973 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:27:12,974 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:27:12,974 | app.py:465 | Received: evaluate message 3953982c-3720-4d22-abcb-759ff3efd453
+executionLog | INFO flwr 2024-05-15 22:27:13,308 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:27:13,308 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:27:13,309 | app.py:465 | Received: evaluate message d41191df-e8e3-42fe-8ad6-c09c706d95b0
+executionLog | INFO flwr 2024-05-15 22:27:13,461 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:27:13,462 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:27:13,462 | app.py:465 | Received: evaluate message 3c18576d-63d5-4e33-ac0d-3304842547a0
+executionLog | INFO flwr 2024-05-15 22:27:13,796 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:27:13,796 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:27:13,796 | app.py:465 | Received: evaluate message 40bc4b41-f654-4759-af92-3ef3c7ec06d9
+executionLog | INFO flwr 2024-05-15 22:27:13,823 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:27:13,824 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:27:13,824 | app.py:465 | Received: evaluate message afba2288-ff44-4926-8fef-5f17ac3499ab
+executionLog | INFO flwr 2024-05-15 22:27:13,835 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:27:13,835 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:27:13,836 | app.py:465 | Received: evaluate message 5b04e9dc-1988-442f-b467-4e54738353e3
+executionLog | INFO flwr 2024-05-15 22:27:13,887 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:27:13,887 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:27:13,888 | app.py:465 | Received: evaluate message fa073129-267c-4821-9cbc-a16d2cd6a80c
+executionLog | INFO flwr 2024-05-15 22:27:14,266 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:27:14,266 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:27:14,266 | app.py:465 | Received: evaluate message c5d96270-7eee-4522-8fb0-1273c5263c22
+executionLog | INFO flwr 2024-05-15 22:27:14,292 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:27:14,292 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:27:14,292 | app.py:465 | Received: evaluate message 17c6252c-f95d-44dd-8e84-0a7193e23f0d
+executionLog | INFO flwr 2024-05-15 22:27:23,416 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:27:24,562 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:27:24,593 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:27:24,611 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:27:24,642 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:27:24,651 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:27:24,716 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:27:24,762 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:27:25,001 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:27:25,014 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:27:25,024 | server.py:190 | aggregate_evaluate: received 10 results and 0 failures
+executionLog | INFO flwr 2024-05-15 22:27:25,025 | server.py:110 | 
+executionLog | INFO flwr 2024-05-15 22:27:25,025 | server.py:111 | [ROUND 5]
+executionLog | INFO flwr 2024-05-15 22:27:25,025 | server.py:224 | configure_fit: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-05-15 22:27:25,461 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:27:25,461 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:27:25,461 | app.py:465 | Received: train message 3dc94e48-25d9-4974-b62f-140c4e411f3f
+executionLog | INFO flwr 2024-05-15 22:27:25,512 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:27:25,512 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:27:25,512 | app.py:465 | Received: train message 6fbbb4ab-eaca-42d0-a10e-34240511915c
+executionLog | INFO flwr 2024-05-15 22:27:25,624 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:27:25,624 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:27:25,624 | app.py:465 | Received: train message f1f57484-aa2e-43e2-8581-54bdc46165f2
+executionLog | INFO flwr 2024-05-15 22:27:25,777 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:27:25,778 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:27:25,778 | app.py:465 | Received: train message 598ac3b6-f13f-421f-a451-41b596823f1c
+executionLog | INFO flwr 2024-05-15 22:27:25,923 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:27:25,923 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:27:25,923 | app.py:465 | Received: train message bc4167f1-76b0-4cd5-abe4-3dbc68746605
+executionLog | INFO flwr 2024-05-15 22:27:25,977 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:27:25,977 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:27:25,977 | app.py:465 | Received: train message 1407cfc8-5328-4364-81eb-22dbf9ad9fb9
+executionLog | INFO flwr 2024-05-15 22:27:26,479 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:27:26,480 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:27:26,480 | app.py:465 | Received: train message 85b67e1d-a3cf-4438-8cfe-29797b3d869d
+executionLog | INFO flwr 2024-05-15 22:27:26,518 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:27:26,518 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:27:26,518 | app.py:465 | Received: train message 45f9ad08-9c27-4660-87d2-6444fea5ad3a
+executionLog | INFO flwr 2024-05-15 22:27:26,560 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:27:26,560 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:27:26,561 | app.py:465 | Received: train message 98d9e97a-04d7-4973-b0a8-a4284b53dfa6
+executionLog | INFO flwr 2024-05-15 22:27:26,615 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:27:26,615 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:27:26,615 | app.py:465 | Received: train message 327f92de-860c-460e-9bbd-f8002d1f68dc
+executionLog | INFO flwr 2024-05-15 22:37:57,444 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:37:58,358 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:37:58,393 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:37:58,517 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:37:59,707 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:38:00,650 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:38:00,672 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:38:01,383 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:38:01,655 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:38:04,221 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:38:04,392 | server.py:238 | aggregate_fit: received 10 results and 0 failures
+executionLog | INFO flwr 2024-05-15 22:39:33,038 | server.py:129 | fit progress: (5, 446.49042415618896, {'accuracy': 0.0473}, 3762.378884000005)
+executionLog | INFO flwr 2024-05-15 22:39:33,039 | server.py:176 | configure_evaluate: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-05-15 22:39:33,256 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:39:33,257 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:39:33,257 | app.py:465 | Received: evaluate message d9c4e89a-fb91-4a9b-a843-735e2d019324
+executionLog | INFO flwr 2024-05-15 22:39:33,327 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:39:33,328 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:39:33,328 | app.py:465 | Received: evaluate message 3c72b16c-9984-40bc-a5c7-fd498fefcea0
+executionLog | INFO flwr 2024-05-15 22:39:33,509 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:39:33,510 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:39:33,510 | app.py:465 | Received: evaluate message 12aab69d-4ccd-43ad-b9ee-f72b1a6a92d3
+executionLog | INFO flwr 2024-05-15 22:39:33,641 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:39:33,641 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:39:33,641 | app.py:465 | Received: evaluate message b4bd57d0-fa31-4d08-9018-77b98b42c3a6
+executionLog | INFO flwr 2024-05-15 22:39:33,827 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:39:33,827 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:39:33,828 | app.py:465 | Received: evaluate message 728ba211-3e11-4b34-9ca9-0d6c0b5a2032
+executionLog | INFO flwr 2024-05-15 22:39:33,964 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:39:33,964 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:39:33,964 | app.py:465 | Received: evaluate message 4244fbdd-3e4e-4b37-9fcb-a5b1ee0e2410
+executionLog | INFO flwr 2024-05-15 22:39:34,070 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:39:34,071 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:39:34,071 | app.py:465 | Received: evaluate message 0c056edd-d77b-463c-a22d-ee6f5ef8af82
+executionLog | INFO flwr 2024-05-15 22:39:34,429 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:39:34,429 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:39:34,429 | app.py:465 | Received: evaluate message 27f42171-b7fa-486a-bc99-295ff8345929
+executionLog | INFO flwr 2024-05-15 22:39:34,430 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:39:34,430 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:39:34,430 | app.py:465 | Received: evaluate message 4073de94-8fee-456e-a682-5eee82261ae3
+executionLog | INFO flwr 2024-05-15 22:39:34,437 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:39:34,438 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:39:34,438 | app.py:465 | Received: evaluate message 705d963a-c2f7-47f6-8ae5-9c65d4c1fd02
+executionLog | INFO flwr 2024-05-15 22:39:42,744 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:39:43,361 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:39:43,822 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:39:43,844 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:39:43,898 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:39:44,114 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:39:44,239 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:39:44,312 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:39:44,331 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:39:44,340 | app.py:534 | Sent reply
+executionLog | INFO flwr 2024-05-15 22:39:44,350 | server.py:190 | aggregate_evaluate: received 10 results and 0 failures
+executionLog | INFO flwr 2024-05-15 22:39:44,382 | server.py:487 | 
+executionLog | INFO flwr 2024-05-15 22:39:44,382 | server.py:488 | [SUMMARY]
+executionLog | INFO flwr 2024-05-15 22:39:44,383 | server.py:489 | Run finished 5 rounds in 3773.69s
+executionLog | INFO flwr 2024-05-15 22:39:44,383 | server.py:492 | History (loss, distributed):
+executionLog | INFO flwr 2024-05-15 22:39:44,384 | server.py:494 | 	('\tround 1: 23.11825637817383\n'
+executionLog | INFO flwr 2024-05-15 22:39:44,384 | server.py:494 | 	 '\tround 2: 22.72888298034668\n'
+executionLog | INFO flwr 2024-05-15 22:39:44,384 | server.py:494 | 	 '\tround 3: 22.34795551300049\n'
+executionLog | INFO flwr 2024-05-15 22:39:44,384 | server.py:494 | 	 '\tround 4: 21.957334518432617\n'
+executionLog | INFO flwr 2024-05-15 22:39:44,385 | server.py:494 | 	 '\tround 5: 21.500231170654295\n')History (loss, centralized):
+executionLog | INFO flwr 2024-05-15 22:39:44,385 | server.py:494 | 	('\tround 0: 462.703067779541\n'
+executionLog | INFO flwr 2024-05-15 22:39:44,385 | server.py:494 | 	 '\tround 1: 466.50464630126953\n'
+executionLog | INFO flwr 2024-05-15 22:39:44,385 | server.py:494 | 	 '\tround 2: 461.5417776107788\n'
+executionLog | INFO flwr 2024-05-15 22:39:44,385 | server.py:494 | 	 '\tround 3: 456.6953868865967\n'
+executionLog | INFO flwr 2024-05-15 22:39:44,385 | server.py:494 | 	 '\tround 4: 451.84565782546997\n'
+executionLog | INFO flwr 2024-05-15 22:39:44,386 | server.py:494 | 	 '\tround 5: 446.49042415618896\n')History (metrics, centralized):
+executionLog | INFO flwr 2024-05-15 22:39:44,386 | server.py:494 | 	{'accuracy': [(0, 0.0072),
+executionLog | INFO flwr 2024-05-15 22:39:44,386 | server.py:494 | 	              (1, 0.0157),
+executionLog | INFO flwr 2024-05-15 22:39:44,386 | server.py:494 | 	              (2, 0.0185),
+executionLog | INFO flwr 2024-05-15 22:39:44,387 | server.py:494 | 	              (3, 0.0266),
+executionLog | INFO flwr 2024-05-15 22:39:44,387 | server.py:494 | 	              (4, 0.0349),
+executionLog | INFO flwr 2024-05-15 22:39:44,387 | server.py:494 | 	              (5, 0.0473)]}
+executionLog | INFO flwr 2024-05-15 22:39:44,387 | server.py:495 | 
+executionLog | INFO flwr 2024-05-15 22:39:44,398 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:39:44,398 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:39:44,398 | app.py:465 | Received: reconnect message 594d2a2e-c040-4296-abc6-cb3fcd94d817
+executionLog | INFO flwr 2024-05-15 22:39:44,401 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:39:44,402 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:39:44,402 | app.py:465 | Received: reconnect message 9a54e43a-d1c5-4d69-9243-ca3e9b47ada3
+executionLog | INFO flwr 2024-05-15 22:39:44,405 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:39:44,405 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:39:44,405 | app.py:465 | Received: reconnect message 436a10fe-630e-4767-9ebc-e215d505181e
+executionLog | INFO flwr 2024-05-15 22:39:44,412 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:39:44,412 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:39:44,412 | app.py:465 | Received: reconnect message d69dd24f-9e1a-431b-a797-7b58840d1d23
+executionLog | INFO flwr 2024-05-15 22:39:44,413 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:39:44,413 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:39:44,413 | app.py:465 | Received: reconnect message 4354da53-d595-4e8b-8c86-076967c82ee6
+executionLog | INFO flwr 2024-05-15 22:39:44,416 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:39:44,416 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:39:44,417 | app.py:465 | Received: reconnect message 621da6e4-9fae-4078-a43e-3473ceea5e41
+executionLog | INFO flwr 2024-05-15 22:39:44,439 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:39:44,440 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:39:44,440 | app.py:465 | Received: reconnect message e53578bd-1525-4943-b66d-117b18f0c277
+executionLog | INFO flwr 2024-05-15 22:39:44,486 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:39:44,487 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:39:44,487 | app.py:465 | Received: reconnect message 36a18ceb-b2d8-4cc9-85e1-e8a5fe564560
+executionLog | INFO flwr 2024-05-15 22:39:44,490 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:39:44,490 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:39:44,490 | app.py:465 | Received: reconnect message 6bae4e1b-56d1-4831-9236-2a158560919b
+executionLog | INFO flwr 2024-05-15 22:39:44,492 | app.py:458 | 
+executionLog | INFO flwr 2024-05-15 22:39:44,493 | app.py:459 | [RUN 0, ROUND ]
+executionLog | INFO flwr 2024-05-15 22:39:44,493 | app.py:465 | Received: reconnect message 1d5e22d4-a31e-4ded-b93b-1f0d601fefae
+executionLog | DEBUG flwr 2024-05-15 22:39:44,559 | connection.py:231 | gRPC channel closed
+executionLog | INFO flwr 2024-05-15 22:39:44,560 | app.py:541 | Disconnect and shut down
+executionLog | DEBUG flwr 2024-05-15 22:39:44,572 | connection.py:231 | gRPC channel closed
+executionLog | INFO flwr 2024-05-15 22:39:44,572 | app.py:541 | Disconnect and shut down
+executionLog | DEBUG flwr 2024-05-15 22:39:44,580 | connection.py:231 | gRPC channel closed
+executionLog | INFO flwr 2024-05-15 22:39:44,580 | app.py:541 | Disconnect and shut down
+executionLog | DEBUG flwr 2024-05-15 22:39:44,588 | connection.py:231 | gRPC channel closed
+executionLog | INFO flwr 2024-05-15 22:39:44,588 | app.py:541 | Disconnect and shut down
+executionLog | DEBUG flwr 2024-05-15 22:39:44,596 | connection.py:231 | gRPC channel closed
+executionLog | INFO flwr 2024-05-15 22:39:44,599 | app.py:541 | Disconnect and shut down
+executionLog | DEBUG flwr 2024-05-15 22:39:44,601 | connection.py:231 | gRPC channel closed
+executionLog | INFO flwr 2024-05-15 22:39:44,604 | app.py:541 | Disconnect and shut down
+executionLog | DEBUG flwr 2024-05-15 22:39:44,628 | connection.py:231 | gRPC channel closed
+executionLog | INFO flwr 2024-05-15 22:39:44,628 | app.py:541 | Disconnect and shut down
+executionLog | DEBUG flwr 2024-05-15 22:39:44,664 | connection.py:231 | gRPC channel closed
+executionLog | INFO flwr 2024-05-15 22:39:44,665 | app.py:541 | Disconnect and shut down
+executionLog | DEBUG flwr 2024-05-15 22:39:44,678 | connection.py:231 | gRPC channel closed
+executionLog | INFO flwr 2024-05-15 22:39:44,680 | app.py:541 | Disconnect and shut down
+executionLog | DEBUG flwr 2024-05-15 22:39:44,700 | connection.py:231 | gRPC channel closed
+executionLog | INFO flwr 2024-05-15 22:39:44,702 | app.py:541 | Disconnect and shut down

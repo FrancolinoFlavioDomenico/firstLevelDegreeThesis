@@ -13,10 +13,10 @@ import torch
 from torch.utils.data.dataloader import DataLoader
 from collections import OrderedDict
 
-from src_torch.FlowerClient import get_client_fn
+from src.FlowerClient import get_client_fn
 
 class Server:
-    ROUNDS_NUMBER = 2
+    ROUNDS_NUMBER = 5
     BATCH_SIZE = 100
 
     def __init__(self, utils: Utils) -> None:
@@ -102,9 +102,6 @@ class Server:
     def get_evaluate_fn(self):
         """Return an evaluation function for server-side evaluation."""
 
-        # model = self.model
-        # utils = self.utils
-        # test_data_loader = DataLoader(self.test_data, batch_size=16)
         test_data_loader = DataLoader(self.test_data, batch_size=Server.BATCH_SIZE)
 
         # The `evaluate` function will be called after every round
@@ -128,34 +125,6 @@ class Server:
             return loss, {"accuracy": accuracy}
         return evaluate
 
-            # """Validate the network on the entire test set."""
-            # print("Starting evalutation server...")
-            # self.model.to(device)  # move model to GPU if available
-            # self.model.eval()
-            #
-            # criterion = torch.nn.CrossEntropyLoss()
-            # correct, loss = 0, 0.0
-            #
-            # test_data_loader = DataLoader(self.test_data, batch_size=Server.BATCH_SIZE)
-            #
-            # with torch.no_grad():
-            #     for batch in test_data_loader:
-            #         images, labels = batch
-            #         images, labels = images.to(device), labels.to(device)
-            #         outputs = self.model(images)
-            #         loss += criterion(outputs, labels).item()
-            #         _, predicted = torch.max(outputs.data, 1)
-            #         correct += (predicted == labels).sum().item()
-            # accuracy = correct / len(test_data_loader.dataset)
-            #
-            # self.accuracy_data.append(accuracy)
-            # self.loss_data.append(loss)
-            # if server_round == Server.ROUNDS_NUMBER:
-            #     self.plotter.line_chart_plot(self.accuracy_data, self.loss_data)
-            #     self.set_confusion_matrix(test_data_loader)
-            #
-            # return loss, accuracy
-
     def test(self, test_data_loader):
         """Validate the network on the entire test set."""
         print("Starting evalutation...")
@@ -173,7 +142,6 @@ class Server:
                 _, predicted = torch.max(outputs.data, 1)
                 correct += (predicted == labels).sum().item()
         accuracy = correct / len(test_data_loader.dataset)
-        # self.model.to("cpu")  # move model back to CPU
         return loss, accuracy
 
     @staticmethod
@@ -202,14 +170,6 @@ class Server:
         result = confusion_matrix(y_true, y_pred)
         self.plotter.confusion_matrix_chart_plot(result)
 
-    # @staticmethod
-    # def set_confusion_matrix(model, model_conf, plotter):
-    #     y_predict = model.predict(model_conf.x_test)
-    #     y_predict = np.argmax(y_predict, axis=1)
-    #     y_test = np.argmax(model_conf.y_test, axis=1)
-    #     result = confusion_matrix(y_test, y_predict)
-    #     plotter.confusion_matrix_chart_plot(result)
-
     def start_server(self):
         # Start Flower server for four rounds of federated learning
         print("Starting server flower...")
@@ -220,11 +180,11 @@ class Server:
         )
 
     def start_simulation(self):
-        # client_resources = {"num_cpus": 2, "num_gpus": 0.5}
+        client_resources = {"num_cpus": 2, "num_gpus": 0.5}
         fl.simulation.start_simulation(
             client_fn=get_client_fn(self.utils),
             num_clients=self.utils.CLIENTS_NUM,
             config=fl.server.ServerConfig(num_rounds=Server.ROUNDS_NUMBER),
             strategy=self.strategy,
-            # client_resources=client_resources,
+            client_resources=client_resources,
         )

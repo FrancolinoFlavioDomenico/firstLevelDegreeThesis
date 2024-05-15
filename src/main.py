@@ -137,25 +137,16 @@ DEFAULT_FORMATTER = logging.Formatter(
 )
 fl.common.logger.configure(identifier="executionLog", filename="../log.txt")
 
-utils = Utils.Utils('cifar100', 100, (3, 3), (32, 32, 3), True, False)
+utils = Utils.Utils('cifar100', 100, (3, 3), (32, 32, 3), False, False)
 
 
 def start_server():
     server = Server.Server(utils)
-    # Start Flower server for four rounds of federated learning
-    # print("Starting server flowe...")
-    # fl.server.start_server(
-    #     server_address="0.0.0.0:8080",
-    #     config=fl.server.ServerConfig(num_rounds=Server.Server.ROUNDS_NUMBER),
-    #     strategy=server.strategy,
-    # )
     server.start_server()
 
 
 def start_client(cid):
-    print("clien{cid} start".format(cid=cid))
     client = FlowerClient.FlowerClient(utils, cid)
-    # fl.client.start_client(server_address="127.0.0.1:8080", client=client)
     client.start_client()
 
 

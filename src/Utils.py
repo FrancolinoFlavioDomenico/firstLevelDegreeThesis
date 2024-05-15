@@ -20,8 +20,7 @@ from torchvision.utils import make_grid
 
 
 class Utils:
-    CLIENTS_NUM = 2
-    # ROUNDS_NUM = 4
+    CLIENTS_NUM = 10
     POISONERS_CLIENTS_CID = np.random.randint(0, CLIENTS_NUM, round((CLIENTS_NUM * 30) / 100))
     DATASET_PATH = '../data/torchDownload'
 
@@ -78,15 +77,12 @@ class Utils:
         #     plt.imshow(img, cmap="gray")
         # plt.show()
 
-        # test code.....print image with relative label
+        # test code.....print image 
         # train_data.transform = Utils.train_transform
         # batch_size = 128
         # train_dl = DataLoader(self.train_data, batch_size, num_workers=0, pin_memory=True, shuffle=True)
         # for batch in train_dl:
         #     images, labels = batch
-        #     print(f"-------------------------\nbefore permutation \n {labels}\n------------------------")
-        #     labels = labels[torch.randperm(labels.size(0))]
-        #     print(f"-------------------------\nafter permutation \n {labels}\n------------------------")
         #
         #     fig, ax = plt.subplots(figsize=(7.5, 7.5))
         #     ax.set_yticks([])
@@ -103,7 +99,6 @@ class Utils:
         #                        f"partition_{0}.pickle"), "rb") as f:
         #     tmp = pickle.load(f)
         # print('----------------------------------------------------------------', tmp.dataset)
-        # tmp.__getitem__(6000)#out of range => le partizioni hanno effettivmente 5000 item
         # batch_size = 128
         # train_dl = DataLoader(tmp, batch_size, num_workers=0, pin_memory=True, shuffle=True)
         # for batch in train_dl:
@@ -120,9 +115,9 @@ class Utils:
         partition_lenght = np.full(Utils.CLIENTS_NUM, len(self.train_data.data) / Utils.CLIENTS_NUM).astype(
             int).tolist()
         partitions = torch.utils.data.random_split(self.train_data, partition_lenght)
-        print(partitions[0].dataset.data.shape)
-        print(len(partitions))
-        print(partitions[0])
+        # print(partitions[0].dataset.data.shape)
+        # print(len(partitions))
+        # print(partitions[0])
 
         dataset_partition_dir = f"../data/partitions/{self.dataset_name}"
         if not os.path.exists(dataset_partition_dir):
