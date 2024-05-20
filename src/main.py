@@ -152,7 +152,6 @@ def start_client(cid):
 
 if __name__ == "__main__":
     # start_server()
-    multiprocessing.set_start_method('spawn')
     serverThread = multiprocessing.Process(target=start_server).start()
     time.sleep(5)
     for i in range(utils.CLIENTS_NUM):

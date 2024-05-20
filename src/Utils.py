@@ -173,7 +173,13 @@ class Utils:
 
         for param in efficientnet.parameters():
             param.requires_grad = False
-        layer_to_unfreeze = [layer for layer in efficientnet.children() if isinstance(layer, torch.nn.Conv2d)][-4:]
+
+        # for layer in efficientnet.children():
+        #     print(layer)
+        layer_to_unfreeze = [param  for name, param  in efficientnet.named_parameters() if "Conv2d" in name]
+        layer_to_unfreeze = layer_to_unfreeze[-4:]
+        print(f"Number of layers: {len(layer_to_unfreeze)}")
+        print(layer_to_unfreeze)
         for layer in layer_to_unfreeze:
             for param in layer.parameters():
                 param.requires_grad = True
