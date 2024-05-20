@@ -137,7 +137,7 @@ DEFAULT_FORMATTER = logging.Formatter(
 )
 fl.common.logger.configure(identifier="executionLog", filename="../log.txt")
 
-utils = Utils.Utils('cifar100', 100, (3, 3), (32, 32, 3), False, False)
+utils = Utils.Utils('cifar10', 10, (3, 3), (32, 32, 3), False, False)
 
 
 def start_server():
@@ -152,6 +152,7 @@ def start_client(cid):
 
 if __name__ == "__main__":
     # start_server()
+    multiprocessing.set_start_method('spawn')
     serverThread = multiprocessing.Process(target=start_server).start()
     time.sleep(5)
     for i in range(utils.CLIENTS_NUM):

@@ -1,5 +1,9 @@
 import flwr as fl
+from torch.optim import lr_scheduler
 from torch.utils.data import DataLoader
+from torchvision.transforms import Compose, RandomHorizontalFlip, RandomCrop, ToTensor, Normalize
+from torchvision.utils import make_grid
+
 from Utils import Utils
 import pickle
 import os
@@ -7,6 +11,8 @@ import torch
 from torch.utils.data.dataset import Subset
 from collections import OrderedDict
 from tqdm import tqdm
+from matplotlib import pyplot as plt
+
 
 class FlowerClient(fl.client.NumPyClient):
 
@@ -20,27 +26,46 @@ class FlowerClient(fl.client.NumPyClient):
         )
 
         self.model = self.utils.get_model()
-        self.epochs = 10 if self.utils.dataset_name != 'mnist' else 1
-        self.batch_size = 100
-        self.client_partition_data: Subset
+        self.epochs = 20 if self.utils.dataset_name != 'mnist' else 10
+        self.batch_size = 86
+        self.train_data: Subset
         with open(os.path.join(f"../data/partitions/{self.utils.dataset_name}",
-                               f"partition_{0}.pickle"), "rb") as f:
-            self.client_partition_data = pickle.load(f)
+                               f"partition_{self.cid}.pickle"), "rb") as f:
+            self.train_data = pickle.load(f)
 
-        train_data_size = int(0.9 * len(self.client_partition_data))  # 90% for training
-        test_data_size = len(self.client_partition_data) - train_data_size
-        self.train_data, self.test_data = torch.utils.data.random_split(self.client_partition_data,
-                                                                        [train_data_size, test_data_size])
+        # train_data_size = int(0.95 * len(self.client_partition_data))  # 90% for training
+        # test_data_size = len(self.client_partition_data) - train_data_size
+        # self.train_data, self.test_data = torch.utils.data.random_split(self.client_partition_data,
+        #                                                                 [train_data_size, test_data_size])
+
+        stats = ((0.5), (0.5)) if self.utils.dataset_name == 'mnist' else ((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+        train_transform = Compose([
+            RandomHorizontalFlip(),
+            RandomCrop(28 if self.utils.dataset_name == 'mnist' else 32, padding=4, padding_mode="reflect"),
+            ToTensor(),
+            Normalize(*stats),
+
+        ])
+        self.train_data.dataset.transform = train_transform
 
         # self.steps_for_epoch = len(self.x_train) // self.batch_size
         # self.verbose = 0
 
-        self.train_data_loader = DataLoader(self.test_data, batch_size=self.batch_size, shuffle=True)
-        self.test_data_loader = DataLoader(self.test_data, batch_size=self.batch_size)
+        self.train_data_loader = DataLoader(self.train_data, batch_size=self.batch_size, shuffle=True)
+        self.test_data_loader = DataLoader(self.utils.test_data, batch_size=self.batch_size)
+        # for batch in self.train_data_loader:
+        #     images, labels = batch
+        #     fig, ax = plt.subplots(figsize=(7.5, 7.5))
+        #     ax.set_yticks([])
+        #     ax.set_xticks([])
+        #     ax.set_title('subset')
+        #     ax.imshow(make_grid(images[:20], nrow=5).permute(1, 2, 0))
+        #     break
+        # plt.show()
 
-        if utils.poisoning and (self.cid in utils.POISONERS_CLIENTS_CID):
-            self.run_poisoning()
-
+        # TODO decomment
+        # if self.utils.poisoning and (self.cid in Utils.POISONERS_CLIENTS_CID):
+        #     self.run_poisoning()
 
     def run_poisoning(self):
         self.utils.printLog(f'client {self.cid} starting poisoning')
@@ -88,14 +113,15 @@ class FlowerClient(fl.client.NumPyClient):
         optimizer = torch.optim.SGD(
             self.model.parameters(), lr=0.001, momentum=0.9, weight_decay=1e-4
         )
+        # exp_lr_scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
 
         self.model.train()
         for epoch in range(self.epochs):
             running_loss = 0.0
-            correct = 0
+            running_correct = 0
             total = 0
 
-            progress_bar = tqdm(enumerate(self.train_data_loader), total=len(self.test_data_loader))
+            progress_bar = tqdm(enumerate(self.train_data_loader), total=len(self.train_data_loader))
             for batch_idx, (images, labels) in progress_bar:
                 images, labels = images.to(self.device), labels.to(self.device)
                 optimizer.zero_grad()
@@ -106,10 +132,12 @@ class FlowerClient(fl.client.NumPyClient):
                 running_loss += loss.item()
                 _, predicted = self.model(images).max(1)
                 total += labels.size(0)
-                correct += predicted.eq(labels).sum().item()
+                running_correct += predicted.eq(labels).sum().item()
 
                 progress_bar.set_description(
-                    f'Epoch [{epoch + 1}/{self.epochs}], Train Loss: {running_loss / (batch_idx + 1):.4f}, Train Acc: {100. * correct / total:.2f}%')
+                    f'Epoch [{epoch + 1}/{self.epochs}], Train Loss: {running_loss / (batch_idx + 1):.4f}, Train Acc: {100. * running_correct / total:.2f}%')
+
+            # exp_lr_scheduler.step()
 
         self.model.to("cpu")  # move model back to CPU
 
@@ -124,7 +152,7 @@ class FlowerClient(fl.client.NumPyClient):
         }
         return results
 
-    def test(self,data_loader):
+    def test(self, data_loader):
         """Validate the network on the entire test set."""
         Utils.printLog(f"Starting evalutation client{self.cid}...")
         device: torch.device = torch.device("cpu")
@@ -165,19 +193,15 @@ class FlowerClient(fl.client.NumPyClient):
         Utils.printLog(
             f'Val Loss: {loss:.4f}, Val Acc: {accuracy:.2f}%')
 
-        return float(loss), len(self.test_data), {"accuracy": float(accuracy)}
+        return float(loss), len(self.utils.test_data), {"accuracy": float(accuracy)}
 
     def start_client(self):
         # client = CifarClient(trainset, testset, device, args.model).to_client()
         fl.client.start_client(server_address="127.0.0.1:8080", client=self.to_client())
 
 
-
-
 def get_client_fn(model_conf):
     def client_fn(cid: str) -> fl.client.Client:
-       return FlowerClient(model_conf, int(cid))
+        return FlowerClient(model_conf, int(cid))
 
     return client_fn
-
-

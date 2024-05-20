@@ -17,7 +17,7 @@ from src.FlowerClient import get_client_fn
 
 class Server:
     ROUNDS_NUMBER = 5
-    BATCH_SIZE = 100
+    BATCH_SIZE = 86
 
     def __init__(self, utils: Utils) -> None:
         self.utils = utils
@@ -32,7 +32,6 @@ class Server:
         self.plotter = Plotter.Plotter(self.utils.dataset_name, Server.ROUNDS_NUMBER, self.utils.poisoning,
                                        self.utils.blockchain)
 
-        self.test_data = self.get_test_data()
 
         self.strategy = fl.server.strategy.FedAvg(
             # fraction_fit=1.0,
@@ -46,37 +45,7 @@ class Server:
             initial_parameters=fl.common.ndarrays_to_parameters(self.model_parameters),
         )
 
-    def get_test_data(self):
-        stats = ((0.5), (0.5)) if self.utils.dataset_name == 'mnist' else ((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-        test_transform = Compose([
-            ToTensor(),
-            Normalize(*stats)
-        ])
 
-        if self.utils.dataset_name == 'cifar100':
-            test_data = datasets.CIFAR100(
-                root=Utils.DATASET_PATH,
-                train=False,
-                download=True,
-                transform=test_transform
-            )
-        elif self.utils.dataset_name == 'cifar10':
-            test_data = datasets.CIFAR10(
-                root=Utils.DATASET_PATH,
-                train=False,
-                download=True,
-                transform=test_transform
-            )
-        else:
-            test_data = datasets.MNIST(
-                root=Utils.DATASET_PATH,
-                train=False,
-                download=True,
-                transform=test_transform
-            )
-            # serve?
-            # self.train_data.data = self.train_data.data.reshape(self.train_data.data.shape[0],self.train_data.data.shape[1], self.train_data.data.shape[2],1)
-        return test_data
 
     def fit_config(self, server_round: int):
         """Return training configuration dict for each round.
@@ -102,7 +71,7 @@ class Server:
     def get_evaluate_fn(self):
         """Return an evaluation function for server-side evaluation."""
 
-        test_data_loader = DataLoader(self.test_data, batch_size=Server.BATCH_SIZE)
+        test_data_loader = DataLoader(self.utils.test_data, batch_size=Server.BATCH_SIZE)
 
         # The `evaluate` function will be called after every round
         def evaluate(
@@ -119,7 +88,7 @@ class Server:
 
             self.loss_data.append(loss)
             self.accuracy_data.append(accuracy)
-            if server_round == (Server.ROUNDS_NUMBER):
+            if server_round == Server.ROUNDS_NUMBER:
                 self.plotter.line_chart_plot(self.accuracy_data, self.loss_data)
                 self.set_confusion_matrix(test_data_loader)
             return loss, {"accuracy": accuracy}

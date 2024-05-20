@@ -2,11 +2,10 @@ import pickle
 import os
 
 import torch
-from torchvision.transforms import  ToTensor, Normalize, Compose
+from torchvision.transforms import ToTensor, Normalize, Compose
 from torchvision.transforms import RandomHorizontalFlip, RandomCrop
-from torchvision.models import efficientnet_b0
+from torchvision.models import efficientnet_b0, resnet50, resnet18
 import warnings
-
 
 import numpy as np
 import logging
@@ -16,7 +15,6 @@ from torchvision import datasets
 import matplotlib.pyplot as plt
 from torch.utils.data.dataloader import DataLoader
 from torchvision.utils import make_grid
-
 
 
 class Utils:
@@ -32,38 +30,12 @@ class Utils:
         self.poisoning = poisoning
         self.blockchain = blockchain
 
-        stats = ((0.5), (0.5)) if self.dataset_name == 'mnist' else ((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-        train_transform = Compose([
-            RandomHorizontalFlip(),
-            RandomCrop(32, padding=4, padding_mode="reflect"),
-            ToTensor(),
-            Normalize(*stats),
+        self.train_data = self.download_data(True)
+        self.test_data = self.download_data(False)
 
-        ])
-
-        if self.dataset_name == 'cifar100':
-            self.train_data = datasets.CIFAR100(
-                root=Utils.DATASET_PATH,
-                train=True,
-                download=True,
-                transform=train_transform
-            )
-        elif self.dataset_name == 'cifar10':
-            self.train_data = datasets.CIFAR10(
-                root=Utils.DATASET_PATH,
-                train=True,
-                download=True,
-                transform=train_transform
-            )
-        else:
-            self.train_data = datasets.MNIST(
-                root=Utils.DATASET_PATH,
-                train=True,
-                download=True,
-                transform=train_transform
-            )
-            # serve?
-            # self.train_data.data = self.train_data.data.reshape(self.train_data.data.shape[0],self.train_data.data.shape[1], self.train_data.data.shape[2],1)
+        # print("------------------------------------------------------------------------------")
+        # self.get_model()
+        # print("------------------------------------------------------------------------------")
 
         # test code.....print image with relative label
         # figure = plt.figure(figsize=(10, 8))
@@ -111,6 +83,49 @@ class Utils:
         #     break
         # plt.show()
 
+    def download_data(self, train):
+        stats = ((0.5), (0.5)) if self.dataset_name == 'mnist' else ((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+        # train_transform = Compose([
+        #     # RandomHorizontalFlip(),
+        #     # RandomCrop(28 if self.dataset_name == 'mnist' else 32, padding=4, padding_mode="reflect"),
+        #     ToTensor(),
+        #     Normalize(*stats),
+        #
+        # ])
+
+        test_transform = Compose([
+            ToTensor(),
+            Normalize(*stats)
+        ])
+        if self.dataset_name == 'cifar100':
+            data = datasets.CIFAR100(
+                root=Utils.DATASET_PATH,
+                train=train,
+                download=True
+                # transform=train_transform if train else test_transform
+            )
+        elif self.dataset_name == 'cifar10':
+            data = datasets.CIFAR10(
+                root=Utils.DATASET_PATH,
+                train=train,
+                download=True
+                #                 transform=train_transform if train else test_transform
+            )
+        else:
+            data = datasets.MNIST(
+                root=Utils.DATASET_PATH,
+                train=train,
+                download=True
+                #                 transform=train_transform if train else test_transform
+            )
+            # serve?
+            # self.train_data.data = self.train_data.data.reshape(self.train_data.data.shape[0],self.train_data.data.shape[1], self.train_data.data.shape[2],1)
+
+        if not train:
+            data.transform = test_transform
+
+        return data
+
     def generate_dataset_client_partition(self):
         partition_lenght = np.full(Utils.CLIENTS_NUM, len(self.train_data.data) / Utils.CLIENTS_NUM).astype(
             int).tolist()
@@ -129,7 +144,40 @@ class Utils:
 
     def get_model(self) -> torch.nn.Module:
         """Loads EfficienNetB0 from TorchVision."""
-        efficientnet = efficientnet_b0(pretrained=True)
+        efficientnet = efficientnet_b0(weights='IMAGENET1K_V1')
+        # last_conv_layer_found = False
+
+        # for name, layer in efficientnet.named_children():
+        #     if isinstance(layer, torch.nn.Conv2d):  # Identifica i livelli convoluzionali
+        #         # Se abbiamo trovato l'ultimo livello convoluzionale, smetti di congelare
+        #         if last_conv_layer_found:
+        #             break
+        #         # Congela i parametri del livello convoluzionale
+        #         for param in layer.parameters():
+        #             param.requires_grad = False
+        #         # Se questo è l'ultimo livello convoluzionale, impostalo come trovato
+        #         last_conv_layer_found = True
+        #     else:
+        #         # Se il livello non è convoluzionale, congela i suoi parametri
+        #         if not last_conv_layer_found:
+        #             for param in layer.parameters():
+        #                 param.requires_grad = False
+
+        # PROBABILE BUONO
+        # for param in efficientnet.parameters():
+        #     param.requires_grad = False
+        # unfreeze_layers = efficientnet.features[-3:]
+        # for feature in unfreeze_layers:
+        #     for param in feature.parameters():
+        #         param.requires_grad = True
+
+        for param in efficientnet.parameters():
+            param.requires_grad = False
+        layer_to_unfreeze = [layer for layer in efficientnet.children() if isinstance(layer, torch.nn.Conv2d)][-4:]
+        for layer in layer_to_unfreeze:
+            for param in layer.parameters():
+                param.requires_grad = True
+
         # Re-init output linear layer with the right number of classes
         efficentnet_classes_classes = efficientnet.classifier[1].in_features
         if self.classes_number != efficentnet_classes_classes:
