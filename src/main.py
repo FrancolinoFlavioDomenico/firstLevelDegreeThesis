@@ -133,7 +133,7 @@ import logging
 
 
 DEFAULT_FORMATTER = logging.Formatter(
-"%(levelname)s %(name)s %(asctime)s | %(filename)s:%(lineno)d | %(message)s"
+    "%(levelname)s %(name)s %(asctime)s | %(filename)s:%(lineno)d | %(message)s"
 )
 fl.common.logger.configure(identifier="executionLog", filename="../log.txt")
 
@@ -156,7 +156,3 @@ if __name__ == "__main__":
     time.sleep(5)
     for i in range(utils.CLIENTS_NUM):
         clientThread = multiprocessing.Process(target=start_client, args=[i]).start()
-
-
-    # server=Server.Server(utils)
-    # server.start_simulation()

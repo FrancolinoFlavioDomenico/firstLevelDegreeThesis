@@ -1,7 +1,8 @@
 import flwr as fl
 from torch.optim import lr_scheduler
 from torch.utils.data import DataLoader
-from torchvision.transforms import Compose, RandomHorizontalFlip, RandomCrop, ToTensor, Normalize
+from torchvision.transforms import Compose, RandomHorizontalFlip, RandomCrop, ToTensor, Normalize, Resize, \
+    RandomResizedCrop
 from torchvision.utils import make_grid
 
 from Utils import Utils
@@ -26,8 +27,8 @@ class FlowerClient(fl.client.NumPyClient):
         )
 
         self.model = self.utils.get_model()
-        self.epochs = 20 if self.utils.dataset_name != 'mnist' else 10
-        self.batch_size = 86
+        self.epochs = 15 if self.utils.dataset_name != 'mnist' else 5
+        self.batch_size = 128
         self.train_data: Subset
         with open(os.path.join(f"../data/partitions/{self.utils.dataset_name}",
                                f"partition_{self.cid}.pickle"), "rb") as f:
@@ -38,10 +39,12 @@ class FlowerClient(fl.client.NumPyClient):
         # self.train_data, self.test_data = torch.utils.data.random_split(self.client_partition_data,
         #                                                                 [train_data_size, test_data_size])
 
-        stats = ((0.5), (0.5)) if self.utils.dataset_name == 'mnist' else ((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+        stats = ((0.5), (0.5)) if self.utils.dataset_name == 'mnist' else ((0.4914, 0.4822, 0.4465), (0.2023, 0.2154, 0.229))
         train_transform = Compose([
             RandomHorizontalFlip(),
-            RandomCrop(28 if self.utils.dataset_name == 'mnist' else 32, padding=4, padding_mode="reflect"),
+            RandomResizedCrop(224),
+            # RandomCrop(28 if self.utils.dataset_name == 'mnist' else 32, padding=4, padding_mode="reflect"),
+            Resize((224, 224)),
             ToTensor(),
             Normalize(*stats),
 
@@ -51,6 +54,8 @@ class FlowerClient(fl.client.NumPyClient):
         # self.steps_for_epoch = len(self.x_train) // self.batch_size
         # self.verbose = 0
 
+
+    def load_data_on_memory(self):
         self.train_data_loader = DataLoader(self.train_data, batch_size=self.batch_size, shuffle=True)
         self.test_data_loader = DataLoader(self.utils.test_data, batch_size=self.batch_size)
         # for batch in self.train_data_loader:
@@ -62,10 +67,8 @@ class FlowerClient(fl.client.NumPyClient):
         #     ax.imshow(make_grid(images[:20], nrow=5).permute(1, 2, 0))
         #     break
         # plt.show()
-
-        # TODO decomment
-        # if self.utils.poisoning and (self.cid in Utils.POISONERS_CLIENTS_CID):
-        #     self.run_poisoning()
+        if self.utils.poisoning and (self.cid in Utils.POISONERS_CLIENTS_CID):
+            self.run_poisoning()
 
     def run_poisoning(self):
         self.utils.printLog(f'client {self.cid} starting poisoning')
@@ -90,6 +93,7 @@ class FlowerClient(fl.client.NumPyClient):
 
     def fit(self, parameters, config):
         """Train parameters on the locally held training set."""
+        self.load_data_on_memory()
 
         # Update local model parameters
         self.set_parameters(parameters)
@@ -110,9 +114,11 @@ class FlowerClient(fl.client.NumPyClient):
         print("Starting training...")
         self.model.to(self.device)  # move model to GPU if available
         criterion = torch.nn.CrossEntropyLoss().to(self.device)
-        optimizer = torch.optim.SGD(
-            self.model.parameters(), lr=0.001, momentum=0.9, weight_decay=1e-4
-        )
+        # optimizer = torch.optim.SGD(
+        #     self.model.parameters(), lr=0.001, momentum=0.9, weight_decay=1e-4
+        # )
+
+        optimizer = torch.optim.Adam(self.model.classifier.parameters())
         # exp_lr_scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
 
         self.model.train()

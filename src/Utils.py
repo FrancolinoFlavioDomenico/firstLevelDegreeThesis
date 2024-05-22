@@ -2,7 +2,7 @@ import pickle
 import os
 
 import torch
-from torchvision.transforms import ToTensor, Normalize, Compose
+from torchvision.transforms import ToTensor, Normalize, Compose, Resize
 from torchvision.transforms import RandomHorizontalFlip, RandomCrop
 from torchvision.models import efficientnet_b0, resnet50, resnet18
 import warnings
@@ -94,6 +94,7 @@ class Utils:
         # ])
 
         test_transform = Compose([
+            Resize((224, 224)),
             ToTensor(),
             Normalize(*stats)
         ])
@@ -174,20 +175,23 @@ class Utils:
         for param in efficientnet.parameters():
             param.requires_grad = False
 
-        # for layer in efficientnet.children():
-        #     print(layer)
-        layer_to_unfreeze = [param  for name, param  in efficientnet.named_parameters() if "Conv2d" in name]
-        layer_to_unfreeze = layer_to_unfreeze[-4:]
-        print(f"Number of layers: {len(layer_to_unfreeze)}")
-        print(layer_to_unfreeze)
-        for layer in layer_to_unfreeze:
-            for param in layer.parameters():
-                param.requires_grad = True
+        efficientnet.classifier = torch.nn.Sequential(
+            # torch.nn.Dropout(p=0.2, inplace=True),
+            torch.nn.Linear(1280, efficientnet.classifier[1].in_features),
+            torch.nn.ReLU(inplace=True),
+            torch.nn.Linear(efficientnet.classifier[1].in_features, self.classes_number))
+
+        print(efficientnet.classifier)
+
+        # efficientnet.classifier[1] = torch.nn.Sequential(
+        #     torch.nn.Linear(2048, 128),
+        #     torch.nn.ReLU(inplace=True),
+        #     torch.nn.Linear(128, 2))
 
         # Re-init output linear layer with the right number of classes
-        efficentnet_classes_classes = efficientnet.classifier[1].in_features
-        if self.classes_number != efficentnet_classes_classes:
-            efficientnet.classifier[1] = torch.nn.Linear(efficentnet_classes_classes, self.classes_number)
+        # efficentnet_classes_classes = efficientnet.classifier[1].in_features
+        # if self.classes_number != efficentnet_classes_classes:
+        #     efficientnet.classifier[1] = torch.nn.Linear(efficentnet_classes_classes, self.classes_number)
         return efficientnet
 
     @classmethod
