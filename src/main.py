@@ -154,5 +154,5 @@ if __name__ == "__main__":
     # start_server()
     serverThread = multiprocessing.Process(target=start_server).start()
     time.sleep(5)
-    for i in range(utils.CLIENTS_NUM):
+    for i in range(Utils.Utils.CLIENTS_NUM):
         clientThread = multiprocessing.Process(target=start_client, args=[i]).start()
