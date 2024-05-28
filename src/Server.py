@@ -13,7 +13,7 @@ import torch
 from torch.utils.data.dataloader import DataLoader
 from collections import OrderedDict
 
-from src.FlowerClient import get_client_fn
+from FlowerClient import get_client_fn
 
 class Server:
     ROUNDS_NUMBER = 5
