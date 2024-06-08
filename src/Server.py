@@ -17,7 +17,7 @@ from FlowerClient import get_client_fn
 
 class Server:
     ROUNDS_NUMBER = 5
-    BATCH_SIZE = 86
+    BATCH_SIZE = 64
 
     def __init__(self, utils: Utils) -> None:
         self.utils = utils
@@ -40,8 +40,6 @@ class Server:
             min_evaluate_clients=Utils.CLIENTS_NUM,
             min_available_clients=self.utils.CLIENTS_NUM,
             evaluate_fn=self.get_evaluate_fn(),
-            # on_fit_config_fn=self.fit_config(),
-            # on_evaluate_config_fn=self.evaluate_config(),
             initial_parameters=fl.common.ndarrays_to_parameters(self.model_parameters),
         )
 
@@ -71,7 +69,7 @@ class Server:
     def get_evaluate_fn(self):
         """Return an evaluation function for server-side evaluation."""
 
-        test_data_loader = DataLoader(self.utils.test_data, batch_size=Server.BATCH_SIZE)
+        test_data_loader = self.utils.get_test_data_loader(Server.BATCH_SIZE)#DataLoader(self.utils.test_data, batch_size=Server.BATCH_SIZE)
 
         # The `evaluate` function will be called after every round
         def evaluate(
@@ -111,6 +109,7 @@ class Server:
                 _, predicted = torch.max(outputs.data, 1)
                 correct += (predicted == labels).sum().item()
         accuracy = correct / len(test_data_loader.dataset)
+        self.model.to("cpu")
         return loss, accuracy
 
     @staticmethod
@@ -152,7 +151,7 @@ class Server:
         client_resources = {"num_cpus": 2, "num_gpus": 0.5}
         fl.simulation.start_simulation(
             client_fn=get_client_fn(self.utils),
-            num_clients=self.utils.CLIENTS_NUM,
+            num_clients=Utils.CLIENTS_NUM,
             config=fl.server.ServerConfig(num_rounds=Server.ROUNDS_NUMBER),
             strategy=self.strategy,
             client_resources=client_resources,
