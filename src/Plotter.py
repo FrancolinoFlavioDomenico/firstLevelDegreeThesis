@@ -57,7 +57,7 @@ class Plotter:
         self.set_save_fig_path('confusionMatrix')
 
     def set_save_fig_path(self, chart_name):
-        output_plot_dir = f"../outputPlot/{'blockchain' if self.blockchain else 'noBlockchain'}/{'poisoning' if self.poisoning else 'noPoisoning'}/"
+        output_plot_dir = f"outputPlot/{'blockchain' if self.blockchain else 'noBlockchain'}/{'poisoning' if self.poisoning else 'noPoisoning'}/"
         output_plot_dir = os.path.join(output_plot_dir,
                                        f"{self.dataset_name}_{chart_name}_{'poisoned' if self.poisoning else ''}.png")
         plt.savefig(output_plot_dir)
