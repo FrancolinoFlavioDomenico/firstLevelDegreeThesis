@@ -130,7 +130,6 @@ import flwr as fl
 import threading
 import logging
 
-from ray.util.multiprocessing import Pool
 import threading as th
 
 
@@ -139,12 +138,12 @@ DEFAULT_FORMATTER = logging.Formatter(
 )
 fl.common.logger.configure(identifier="executionLog", filename="log.txt")
 
-utils = Utils.Utils('cifar10', 10, (3, 3), (32, 32, 3), False, False)
+utils = Utils.Utils('cifar10', 10, (3, 3), (32, 32, 3), True, False)
 
 def start_server():
     server = Server.Server(utils)
-    server.start_server()
-    # server.start_simulation()
+    # server.start_server()
+    server.start_simulation()
 
 
 def start_client(cid):
@@ -155,26 +154,18 @@ def start_client(cid):
 
 if __name__ == "__main__":
     
-    # start_server()
-    serverThread = mp.Process(target=start_server)
-    serverThread.start()
-    time.sleep(15)
-    
+    start_server()
+    # serverThread = mp.Process(target=start_server)
+    # serverThread.start()
+    # time.sleep(15)
+        
     # for i in range(Utils.Utils.CLIENTS_NUM):
-    #     with Pool(5) as p:
-    #         p.map(start_client, (i,))
-    # pool = mp.Pool()
-    # pool.map(start_client,[i for i in range(Utils.Utils.CLIENTS_NUM)])
-    # pool.close()
-    # pool.join()
-    
-    for i in range(Utils.Utils.CLIENTS_NUM):
-        client_thread  = th.Thread(target=start_client,args=[i])
-        client_thread.start()
-        client_thread.join
+    #     client_thread  = th.Thread(target=start_client,args=[i])
+    #     client_thread.start()
+    #     client_thread.join
     
     
-    serverThread.join()
+    # serverThread.join()
     
     
     # for i in range(Utils.Utils.CLIENTS_NUM):
