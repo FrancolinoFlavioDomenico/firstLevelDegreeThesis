@@ -151,21 +151,32 @@ class Utils:
         model = resnet50(weights='IMAGENET1K_V1')
             
         num_ftrs = model.fc.in_features
-        model.fc = torch.nn.Linear(num_ftrs, 1024)
+
+        #test
+        model.fc = torch.nn.Linear(num_ftrs, 256)
         model.fc = torch.nn.Sequential(
             torch.nn.Dropout(0.5),
-            torch.nn.Linear(num_ftrs, 1024),
-            torch.nn.Dropout(0.2),
-            torch.nn.Linear(1024, 512),
-            torch.nn.Dropout(0.2),
-            torch.nn.Linear(512, 256),
-            torch.nn.Dropout(0.2),
-            torch.nn.Linear(256, 128),
-            torch.nn.Dropout(0.2),
-            torch.nn.Linear(128, self.classes_number)
+            torch.nn.Linear(num_ftrs, self.classes_number)
         )
         
         return model
+    
+        #initial arch
+        # model.fc = torch.nn.Linear(num_ftrs, 1024)
+        # model.fc = torch.nn.Sequential(
+        #     torch.nn.Dropout(0.5),
+        #     torch.nn.Linear(num_ftrs, 1024),
+        #     torch.nn.Dropout(0.2),
+        #     torch.nn.Linear(1024, 512),
+        #     torch.nn.Dropout(0.2),
+        #     torch.nn.Linear(512, 256),
+        #     torch.nn.Dropout(0.2),
+        #     torch.nn.Linear(256, 128),
+        #     torch.nn.Dropout(0.2),
+        #     torch.nn.Linear(128, self.classes_number)
+        # )
+        
+        # return model
 
     @classmethod
     def printLog(cls, msg):

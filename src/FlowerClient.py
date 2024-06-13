@@ -15,6 +15,8 @@ from collections import OrderedDict
 
 from tqdm import tqdm
 
+from PoisonedPartitionDataset import PoisonedPartitionDataset
+
 
 class FlowerClient(fl.client.NumPyClient):
     
@@ -25,7 +27,7 @@ class FlowerClient(fl.client.NumPyClient):
         Utils.printLog(f'initializing client{self.cid}')
         self.utils = utils
         self.model = self.utils.get_model()
-        self.epochs = 5 if self.utils.dataset_name != 'mnist' else 2
+        self.epochs = 8 if self.utils.dataset_name != 'mnist' else 2
 
         
     def fit(self, parameters, config):
@@ -69,26 +71,11 @@ class FlowerClient(fl.client.NumPyClient):
     
     def get_train_data_loader(self):
         data = self.load_train_data_from_file(set_transforms=True)
-        returnValue = torch.utils.data.DataLoader(data, batch_size=FlowerClient.BATCH_SIZE, shuffle=True)
-        if self.utils.poisoning and (self.cid in Utils.POISONERS_CLIENTS_CID):
-            returnValue = self.run_poisoning(returnValue)
+        poisoning = self.utils.poisoning and (self.cid in Utils.POISONERS_CLIENTS_CID)
+        returnValue = torch.utils.data.DataLoader(
+            PoisonedPartitionDataset(data, self.utils.classes_number) if poisoning else data,
+            batch_size=FlowerClient.BATCH_SIZE, shuffle=True)
         return returnValue
-    
-    def run_poisoning(self, data_loader):
-        self.utils.printLog(f'client {self.cid} starting poisoning')
-        loader = data_loader
-        for batch in loader:
-            img, labels = batch
-            labels = labels[torch.randperm(labels.size(0))]  # label flipping
-            img = self.add_perturbation(img)
-        return loader
-
-    def add_perturbation(self, img):
-        scale = 0.8
-        noise = torch.randn(img.shape) * scale
-        perturbed_img = img + noise
-
-        return perturbed_img
 
     # def train(self):
     #     """Train the network on the training set."""
