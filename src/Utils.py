@@ -1,12 +1,15 @@
 import pickle
 import os
 
-import ray.data
+from torchvision.transforms import ToTensor, Normalize, Compose
+from torchvision.models import resnet50
 import torch
-from torchvision.transforms import ToTensor, Normalize, Compose, Resize
-from torchvision.transforms import RandomHorizontalFlip, RandomCrop
-from torchvision.models import efficientnet_b0, resnet50, resnet18
-import warnings
+from typing import Tuple, Dict
+# from torch.utils.data import random_split
+# from torch.nn import Sequential, Dropout, Linear, Module,CrossEntropyLoss
+# from torch import no_grad, max
+# import torch
+# from torch.cuda import is_available
 
 
 import numpy as np
@@ -14,12 +17,8 @@ import logging
 
 from torchvision import datasets
 
-import matplotlib.pyplot as plt
 from torch.utils.data.dataloader import DataLoader
-from torchvision.utils import make_grid
-import multiprocessing as mp
 import gc 
-import ray
 
 
 
@@ -49,25 +48,6 @@ class Utils:
         finally:
             file.close()
 
-        # print("------------------------------------------------------------------------------")
-        # self.get_model()
-        # print("------------------------------------------------------------------------------")
-
-        # test code.....print image 
-        # train_data.transform = Utils.train_transform
-        # batch_size = 128
-        # train_dl = DataLoader(self.train_data, batch_size, num_workers=0, pin_memory=True, shuffle=True)
-        # for batch in train_dl:
-        #     images, labels = batch
-        #
-        #     fig, ax = plt.subplots(figsize=(7.5, 7.5))
-        #     ax.set_yticks([])
-        #     ax.set_xticks([])
-        #     ax.imshow(make_grid(images[:20], nrow=5).permute(1, 2, 0))
-        #     break
-        # plt.show()
-
-
         self.generate_dataset_client_partition()
         
         del(self.train_data)
@@ -76,13 +56,8 @@ class Utils:
 
 
     def download_data(self, train):
-        stats = ((0.5), (0.5)) if self.dataset_name == 'mnist' else ((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-
-        test_transform = Compose([
-            Resize((224, 224)),
-            ToTensor(),
-            Normalize(*stats)
-        ])
+  
+        
         if self.dataset_name == 'cifar100':
             data = datasets.CIFAR100(
                 root=Utils.DATASET_PATH,
@@ -108,6 +83,11 @@ class Utils:
             # self.train_data.data = self.train_data.data.reshape(self.train_data.data.shape[0],self.train_data.data.shape[1], self.train_data.data.shape[2],1)
 
         if not train:
+            stats = ((0.5), (0.5)) if self.dataset_name == 'mnist' else ((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
+            test_transform = Compose([
+                ToTensor(),
+                Normalize(*stats)
+            ])
             data.transform = test_transform
 
         return data
@@ -126,15 +106,37 @@ class Utils:
             try:
                 pickle.dump(partition,file)
             finally:
-                file.close()
-            # with open(os.path.join(dataset_partition_dir, f"partition_{i}.pickle"), "wb") as f:
-            #     pickle.dump(partition, f)  
+                file.close()  
             
+    def test(
+        self,
+        model
+    ) -> Tuple[float, float]:
+        """Validate the network on the entire test set."""
+        device = torch.device(
+            "cuda:0" if torch.cuda.is_available() else "cpu"
+        )
+        testloader = DataLoader(self.get_test_data())
+        
+        criterion = torch.nn.CrossEntropyLoss()
+        correct = 0
+        total = 0
+        loss = 0.0
+        model.to(device)
+        with torch.no_grad():
+            model.eval()
+            for data in testloader:
+                images, labels = data[0].to(device), data[1].to(device)
+                outputs = model(images)
+                loss += criterion(outputs, labels).item()
+                _, predicted = torch.max(outputs.data, 1)
+                total += labels.size(0)
+                correct += (predicted == labels).sum().item()
+        accuracy = correct / total
+        model.to('cpu')
+        return loss, accuracy
             
-    def get_test_data_loader(self,batch_size,datal_loader=True):
-        # with open(os.path.join(f"data/partitions/{self.utils.dataset_name}",
-        #                        f"test_data.pickle"), "rb") as f:
-        #     test_data = pickle.load(f)
+    def get_test_data(self):
             
         file = open(os.path.join(f"data/partitions/{self.dataset_name}",
                                f"test_data.pickle"), "rb")
@@ -142,66 +144,22 @@ class Utils:
             test_data = pickle.load(file)
         finally:
             file.close()
-            
-        if datal_loader:
-            return  DataLoader(test_data, batch_size=batch_size, shuffle=False)    
+  
         return test_data      
 
     def get_model(self) -> torch.nn.Module:
-        """Loads EfficienNetB0 from TorchVision."""
-        efficientnet = efficientnet_b0(weights='IMAGENET1K_V1')
-        # last_conv_layer_found = False
+        model = resnet50(weights='IMAGENET1K_V1')
+            
+        num_ftrs = model.fc.in_features
 
-        # for name, layer in efficientnet.named_children():
-        #     if isinstance(layer, torch.nn.Conv2d):  # Identifica i livelli convoluzionali
-        #         # Se abbiamo trovato l'ultimo livello convoluzionale, smetti di congelare
-        #         if last_conv_layer_found:
-        #             break
-        #         # Congela i parametri del livello convoluzionale
-        #         for param in layer.parameters():
-        #             param.requires_grad = False
-        #         # Se questo è l'ultimo livello convoluzionale, impostalo come trovato
-        #         last_conv_layer_found = True
-        #     else:
-        #         # Se il livello non è convoluzionale, congela i suoi parametri
-        #         if not last_conv_layer_found:
-        #             for param in layer.parameters():
-        #                 param.requires_grad = False
-
-        # PROBABILE BUONO
-        # for param in efficientnet.parameters():
-        #     param.requires_grad = False
-        # unfreeze_layers = efficientnet.features[-3:]
-        # for feature in unfreeze_layers:
-        #     for param in feature.parameters():
-        #         param.requires_grad = True
-
-        for name, param in efficientnet.named_parameters():
-            param.requires_grad = False
+        model.fc = torch.nn.Linear(num_ftrs, 256)
+        model.fc = torch.nn.Sequential(
+            torch.nn.Dropout(0.5),
+            torch.nn.Linear(num_ftrs, self.classes_number)
+        )
         
-        efficientnet = torch.nn.Sequential(efficientnet, torch.nn.Dropout(p=0.4, inplace=False), torch.nn.Linear(1000,self.classes_number))
+        return model
 
-        #self made buono? si inchioda al 66% dal primo round
-        # for param in efficientnet.parameters():
-        #     param.requires_grad = False
-        # efficientnet.classifier = torch.nn.Sequential(
-        #     # torch.nn.Dropout(p=0.2, inplace=True),
-        #     torch.nn.Linear(1280, efficientnet.classifier[1].in_features),
-        #     torch.nn.ReLU(inplace=True),
-        #     torch.nn.Linear(efficientnet.classifier[1].in_features, self.classes_number))
-
-        # print(efficientnet.classifier)
-
-        # efficientnet.classifier[1] = torch.nn.Sequential(
-        #     torch.nn.Linear(2048, 128),
-        #     torch.nn.ReLU(inplace=True),
-        #     torch.nn.Linear(128, 2))
-
-        # Re-init output linear layer with the right number of classes
-        # efficentnet_classes_classes = efficientnet.classifier[1].in_features
-        # if self.classes_number != efficentnet_classes_classes:
-        #     efficientnet.classifier[1] = torch.nn.Linear(efficentnet_classes_classes, self.classes_number)
-        return efficientnet
 
     @classmethod
     def printLog(cls, msg):

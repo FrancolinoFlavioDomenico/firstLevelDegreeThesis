@@ -12,7 +12,6 @@ from torchvision.transforms import ToTensor, Normalize, Compose
 import torch
 from torch.utils.data.dataloader import DataLoader
 from collections import OrderedDict
-
 from FlowerClient import get_client_fn
 
 class Server:
@@ -40,36 +39,14 @@ class Server:
             min_evaluate_clients=Utils.CLIENTS_NUM,
             min_available_clients=self.utils.CLIENTS_NUM,
             evaluate_fn=self.get_evaluate_fn(),
-            initial_parameters=fl.common.ndarrays_to_parameters(self.model_parameters),
+            # initial_parameters=fl.common.ndarrays_to_parameters(self.model_parameters),
         )
 
-
-
-    def fit_config(self, server_round: int):
-        """Return training configuration dict for each round.
-
-        Keep batch size fixed at 32, perform two rounds of training with one local epoch,
-        increase to two local epochs afterwards.
-        """
-        config = {
-            "batch_size": Server.BATCH_SIZE,
-            "local_epochs": 1 if server_round < 2 else 2,
-        }
-        return config
-
-    def evaluate_config(self, server_round: int):
-        """Return evaluation configuration dict for each round.
-
-        Perform five local evaluation steps on each client (i.e., use five batches) during
-        rounds one to three, then increase to ten local evaluation steps.
-        """
-        val_steps = 5 if server_round < 4 else 10
-        return {"val_steps": val_steps}
 
     def get_evaluate_fn(self):
         """Return an evaluation function for server-side evaluation."""
 
-        test_data_loader = self.utils.get_test_data_loader(Server.BATCH_SIZE)#DataLoader(self.utils.test_data, batch_size=Server.BATCH_SIZE)
+        test_data_loader =  DataLoader(self.utils.get_test_data())
 
         # The `evaluate` function will be called after every round
         def evaluate(
@@ -82,7 +59,7 @@ class Server:
             state_dict = OrderedDict({k: torch.tensor(v) for k, v in params_dict})
             self.model.load_state_dict(state_dict, strict=True)
 
-            loss, accuracy = self.test(test_data_loader)
+            loss, accuracy = self.utils.test(self.model)
 
             self.loss_data.append(loss)
             self.accuracy_data.append(accuracy)
@@ -91,26 +68,6 @@ class Server:
                 self.set_confusion_matrix(test_data_loader)
             return loss, {"accuracy": accuracy}
         return evaluate
-
-    def test(self, test_data_loader):
-        """Validate the network on the entire test set."""
-        print("Starting evalutation...")
-        device: torch.device = torch.device("cpu")
-        self.model.to(device)  # move model to GPU if available
-        criterion = torch.nn.CrossEntropyLoss()
-        correct, loss = 0, 0.0
-        self.model.eval()
-        with torch.no_grad():
-            for batch in test_data_loader:
-                images, labels = batch
-                images, labels = images.to(device), labels.to(device)
-                outputs = self.model(images)
-                loss += criterion(outputs, labels).item()
-                _, predicted = torch.max(outputs.data, 1)
-                correct += (predicted == labels).sum().item()
-        accuracy = correct / len(test_data_loader.dataset)
-        self.model.to("cpu")
-        return loss, accuracy
 
     @staticmethod
     def weighted_average(metrics: List[Tuple[int, Metrics]]) -> Metrics:
@@ -146,7 +103,8 @@ class Server:
             config=fl.server.ServerConfig(num_rounds=Server.ROUNDS_NUMBER),
             strategy=self.strategy,
         )
-
+        
+        
     def start_simulation(self):
         client_resources = {"num_cpus": 2, "num_gpus": 0.5}
         fl.simulation.start_simulation(

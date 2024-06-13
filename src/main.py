@@ -123,28 +123,28 @@
 import Utils
 import Server
 import FlowerClient
-import time
 import multiprocessing as mp
 import subprocess
 import flwr as fl
 import threading
 import logging
 
-from ray.util.multiprocessing import Pool
 import threading as th
-
 
 DEFAULT_FORMATTER = logging.Formatter(
     "%(levelname)s %(name)s %(asctime)s | %(filename)s:%(lineno)d | %(message)s"
 )
 fl.common.logger.configure(identifier="executionLog", filename="log.txt")
 
-utils = Utils.Utils('cifar10', 10, (3, 3), (32, 32, 3), False, False)
+utils = Utils.Utils('cifar10', 10, (3, 3), (32, 32, 3), True, False)
+
 
 def start_server():
     server = Server.Server(utils)
-    server.start_server()
-    # server.start_simulation()
+    # subporcess
+    # server.start_server()
+    # simulation
+    server.start_simulation()
 
 
 def start_client(cid):
@@ -153,38 +153,26 @@ def start_client(cid):
     client.start_client()
 
 
+def client_test():
+    import clientTest
+    clientTest = clientTest.FlowerClient(utils,0)
+    clientTest.test()
+
+
 if __name__ == "__main__":
-    
-    # start_server()
-    serverThread = mp.Process(target=start_server)
-    serverThread.start()
-    time.sleep(15)
-    
-    # for i in range(Utils.Utils.CLIENTS_NUM):
-    #     with Pool(5) as p:
-    #         p.map(start_client, (i,))
-    # pool = mp.Pool()
-    # pool.map(start_client,[i for i in range(Utils.Utils.CLIENTS_NUM)])
-    # pool.close()
-    # pool.join()
-    
-    for i in range(Utils.Utils.CLIENTS_NUM):
-        client_thread  = th.Thread(target=start_client,args=[i])
-        client_thread.start()
-        client_thread.join
-    
-    
-    serverThread.join()
-    
-    
-    # for i in range(Utils.Utils.CLIENTS_NUM):
-    #     utils.printLog("start new client")
-    #     clientThread = mp.Process(target=start_client, args=(i,))
-    #     clientThread.start()
-    #     clientThread.join()
-    
-    # with Pool() as server_process:
-    #     server_process.map(start_server, [])
+    # tescode
+    # client_test()
+
+    # simulation
+    start_server()
+
+    # subprocess
+    # serverThread = mp.Process(target=start_server)
+    # serverThread.start()
     # time.sleep(15)
-    # with Pool() as client_process:
-    #     client_process.map(start_client, [i for i in range(Utils.Utils.CLIENTS_NUM)])
+    # for i in range(Utils.Utils.CLIENTS_NUM):
+    #     client_thread  = th.Thread(target=start_client,args=[i])
+    #     client_thread.start()
+    #     client_thread.join
+    # serverThread.join()
+
