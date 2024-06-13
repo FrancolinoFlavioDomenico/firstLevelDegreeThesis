@@ -120,6 +120,7 @@
 # # start_cifar100(True, True)
 # # clear_ram()
 
+import time
 import Utils
 import Server
 import FlowerClient
@@ -136,7 +137,7 @@ DEFAULT_FORMATTER = logging.Formatter(
 )
 fl.common.logger.configure(identifier="executionLog", filename="log.txt")
 
-utils = Utils.Utils('cifar10', 10, (3, 3), (32, 32, 3), True, False)
+
 
 
 def start_server():
@@ -164,7 +165,16 @@ if __name__ == "__main__":
     # client_test()
 
     # simulation
+    utils = Utils.Utils('mnist', 10, (3, 3), (28, 28, 1), False, False)
+    # utils = Utils.Utils('cifar10', 10, (3, 3), (32, 32, 3), True, False)
+    # utils = Utils.Utils('cifar100', 100, (3, 3), (32, 32, 3), True, False)
     start_server()
+    
+    time.sleep(15)
+    
+    utils = Utils.Utils('mnist', 10, (3, 3), (28, 28, 1), True, False)
+    start_server()
+    
 
     # subprocess
     # serverThread = mp.Process(target=start_server)

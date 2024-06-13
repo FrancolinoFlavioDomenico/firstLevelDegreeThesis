@@ -1,12 +1,7 @@
 import torch
 import torch.optim as optim
-import torchvision
 from matplotlib import pyplot as plt
-# from torch.utils.data.dataset import Subset
-# from torch.utils.data import DataLoader
 from torchvision import transforms
-from collections import OrderedDict
-from typing import List
 import numpy as np
 import flwr as fl
 
@@ -56,8 +51,6 @@ class FlowerClient(fl.client.NumPyClient):
         returnValue = torch.utils.data.DataLoader(
             PoisonedPartitionDataset(data, self.utils.classes_number) if self.utils.poisoning else data,
             batch_size=FlowerClient.BATCH_SIZE, shuffle=False)
-        # if self.utils.poisoning:
-        #     returnValue = self.run_poisoning(returnValue)
         return returnValue
 
     def run_poisoning(self, data_loader):
@@ -80,10 +73,6 @@ class FlowerClient(fl.client.NumPyClient):
 
         progress_bar = tqdm(enumerate(data_loader), total=len(data_loader))
 
-        # get some random training images
-        # dataiter = iter(data_loader)
-        # images, labels = next(dataiter)
-        # self.imshow(torchvision.utils.make_grid(images))
         for batch_idx, (inputs, labels) in progress_bar:
             if batch_idx == 1:
                 print("label lenng", labels[0])
@@ -91,11 +80,7 @@ class FlowerClient(fl.client.NumPyClient):
                 plt.title(labels[0])
                 print(
                     "------------------------------------------------------------------------------------------------------------------------")
-                # inputs = inputs / 2 + 0.5  # unnormalize
-                # npimg = inputs.numpy()
-                # plt.imshow(np.transpose(npimg, (1, 2, 0)))
-                # plt.show()
-            #     inputs = inputs.float()
+
 
     def imshow(self, img):
         img = img / 2 + 0.5  # unnormalize

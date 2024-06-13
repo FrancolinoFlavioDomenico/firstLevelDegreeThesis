@@ -2,15 +2,9 @@ import pickle
 import os
 
 from torchvision.transforms import ToTensor, Normalize, Compose
-from torchvision.models import resnet50
+from torchvision.models import resnet50,resnet18
 import torch
-from typing import Tuple, Dict
-# from torch.utils.data import random_split
-# from torch.nn import Sequential, Dropout, Linear, Module,CrossEntropyLoss
-# from torch import no_grad, max
-# import torch
-# from torch.cuda import is_available
-
+from typing import Tuple
 
 import numpy as np
 import logging
@@ -63,24 +57,19 @@ class Utils:
                 root=Utils.DATASET_PATH,
                 train=train,
                 download=True
-                # transform=train_transform if train else test_transform
             )
         elif self.dataset_name == 'cifar10':
             data = datasets.CIFAR10(
                 root=Utils.DATASET_PATH,
                 train=train,
                 download=True
-                #                 transform=train_transform if train else test_transform
             )
         else:
             data = datasets.MNIST(
                 root=Utils.DATASET_PATH,
                 train=train,
                 download=True
-                #                 transform=train_transform if train else test_transform
             )
-            # serve?
-            # self.train_data.data = self.train_data.data.reshape(self.train_data.data.shape[0],self.train_data.data.shape[1], self.train_data.data.shape[2],1)
 
         if not train:
             stats = ((0.5), (0.5)) if self.dataset_name == 'mnist' else ((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
@@ -148,17 +137,21 @@ class Utils:
         return test_data      
 
     def get_model(self) -> torch.nn.Module:
-        model = resnet50(weights='IMAGENET1K_V1')
-            
-        num_ftrs = model.fc.in_features
-
-        model.fc = torch.nn.Linear(num_ftrs, 256)
-        model.fc = torch.nn.Sequential(
-            torch.nn.Dropout(0.5),
-            torch.nn.Linear(num_ftrs, self.classes_number)
-        )
-        
-        return model
+        if self.dataset_name == 'mnist':
+            model = resnet18(pretrained=False)
+            model.conv1 = torch.nn.Conv2d(1, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False) 
+            num_ftrs = model.fc.in_features
+            model.fc = torch.nn.Linear(num_ftrs, 10)
+            return model
+        else:
+            model = resnet50(weights='IMAGENET1K_V1')
+            num_ftrs = model.fc.in_features
+            model.fc = torch.nn.Linear(num_ftrs, 256)
+            model.fc = torch.nn.Sequential(
+                torch.nn.Dropout(0.5),
+                torch.nn.Linear(num_ftrs, self.classes_number)
+            )
+            return model
 
 
     @classmethod

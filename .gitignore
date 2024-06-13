@@ -167,5 +167,3 @@ cython_debug/
 # splitted dataset e saved on file
 data/
 
-*example*/
-

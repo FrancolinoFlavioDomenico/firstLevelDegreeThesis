@@ -8,7 +8,6 @@ import Plotter
 from Utils import Utils
 
 from torchvision import datasets
-from torchvision.transforms import ToTensor, Normalize, Compose
 import torch
 from torch.utils.data.dataloader import DataLoader
 from collections import OrderedDict
@@ -19,8 +18,8 @@ class Server:
     BATCH_SIZE = 64
 
     def __init__(self, utils: Utils) -> None:
-        self.utils = utils
         Utils.printLog('server starting')
+        self.utils = utils
 
         self.model = utils.get_model()
         self.model_parameters = [val.cpu().numpy() for _, val in self.model.state_dict().items()]
@@ -33,18 +32,15 @@ class Server:
 
 
         self.strategy = fl.server.strategy.FedAvg(
-            # fraction_fit=1.0,
-            # fraction_evaluate=1.0,
             min_fit_clients=self.utils.CLIENTS_NUM,
             min_evaluate_clients=Utils.CLIENTS_NUM,
             min_available_clients=self.utils.CLIENTS_NUM,
             evaluate_fn=self.get_evaluate_fn(),
-            # initial_parameters=fl.common.ndarrays_to_parameters(self.model_parameters),
         )
 
 
     def get_evaluate_fn(self):
-        """Return an evaluation function for server-side evaluation."""
+        #Return an evaluation function for server-side evaluation.
 
         test_data_loader =  DataLoader(self.utils.get_test_data())
 
@@ -96,7 +92,7 @@ class Server:
         self.plotter.confusion_matrix_chart_plot(result)
 
     def start_server(self):
-        # Start Flower server for four rounds of federated learning
+        # Start Flower server for n rounds of federated learning
         print("Starting server flower...")
         fl.server.start_server(
             server_address="0.0.0.0:8080",

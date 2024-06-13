@@ -1,0 +1,138 @@
+executionLog | INFO flwr 2024-06-13 22:53:21,303 | app.py:178 | Starting Flower simulation, config: num_rounds=5, no round_timeout
+executionLog | INFO flwr 2024-06-13 22:53:25,901 | app.py:213 | Flower VCE: Ray initialized with resources: {'node:__internal_head__': 1.0, 'GPU': 1.0, 'memory': 6476169216.0, 'node:127.0.0.1': 1.0, 'object_store_memory': 3238084608.0, 'CPU': 20.0}
+executionLog | INFO flwr 2024-06-13 22:53:25,901 | app.py:219 | Optimize your simulation with Flower VCE: https://flower.ai/docs/framework/how-to-run-simulations.html
+executionLog | INFO flwr 2024-06-13 22:53:25,901 | app.py:242 | Flower VCE: Resources for each Virtual Client: {'num_cpus': 2, 'num_gpus': 0.5}
+executionLog | INFO flwr 2024-06-13 22:53:25,910 | app.py:288 | Flower VCE: Creating VirtualClientEngineActorPool with 2 actors
+executionLog | INFO flwr 2024-06-13 22:53:25,911 | server.py:92 | [INIT]
+executionLog | INFO flwr 2024-06-13 22:53:25,911 | server.py:279 | Requesting initial parameters from one random client
+executionLog | INFO flwr 2024-06-13 22:53:28,936 | server.py:285 | Received initial parameters from one random client
+executionLog | INFO flwr 2024-06-13 22:53:28,937 | server.py:94 | Evaluating initial global parameters
+executionLog | INFO flwr 2024-06-13 22:54:00,415 | server.py:97 | initial parameters (loss, other metrics): 23314.667039871216, {'accuracy': 0.1255}
+executionLog | INFO flwr 2024-06-13 22:54:00,415 | server.py:110 | 
+executionLog | INFO flwr 2024-06-13 22:54:00,415 | server.py:111 | [ROUND 1]
+executionLog | INFO flwr 2024-06-13 22:54:00,415 | server.py:224 | configure_fit: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-06-13 22:55:26,315 | server.py:238 | aggregate_fit: received 10 results and 0 failures
+executionLog | WARNING flwr 2024-06-13 22:55:26,806 | fedavg.py:252 | No fit_metrics_aggregation_fn provided
+executionLog | INFO flwr 2024-06-13 22:55:49,877 | server.py:129 | fit progress: (1, 3286.555578364896, {'accuracy': 0.8959}, 109.46188840000832)
+executionLog | INFO flwr 2024-06-13 22:55:49,881 | server.py:176 | configure_evaluate: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-06-13 22:59:05,094 | server.py:190 | aggregate_evaluate: received 10 results and 0 failures
+executionLog | WARNING flwr 2024-06-13 22:59:05,094 | fedavg.py:283 | No evaluate_metrics_aggregation_fn provided
+executionLog | INFO flwr 2024-06-13 22:59:05,096 | server.py:110 | 
+executionLog | INFO flwr 2024-06-13 22:59:05,096 | server.py:111 | [ROUND 2]
+executionLog | INFO flwr 2024-06-13 22:59:05,097 | server.py:224 | configure_fit: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-06-13 23:00:20,252 | server.py:238 | aggregate_fit: received 10 results and 0 failures
+executionLog | INFO flwr 2024-06-13 23:00:44,873 | server.py:129 | fit progress: (2, 712.0506123257095, {'accuracy': 0.9773}, 404.4572705000028)
+executionLog | INFO flwr 2024-06-13 23:00:44,874 | server.py:176 | configure_evaluate: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-06-13 23:04:31,497 | server.py:190 | aggregate_evaluate: received 10 results and 0 failures
+executionLog | INFO flwr 2024-06-13 23:04:31,497 | server.py:110 | 
+executionLog | INFO flwr 2024-06-13 23:04:31,498 | server.py:111 | [ROUND 3]
+executionLog | INFO flwr 2024-06-13 23:04:31,498 | server.py:224 | configure_fit: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-06-13 23:05:44,208 | server.py:238 | aggregate_fit: received 10 results and 0 failures
+executionLog | INFO flwr 2024-06-13 23:06:08,592 | server.py:129 | fit progress: (3, 482.8465601171515, {'accuracy': 0.9841}, 728.1759856999997)
+executionLog | INFO flwr 2024-06-13 23:06:08,592 | server.py:176 | configure_evaluate: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-06-13 23:09:23,910 | server.py:190 | aggregate_evaluate: received 10 results and 0 failures
+executionLog | INFO flwr 2024-06-13 23:09:23,911 | server.py:110 | 
+executionLog | INFO flwr 2024-06-13 23:09:23,911 | server.py:111 | [ROUND 4]
+executionLog | INFO flwr 2024-06-13 23:09:23,911 | server.py:224 | configure_fit: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-06-13 23:10:37,627 | server.py:238 | aggregate_fit: received 10 results and 0 failures
+executionLog | INFO flwr 2024-06-13 23:11:01,461 | server.py:129 | fit progress: (4, 399.7964586700679, {'accuracy': 0.9865}, 1021.0452990000049)
+executionLog | INFO flwr 2024-06-13 23:11:01,462 | server.py:176 | configure_evaluate: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-06-13 23:14:14,999 | server.py:190 | aggregate_evaluate: received 10 results and 0 failures
+executionLog | INFO flwr 2024-06-13 23:14:15,000 | server.py:110 | 
+executionLog | INFO flwr 2024-06-13 23:14:15,000 | server.py:111 | [ROUND 5]
+executionLog | INFO flwr 2024-06-13 23:14:15,000 | server.py:224 | configure_fit: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-06-13 23:15:27,703 | server.py:238 | aggregate_fit: received 10 results and 0 failures
+executionLog | INFO flwr 2024-06-13 23:16:59,986 | server.py:129 | fit progress: (5, 348.0251864653106, {'accuracy': 0.988}, 1379.5706173000071)
+executionLog | INFO flwr 2024-06-13 23:16:59,988 | server.py:176 | configure_evaluate: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-06-13 23:20:17,044 | server.py:190 | aggregate_evaluate: received 10 results and 0 failures
+executionLog | INFO flwr 2024-06-13 23:20:17,062 | server.py:487 | 
+executionLog | INFO flwr 2024-06-13 23:20:17,062 | server.py:488 | [SUMMARY]
+executionLog | INFO flwr 2024-06-13 23:20:17,063 | server.py:489 | Run finished 5 rounds in 1576.63s
+executionLog | INFO flwr 2024-06-13 23:20:17,066 | server.py:492 | History (loss, distributed):
+executionLog | INFO flwr 2024-06-13 23:20:17,067 | server.py:494 | 	('\tround 1: 3286.555578364896\n'
+executionLog | INFO flwr 2024-06-13 23:20:17,068 | server.py:494 | 	 '\tround 2: 712.0506123257095\n'
+executionLog | INFO flwr 2024-06-13 23:20:17,068 | server.py:494 | 	 '\tround 3: 482.8465601171515\n'
+executionLog | INFO flwr 2024-06-13 23:20:17,069 | server.py:494 | 	 '\tround 4: 399.79645867006786\n'
+executionLog | INFO flwr 2024-06-13 23:20:17,069 | server.py:494 | 	 '\tround 5: 348.0251864653106\n')History (loss, centralized):
+executionLog | INFO flwr 2024-06-13 23:20:17,070 | server.py:494 | 	('\tround 0: 23314.667039871216\n'
+executionLog | INFO flwr 2024-06-13 23:20:17,070 | server.py:494 | 	 '\tround 1: 3286.555578364896\n'
+executionLog | INFO flwr 2024-06-13 23:20:17,070 | server.py:494 | 	 '\tround 2: 712.0506123257095\n'
+executionLog | INFO flwr 2024-06-13 23:20:17,070 | server.py:494 | 	 '\tround 3: 482.8465601171515\n'
+executionLog | INFO flwr 2024-06-13 23:20:17,070 | server.py:494 | 	 '\tround 4: 399.7964586700679\n'
+executionLog | INFO flwr 2024-06-13 23:20:17,070 | server.py:494 | 	 '\tround 5: 348.0251864653106\n')History (metrics, centralized):
+executionLog | INFO flwr 2024-06-13 23:20:17,071 | server.py:494 | 	{'accuracy': [(0, 0.1255),
+executionLog | INFO flwr 2024-06-13 23:20:17,071 | server.py:494 | 	              (1, 0.8959),
+executionLog | INFO flwr 2024-06-13 23:20:17,071 | server.py:494 | 	              (2, 0.9773),
+executionLog | INFO flwr 2024-06-13 23:20:17,071 | server.py:494 | 	              (3, 0.9841),
+executionLog | INFO flwr 2024-06-13 23:20:17,071 | server.py:494 | 	              (4, 0.9865),
+executionLog | INFO flwr 2024-06-13 23:20:17,072 | server.py:494 | 	              (5, 0.988)]}
+executionLog | INFO flwr 2024-06-13 23:20:17,072 | server.py:495 | 
+executionLog | INFO flwr 2024-06-13 23:20:32,872 | app.py:178 | Starting Flower simulation, config: num_rounds=5, no round_timeout
+executionLog | INFO flwr 2024-06-13 23:20:40,917 | app.py:213 | Flower VCE: Ray initialized with resources: {'node:__internal_head__': 1.0, 'GPU': 1.0, 'memory': 5587982747.0, 'node:127.0.0.1': 1.0, 'object_store_memory': 2793991372.0, 'CPU': 20.0}
+executionLog | INFO flwr 2024-06-13 23:20:40,917 | app.py:219 | Optimize your simulation with Flower VCE: https://flower.ai/docs/framework/how-to-run-simulations.html
+executionLog | INFO flwr 2024-06-13 23:20:40,917 | app.py:242 | Flower VCE: Resources for each Virtual Client: {'num_cpus': 2, 'num_gpus': 0.5}
+executionLog | INFO flwr 2024-06-13 23:20:40,926 | app.py:288 | Flower VCE: Creating VirtualClientEngineActorPool with 2 actors
+executionLog | INFO flwr 2024-06-13 23:20:40,926 | server.py:92 | [INIT]
+executionLog | INFO flwr 2024-06-13 23:20:40,927 | server.py:279 | Requesting initial parameters from one random client
+executionLog | INFO flwr 2024-06-13 23:20:44,921 | server.py:285 | Received initial parameters from one random client
+executionLog | INFO flwr 2024-06-13 23:20:44,922 | server.py:94 | Evaluating initial global parameters
+executionLog | INFO flwr 2024-06-13 23:21:08,701 | server.py:97 | initial parameters (loss, other metrics): 24091.625442624092, {'accuracy': 0.0813}
+executionLog | INFO flwr 2024-06-13 23:21:08,701 | server.py:110 | 
+executionLog | INFO flwr 2024-06-13 23:21:08,702 | server.py:111 | [ROUND 1]
+executionLog | INFO flwr 2024-06-13 23:21:08,702 | server.py:224 | configure_fit: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-06-13 23:22:20,561 | server.py:238 | aggregate_fit: received 10 results and 0 failures
+executionLog | WARNING flwr 2024-06-13 23:22:21,048 | fedavg.py:252 | No fit_metrics_aggregation_fn provided
+executionLog | INFO flwr 2024-06-13 23:22:44,776 | server.py:129 | fit progress: (1, 19976.45555947721, {'accuracy': 0.1622}, 96.07476289999613)
+executionLog | INFO flwr 2024-06-13 23:22:44,777 | server.py:176 | configure_evaluate: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-06-13 23:25:59,012 | server.py:190 | aggregate_evaluate: received 10 results and 0 failures
+executionLog | WARNING flwr 2024-06-13 23:25:59,013 | fedavg.py:283 | No evaluate_metrics_aggregation_fn provided
+executionLog | INFO flwr 2024-06-13 23:25:59,013 | server.py:110 | 
+executionLog | INFO flwr 2024-06-13 23:25:59,013 | server.py:111 | [ROUND 2]
+executionLog | INFO flwr 2024-06-13 23:25:59,013 | server.py:224 | configure_fit: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-06-13 23:27:13,965 | server.py:238 | aggregate_fit: received 10 results and 0 failures
+executionLog | INFO flwr 2024-06-13 23:27:37,640 | server.py:129 | fit progress: (2, 15037.002778708935, {'accuracy': 0.5558}, 388.93938799999887)
+executionLog | INFO flwr 2024-06-13 23:27:37,641 | server.py:176 | configure_evaluate: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-06-13 23:30:53,232 | server.py:190 | aggregate_evaluate: received 10 results and 0 failures
+executionLog | INFO flwr 2024-06-13 23:30:53,232 | server.py:110 | 
+executionLog | INFO flwr 2024-06-13 23:30:53,233 | server.py:111 | [ROUND 3]
+executionLog | INFO flwr 2024-06-13 23:30:53,233 | server.py:224 | configure_fit: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-06-13 23:32:06,927 | server.py:238 | aggregate_fit: received 10 results and 0 failures
+executionLog | INFO flwr 2024-06-13 23:32:30,615 | server.py:129 | fit progress: (3, 6333.722546918318, {'accuracy': 0.8641}, 681.914111799997)
+executionLog | INFO flwr 2024-06-13 23:32:30,616 | server.py:176 | configure_evaluate: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-06-13 23:35:43,502 | server.py:190 | aggregate_evaluate: received 10 results and 0 failures
+executionLog | INFO flwr 2024-06-13 23:35:43,503 | server.py:110 | 
+executionLog | INFO flwr 2024-06-13 23:35:43,503 | server.py:111 | [ROUND 4]
+executionLog | INFO flwr 2024-06-13 23:35:43,503 | server.py:224 | configure_fit: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-06-13 23:36:56,980 | server.py:238 | aggregate_fit: received 10 results and 0 failures
+executionLog | INFO flwr 2024-06-13 23:37:21,551 | server.py:129 | fit progress: (4, 2676.6185313478636, {'accuracy': 0.9277}, 972.8497228999913)
+executionLog | INFO flwr 2024-06-13 23:37:21,552 | server.py:176 | configure_evaluate: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-06-13 23:40:34,399 | server.py:190 | aggregate_evaluate: received 10 results and 0 failures
+executionLog | INFO flwr 2024-06-13 23:40:34,399 | server.py:110 | 
+executionLog | INFO flwr 2024-06-13 23:40:34,399 | server.py:111 | [ROUND 5]
+executionLog | INFO flwr 2024-06-13 23:40:34,400 | server.py:224 | configure_fit: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-06-13 23:41:45,613 | server.py:238 | aggregate_fit: received 10 results and 0 failures
+executionLog | INFO flwr 2024-06-13 23:43:20,566 | server.py:129 | fit progress: (5, 2441.0142593548226, {'accuracy': 0.9389}, 1331.8651125000033)
+executionLog | INFO flwr 2024-06-13 23:43:20,566 | server.py:176 | configure_evaluate: strategy sampled 10 clients (out of 10)
+executionLog | INFO flwr 2024-06-13 23:46:35,741 | server.py:190 | aggregate_evaluate: received 10 results and 0 failures
+executionLog | INFO flwr 2024-06-13 23:46:35,759 | server.py:487 | 
+executionLog | INFO flwr 2024-06-13 23:46:35,760 | server.py:488 | [SUMMARY]
+executionLog | INFO flwr 2024-06-13 23:46:35,760 | server.py:489 | Run finished 5 rounds in 1525.50s
+executionLog | INFO flwr 2024-06-13 23:46:35,761 | server.py:492 | History (loss, distributed):
+executionLog | INFO flwr 2024-06-13 23:46:35,761 | server.py:494 | 	('\tround 1: 19976.45555947721\n'
+executionLog | INFO flwr 2024-06-13 23:46:35,762 | server.py:494 | 	 '\tround 2: 15037.002778708935\n'
+executionLog | INFO flwr 2024-06-13 23:46:35,762 | server.py:494 | 	 '\tround 3: 6333.7225469183195\n'
+executionLog | INFO flwr 2024-06-13 23:46:35,762 | server.py:494 | 	 '\tround 4: 2676.618531347864\n'
+executionLog | INFO flwr 2024-06-13 23:46:35,762 | server.py:494 | 	 '\tround 5: 2441.014259354823\n')History (loss, centralized):
+executionLog | INFO flwr 2024-06-13 23:46:35,762 | server.py:494 | 	('\tround 0: 24091.625442624092\n'
+executionLog | INFO flwr 2024-06-13 23:46:35,762 | server.py:494 | 	 '\tround 1: 19976.45555947721\n'
+executionLog | INFO flwr 2024-06-13 23:46:35,763 | server.py:494 | 	 '\tround 2: 15037.002778708935\n'
+executionLog | INFO flwr 2024-06-13 23:46:35,763 | server.py:494 | 	 '\tround 3: 6333.722546918318\n'
+executionLog | INFO flwr 2024-06-13 23:46:35,763 | server.py:494 | 	 '\tround 4: 2676.6185313478636\n'
+executionLog | INFO flwr 2024-06-13 23:46:35,763 | server.py:494 | 	 '\tround 5: 2441.0142593548226\n')History (metrics, centralized):
+executionLog | INFO flwr 2024-06-13 23:46:35,763 | server.py:494 | 	{'accuracy': [(0, 0.0813),
+executionLog | INFO flwr 2024-06-13 23:46:35,763 | server.py:494 | 	              (1, 0.1622),
+executionLog | INFO flwr 2024-06-13 23:46:35,763 | server.py:494 | 	              (2, 0.5558),
+executionLog | INFO flwr 2024-06-13 23:46:35,764 | server.py:494 | 	              (3, 0.8641),
+executionLog | INFO flwr 2024-06-13 23:46:35,764 | server.py:494 | 	              (4, 0.9277),
+executionLog | INFO flwr 2024-06-13 23:46:35,764 | server.py:494 | 	              (5, 0.9389)]}
+executionLog | INFO flwr 2024-06-13 23:46:35,764 | server.py:495 | 

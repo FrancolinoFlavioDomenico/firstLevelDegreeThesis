@@ -1,7 +1,5 @@
 import torch
 import torch.optim as optim
-# from torch.utils.data.dataset import Subset
-# from torch.utils.data import DataLoader
 from torchvision import transforms
 from collections import OrderedDict
 from typing import List
@@ -20,14 +18,14 @@ from PoisonedPartitionDataset import PoisonedPartitionDataset
 
 class FlowerClient(fl.client.NumPyClient):
     
-    BATCH_SIZE = 32
+    BATCH_SIZE = 64
 
     def __init__(self, utils: Utils, cid: int) -> None:
         self.cid = cid
         Utils.printLog(f'initializing client{self.cid}')
         self.utils = utils
         self.model = self.utils.get_model()
-        self.epochs = 8 if self.utils.dataset_name != 'mnist' else 2
+        self.epochs = 12 if self.utils.dataset_name != 'mnist' else 5
 
         
     def fit(self, parameters, config):
@@ -76,86 +74,31 @@ class FlowerClient(fl.client.NumPyClient):
             PoisonedPartitionDataset(data, self.utils.classes_number) if poisoning else data,
             batch_size=FlowerClient.BATCH_SIZE, shuffle=True)
         return returnValue
-
-    # def train(self):
-    #     """Train the network on the training set."""
-    #     print("Starting training...")
-    #     device = torch.device(
-    #         "cuda:0" if torch.cuda.is_available() else "cpu"
-    #     )
-    #     data_loader = self.get_train_data_loader()
-        
-    #     self.model.fc = self.model.fc.to(device)
-
-    #     criterion = torch.nn.CrossEntropyLoss()
-    #     optimizer = optim.SGD(self.model.parameters(), lr=3e-3, momentum=0.9, weight_decay=5e-4)
-    #     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.1)
-    #     train_acces, test_acces = [], []
-    #     train_losses, test_losses = [], []
-    #     total_step = len(data_loader)
-    #     for epoch in range(self.epochs):
-    #         print(f'Epoch {epoch}\n')
-
-    #         running_loss = 0.0
-    #         running_corrects = 0
-
-    #         self.model.train()
-
-    #         for batch_idx, (inputs, labels) in enumerate(data_loader):
-    #             inputs = inputs.to(device)
-    #             labels = labels.to(device)
-    #             inputs = inputs.float()
-                
-    #             optimizer.zero_grad()
-                
-    #             outputs = self.model(inputs)
-    #             loss = criterion(outputs, labels)
-    #             loss.backward()
-    #             optimizer.step()
-
-    #             _, preds = torch.max(outputs, 1)
-    #             running_loss += loss.item()
-    #             running_corrects += torch.sum(preds == labels.data)
-    #             print ('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}'.format(self.epoch, self.epochs-1, batch_idx, total_step, loss.item()))
-    #             # if (batch_idx) % 20 == 0:
-    #             #     print ('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}'.format(epoch, self.epochs-1, batch_idx, total_step, loss.item()))
-    #         scheduler.step()
-
-
-    #         epoch_loss = running_loss / len(self.load_train_data_from_file())
-    #         epoch_acc = running_corrects.double() / len(self.load_train_data_from_file())
-            
-    #         train_acces.append(epoch_acc * 100)
-    #         train_losses.append(epoch_loss)
-
-    #         print(f'\ntrain-loss: {np.mean(train_losses):.4f}, train-acc: {train_acces[-1]:.4f}')
     
     def train(self):
-        """Train the network on the training set."""
-        print("Starting training...")
+        Utils.printLog("Starting training...")
+        
         device = torch.device(
             "cuda:0" if torch.cuda.is_available() else "cpu"
         )
         data_loader = self.get_train_data_loader()
         
         self.model = self.model.to(device)
-        # self.model.fc = self.model.fc.to(device)
 
         criterion = torch.nn.CrossEntropyLoss()
         optimizer = optim.SGD(self.model.parameters(), lr=3e-3, momentum=0.9, weight_decay=5e-4)
         scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.1)
-        train_acces, test_acces = [], []
-        train_losses, test_losses = [], []
+        train_acces= []
+        train_losses = []
         for epoch in range(self.epochs):
             print(f'Epoch {epoch}\n')
 
             running_loss = 0.0
             running_corrects = 0
             total = 0
-
+            progress_bar = tqdm(enumerate(data_loader), total=len(data_loader))
             self.model.train()
 
-            progress_bar = tqdm(enumerate(data_loader), total=len(data_loader))
             for batch_idx, (inputs, labels) in progress_bar:
                 inputs = inputs.to(device)
                 labels = labels.to(device)
@@ -172,11 +115,8 @@ class FlowerClient(fl.client.NumPyClient):
                 running_loss += loss.item()
                 running_corrects += torch.sum(preds == labels.data)
                 total += labels.size(0)
-                # print ('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}'.format(self.epoch, self.epochs-1, batch_idx, total_step, loss.item()))
                 progress_bar.set_description(
                     f'Epoch [{epoch + 1}/{self.epochs}], Train Loss: {running_loss / (batch_idx + 1):.4f}, Train Acc: {100. * running_corrects / total:.2f}%')
-                # if (batch_idx) % 20 == 0:
-                #     print ('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}'.format(epoch, self.epochs-1, batch_idx, total_step, loss.item()))
             scheduler.step()
 
 
@@ -191,14 +131,13 @@ class FlowerClient(fl.client.NumPyClient):
         
 
     def evaluate(self, parameters, config):
-        # Set model parameters, evaluate model on local test dataset, return result
+        # Set model parameters, evaluate model on test dataset, return result
         Utils.printLog(f'client {self.cid} evaluating model')
         self.set_parameters(parameters)
         loss, accuracy = self.utils.test(self.model)
         return float(loss), len(self.utils.get_test_data()), {"accuracy": float(accuracy)}
 
     def start_client(self):
-        # client = CifarClient(trainset, testset, device, args.model).to_client()
         fl.client.start_client(server_address="127.0.0.1:8080", client=self.to_client())
 
 
