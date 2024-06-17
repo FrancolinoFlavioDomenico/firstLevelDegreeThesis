@@ -25,7 +25,11 @@ class FlowerClient(fl.client.NumPyClient):
         Utils.printLog(f'initializing client{self.cid}')
         self.utils = utils
         self.model = self.utils.get_model()
-        self.epochs = 12 if self.utils.dataset_name != 'mnist' else 5
+        self.epochs = 5
+        if self.utils.dataset_name == 'cifar10':
+            self.epochs = 12
+        if self.utils.dataset_name == 'cifar100':
+            self.epochs = 20
 
         
     def fit(self, parameters, config):

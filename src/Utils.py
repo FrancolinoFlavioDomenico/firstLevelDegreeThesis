@@ -21,11 +21,9 @@ class Utils:
     POISONERS_CLIENTS_CID = np.random.randint(0, CLIENTS_NUM, round((CLIENTS_NUM * 30) / 100))
     DATASET_PATH = 'data/torchDownload'
 
-    def __init__(self, dataset_name, classes_number, kernel_size, input_shape, poisoning=False, blockchain=False):
+    def __init__(self, dataset_name, classes_number, poisoning=False, blockchain=False):
         self.dataset_name = dataset_name
         self.classes_number = classes_number
-        self.kernel_size = kernel_size
-        self.input_shape = input_shape
         self.poisoning = poisoning
         self.blockchain = blockchain
 
@@ -141,7 +139,7 @@ class Utils:
             model = resnet18(pretrained=False)
             model.conv1 = torch.nn.Conv2d(1, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False) 
             num_ftrs = model.fc.in_features
-            model.fc = torch.nn.Linear(num_ftrs, 10)
+            model.fc = torch.nn.Linear(num_ftrs, self.classes_number)
             return model
         else:
             model = resnet50(weights='IMAGENET1K_V1')

@@ -161,28 +161,88 @@ def client_test():
 
 
 if __name__ == "__main__":
-    # tescode
-    # client_test()
-
-    # simulation
-    utils = Utils.Utils('mnist', 10, (3, 3), (28, 28, 1), False, False)
-    # utils = Utils.Utils('cifar10', 10, (3, 3), (32, 32, 3), True, False)
-    # utils = Utils.Utils('cifar100', 100, (3, 3), (32, 32, 3), True, False)
+    utils = Utils.Utils('cifar100', 100, False, False)
     start_server()
-    
     time.sleep(15)
-    
-    utils = Utils.Utils('mnist', 10, (3, 3), (28, 28, 1), True, False)
+    utils = Utils.Utils('cifar100', 100, True, False)
     start_server()
     
+    time.sleep(30)
+    
+    utils = Utils.Utils('cifar10', 10, False, False)
+    start_server()
+    time.sleep(15)
+    utils = Utils.Utils('cifar10', 10, True, False)
+    start_server()
+    
+    time.sleep(30)
+    
+    utils = Utils.Utils('mnist', 10, False, False)
+    start_server()
+    time.sleep(15)
+    utils = Utils.Utils('mnist', 10, True, False)
+    start_server()
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+    # # tescode
+    # # client_test()
 
-    # subprocess
-    # serverThread = mp.Process(target=start_server)
-    # serverThread.start()
-    # time.sleep(15)
-    # for i in range(Utils.Utils.CLIENTS_NUM):
-    #     client_thread  = th.Thread(target=start_client,args=[i])
-    #     client_thread.start()
-    #     client_thread.join
-    # serverThread.join()
+    # # simulation
+    # # utils = Utils.Utils('mnist', 10, (3, 3), (28, 28, 1), False, False)
+    # # utils = Utils.Utils('cifar10', 10, (3, 3), (32, 32, 3), True, False)
+    # utils = Utils.Utils('cifar100', 100, (3, 3), (32, 32, 3), False, False)
+    # start_server()
+    
+    # # time.sleep(15)
+    
+    # # utils = Utils.Utils('mnist', 10, (3, 3), (28, 28, 1), True, False)
+    # # start_server()
+    
+
+    # # subprocess
+    # # serverThread = mp.Process(target=start_server)
+    # # serverThread.start()
+    # # time.sleep(15)
+    # # for i in range(Utils.Utils.CLIENTS_NUM):
+    # #     client_thread  = th.Thread(target=start_client,args=[i])
+    # #     client_thread.start()
+    # #     client_thread.join
+    # # serverThread.join()
 
