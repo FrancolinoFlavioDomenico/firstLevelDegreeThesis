@@ -1,3 +1,4 @@
+import requests
 import torch
 import torch.optim as optim
 from torchvision import transforms
@@ -30,15 +31,35 @@ class FlowerClient(fl.client.NumPyClient):
             self.epochs = 12
         if self.utils.dataset_name == 'cifar100':
             self.epochs = 20
-
+            
+        if self.utils.blockchain:
+            response = requests.get(f'http://localhost:3000/getBlockchainAddress/{self.cid + 1}')
+            self.blockchain_adress = response.text
         
     def fit(self, parameters, config):
         # Set model parameters, train model, return updated model parameters
         self.set_parameters(parameters)
-        self.train()
+        # TODO remove
+        self.testCode()
+        # TODO decomments
+        # self.train()
         torch.cuda.empty_cache()
         torch.cuda.memory_allocated()
         return self.get_parameters(config={}), len(self.load_train_data_from_file()), {}
+    
+    # TODO remove
+    def testCode(self):
+        response = requests.get(f'http://localhost:3000/contract/test/getTestString')
+        Utils.printLog('------------------------------------------------------------')
+        Utils.printLog(f"string before client {self.cid} set it is: \n{response.text}")
+        Utils.printLog('------------------------------------------------------------')
+        
+        response = requests.post(f'http://localhost:3000/contract/test/setTestStringSend',
+                                 json=f'client {self.cid} set to new string {self.cid}')
+        self.blockchain_adress = response.text
+        Utils.printLog('------------------------------------------------------------')
+        Utils.printLog(f"string after client {self.cid} has set is: \n{response.text}")
+        Utils.printLog('------------------------------------------------------------\n\n\n')
     
     def get_parameters(self, config) -> List[np.ndarray]:
         # Return model parameters as a list of NumPy ndarrays

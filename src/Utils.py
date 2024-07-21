@@ -40,12 +40,11 @@ class Utils:
         finally:
             file.close()
 
-        self.generate_dataset_client_partition()
+        self.generate_dataset_client_partition()           
         
         del(self.train_data)
         del(self.test_data)
         gc.collect()
-
 
     def download_data(self, train):
   

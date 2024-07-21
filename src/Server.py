@@ -2,6 +2,7 @@ from typing import Dict, List, Optional, Tuple
 import flwr as fl
 from flwr.common import Metrics
 
+import requests
 from sklearn.metrics import confusion_matrix
 
 import Plotter
@@ -29,6 +30,12 @@ class Server:
 
         self.plotter = Plotter.Plotter(self.utils.dataset_name, Server.ROUNDS_NUMBER, self.utils.poisoning,
                                        self.utils.blockchain)
+        
+        if self.utils.blockchain:
+            response = requests.get('http://localhost:3000/getBlockchainAddress/0')
+            self.blockchain_adress = response.text
+            print(f"server FUNZIONAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA {self.blockchain_adress}")
+            
 
 
         self.strategy = fl.server.strategy.FedAvg(

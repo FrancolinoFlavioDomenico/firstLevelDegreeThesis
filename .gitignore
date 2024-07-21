@@ -167,3 +167,4 @@ cython_debug/
 # splitted dataset e saved on file
 data/
 
+node_modules/

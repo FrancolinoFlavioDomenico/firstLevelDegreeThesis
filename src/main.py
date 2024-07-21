@@ -161,27 +161,35 @@ def client_test():
 
 
 if __name__ == "__main__":
-    utils = Utils.Utils('cifar100', 100, False, False)
-    start_server()
+    # utils = Utils.Utils('cifar100', 100, False, False)
+    # start_server()
+    # time.sleep(15)
+    # utils = Utils.Utils('cifar100', 100, True, False)
+    # start_server()
+    
+    # time.sleep(30)
+    
+    # utils = Utils.Utils('cifar10', 10, False, False)
+    # start_server()
+    # time.sleep(15)
+    # utils = Utils.Utils('cifar10', 10, True, False)
+    # start_server()
+    
+    # time.sleep(30)
+    
+    # utils = Utils.Utils('mnist', 10, False, False)
+    # start_server()
+    # time.sleep(15)
+    # utils = Utils.Utils('mnist', 10, True, False)
+    # start_server()
+    
+    utils = Utils.Utils('mnist', 10, False,True)
     time.sleep(15)
-    utils = Utils.Utils('cifar100', 100, True, False)
     start_server()
     
-    time.sleep(30)
     
-    utils = Utils.Utils('cifar10', 10, False, False)
-    start_server()
-    time.sleep(15)
-    utils = Utils.Utils('cifar10', 10, True, False)
-    start_server()
     
-    time.sleep(30)
-    
-    utils = Utils.Utils('mnist', 10, False, False)
-    start_server()
-    time.sleep(15)
-    utils = Utils.Utils('mnist', 10, True, False)
-    start_server()
+    print("python started")
    
    
    
