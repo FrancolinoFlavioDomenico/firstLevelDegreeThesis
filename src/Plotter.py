@@ -17,6 +17,9 @@ class Plotter:
         self.dataset_name = dataset_name
         self.rounds_number = rounds_number
 
+    ########################################################################################
+    # build a line chart accuracy chart
+    ########################################################################################
     def line_chart_plot(self, accuracy_data, loss_data):
         line_chart_fig, (accuracy_chart, loss_chart) = plt.subplots(nrows=2, ncols=1, sharex=True)
         accuracy_chart.grid(True)
@@ -35,8 +38,11 @@ class Plotter:
 
         accuracy_chart.plot(accuracy_data)
         loss_chart.plot(x_axis, loss_data)
-        self.set_save_fig_path('accuracy_and_loss')
+        self.save_chart('accuracy_and_loss')
 
+    ########################################################################################
+    # build a confusion matrixx chart
+    ########################################################################################
     def confusion_matrix_chart_plot(self, data):
         confusion_matrix_fig, confusion_matrix_chart = plt.subplots()
         confusion_matrix_fig.set_figwidth(10)
@@ -54,9 +60,12 @@ class Plotter:
         if 'cifar100' == self.dataset_name:
             confusion_matrix_chart.xaxis.set_ticklabels(datasetLabelMapping.cifar100FineLabel)
             confusion_matrix_chart.yaxis.set_ticklabels(datasetLabelMapping.cifar100FineLabel)
-        self.set_save_fig_path('confusionMatrix')
+        self.save_chart('confusionMatrix')
 
-    def set_save_fig_path(self, chart_name):
+    ########################################################################################
+    # save a chart into local dir
+    ########################################################################################
+    def save_chart(self, chart_name):
         output_plot_dir = f"outputPlot/{'blockchain' if self.blockchain else 'noBlockchain'}/{'poisoning' if self.poisoning else 'noPoisoning'}/"
         output_plot_dir = os.path.join(output_plot_dir,
                                        f"{self.dataset_name}_{chart_name}_{'poisoned' if self.poisoning else ''}.png")

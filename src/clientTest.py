@@ -1,3 +1,4 @@
+# TODO remove this class
 import torch
 import torch.optim as optim
 from matplotlib import pyplot as plt

@@ -46,9 +46,10 @@ class Utils:
         del(self.test_data)
         gc.collect()
 
+    ########################################################################################
+    # Download and save dataset in local dir
+    ########################################################################################
     def download_data(self, train):
-  
-        
         if self.dataset_name == 'cifar100':
             data = datasets.CIFAR100(
                 root=Utils.DATASET_PATH,
@@ -78,6 +79,9 @@ class Utils:
 
         return data
 
+    ########################################################################################
+    # Generete  a dataset partition used by single federated client
+    ########################################################################################
     def generate_dataset_client_partition(self):
         partition_lenght = np.full(Utils.CLIENTS_NUM, len(self.train_data.data) / Utils.CLIENTS_NUM).astype(
             int).tolist()
@@ -94,6 +98,9 @@ class Utils:
             finally:
                 file.close()  
             
+    ########################################################################################    
+    # Model test funcion used by single client and server
+    ########################################################################################
     def test(
         self,
         model
@@ -122,6 +129,9 @@ class Utils:
         model.to('cpu')
         return loss, accuracy
             
+    ########################################################################################
+    # function for obtain a dataset test paritition used by server o client into test step
+    ########################################################################################
     def get_test_data(self):
             
         file = open(os.path.join(f"data/partitions/{self.dataset_name}",
@@ -133,6 +143,9 @@ class Utils:
   
         return test_data      
 
+    ########################################################################################
+    # obtain a model arch
+    ########################################################################################
     def get_model(self) -> torch.nn.Module:
         if self.dataset_name == 'mnist':
             model = resnet18(pretrained=False)

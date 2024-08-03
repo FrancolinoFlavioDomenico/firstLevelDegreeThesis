@@ -36,8 +36,11 @@ class FlowerClient(fl.client.NumPyClient):
             response = requests.get(f'http://localhost:3000/getBlockchainAddress/{self.cid + 1}')
             self.blockchain_adress = response.text
         
+    ########################################################################################
+    # federated client model fit step.
+    # return updated model parameters
+    ########################################################################################
     def fit(self, parameters, config):
-        # Set model parameters, train model, return updated model parameters
         self.set_parameters(parameters)
         # TODO remove
         self.testCode()
@@ -61,16 +64,23 @@ class FlowerClient(fl.client.NumPyClient):
         Utils.printLog(f"string after client {self.cid} has set is: \n{response.text}")
         Utils.printLog('------------------------------------------------------------\n\n\n')
     
+    ########################################################################################
+    # Return model parameters as a list of NumPy ndarrays
+    ########################################################################################
     def get_parameters(self, config) -> List[np.ndarray]:
-        # Return model parameters as a list of NumPy ndarrays
         return [val.cpu().numpy() for _, val in self.model.state_dict().items()]
 
+    ########################################################################################
+    # Set model parameters from a list of NumPy ndarrays
+    ########################################################################################
     def set_parameters(self, parameters: List[np.ndarray]) -> None:
-        # Set model parameters from a list of NumPy ndarrays
         params_dict = zip(self.model.state_dict().keys(), parameters)
         state_dict = OrderedDict({k: torch.tensor(v) for k, v in params_dict})
         self.model.load_state_dict(state_dict, strict=True)
     
+    ########################################################################################
+    # obtain from file a dataset train partition of current client
+    ########################################################################################
     def load_train_data_from_file(self,set_transforms = False):
         train_data: torch.utils.data.dataset.Subset        
             
@@ -92,6 +102,9 @@ class FlowerClient(fl.client.NumPyClient):
             train_data.dataset.transform = train_transform
         return train_data
     
+    ########################################################################################
+    # obtain a dataloader of dataset train partition of current client
+    ########################################################################################
     def get_train_data_loader(self):
         data = self.load_train_data_from_file(set_transforms=True)
         poisoning = self.utils.poisoning and (self.cid in Utils.POISONERS_CLIENTS_CID)
@@ -100,6 +113,9 @@ class FlowerClient(fl.client.NumPyClient):
             batch_size=FlowerClient.BATCH_SIZE, shuffle=True)
         return returnValue
     
+    ########################################################################################
+    # federated client train algorithm
+    ########################################################################################
     def train(self):
         Utils.printLog("Starting training...")
         
@@ -155,15 +171,19 @@ class FlowerClient(fl.client.NumPyClient):
         self.model = self.model.to('cpu')
         
 
+    ########################################################################################
+    # federated client model evaluate step.
+    # return result of evaluate
+    ########################################################################################
     def evaluate(self, parameters, config):
-        # Set model parameters, evaluate model on test dataset, return result
         Utils.printLog(f'client {self.cid} evaluating model')
         self.set_parameters(parameters)
         loss, accuracy = self.utils.test(self.model)
         return float(loss), len(self.utils.get_test_data()), {"accuracy": float(accuracy)}
 
-    def start_client(self):
-        fl.client.start_client(server_address="127.0.0.1:8080", client=self.to_client())
+    #  TODO delete at and of project
+    # def start_client(self):
+    #     fl.client.start_client(server_address="127.0.0.1:8080", client=self.to_client())
 
 
 def get_client_fn(model_conf):

@@ -30,11 +30,9 @@ class Server:
 
         self.plotter = Plotter.Plotter(self.utils.dataset_name, Server.ROUNDS_NUMBER, self.utils.poisoning,
                                        self.utils.blockchain)
-        
         if self.utils.blockchain:
             response = requests.get('http://localhost:3000/getBlockchainAddress/0')
             self.blockchain_adress = response.text
-            print(f"server FUNZIONAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA {self.blockchain_adress}")
             
 
 
@@ -45,10 +43,10 @@ class Server:
             evaluate_fn=self.get_evaluate_fn(),
         )
 
-
+    ########################################################################################
+    # Return an evaluation function for server-side evaluation.
+    ########################################################################################
     def get_evaluate_fn(self):
-        #Return an evaluation function for server-side evaluation.
-
         test_data_loader =  DataLoader(self.utils.get_test_data())
 
         # The `evaluate` function will be called after every round
@@ -64,25 +62,31 @@ class Server:
 
             loss, accuracy = self.utils.test(self.model)
 
+            # add chart data
             self.loss_data.append(loss)
             self.accuracy_data.append(accuracy)
-            if server_round == Server.ROUNDS_NUMBER:
+            if server_round == Server.ROUNDS_NUMBER: #last round
                 self.plotter.line_chart_plot(self.accuracy_data, self.loss_data)
                 self.set_confusion_matrix(test_data_loader)
             return loss, {"accuracy": accuracy}
         return evaluate
 
+    ########################################################################################
+    # Aggregation function for (federated) evaluation metrics, i.e. those returned by
+    # the client's evaluate() method.
+    # Multiply accuracy of each client by number of examples used
+    ########################################################################################
     @staticmethod
     def weighted_average(metrics: List[Tuple[int, Metrics]]) -> Metrics:
-        # Aggregation function for (federated) evaluation metrics, i.e. those returned by
-        # the client's evaluate() method.
-        # Multiply accuracy of each client by number of examples used
         accuracies = [num_examples * m["accuracy"] for num_examples, m in metrics]
         examples = [num_examples for num_examples, _ in metrics]
 
         # Aggregate and return custom metric (weighted average)
         return {"accuracy": sum(accuracies) / sum(examples)}
 
+    ########################################################################################
+    #  build a confusion matrix chart
+    ########################################################################################
     def set_confusion_matrix(self, test_data_loader: torch.utils.data.DataLoader):
         y_true = []
         y_pred = []
@@ -98,16 +102,23 @@ class Server:
         result = confusion_matrix(y_true, y_pred)
         self.plotter.confusion_matrix_chart_plot(result)
 
-    def start_server(self):
-        # Start Flower server for n rounds of federated learning
-        print("Starting server flower...")
-        fl.server.start_server(
-            server_address="0.0.0.0:8080",
-            config=fl.server.ServerConfig(num_rounds=Server.ROUNDS_NUMBER),
-            strategy=self.strategy,
-        )
+
+    #TODO remove?
+    ########################################################################################
+    # Start Flower server for n rounds of federated learning
+    ########################################################################################
+    # def start_server(self):
+    #     print("Starting server flower...")
+    #     fl.server.start_server(
+    #         server_address="0.0.0.0:8080",
+    #         config=fl.server.ServerConfig(num_rounds=Server.ROUNDS_NUMBER),
+    #         strategy=self.strategy,
+    #     )
         
         
+    ########################################################################################
+    # start federated simulation
+    ########################################################################################
     def start_simulation(self):
         client_resources = {"num_cpus": 2, "num_gpus": 0.5}
         fl.simulation.start_simulation(
