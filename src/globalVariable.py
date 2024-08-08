@@ -103,4 +103,6 @@ cifar100FineLabel = [
     'worm',
 ]
 
+seed_value = 42
+
 blockchainApiPrefix = 'http://localhost:3000/'
