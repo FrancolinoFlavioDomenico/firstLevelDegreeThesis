@@ -43,6 +43,7 @@ class Server:
             min_evaluate_clients=Utils.CLIENTS_NUM,
             min_available_clients=self.utils.CLIENTS_NUM,
             evaluate_fn=self.get_evaluate_fn(),
+            fraction_evaluate= 0
         )
 
     ########################################################################################

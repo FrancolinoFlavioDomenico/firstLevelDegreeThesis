@@ -15,7 +15,6 @@ from tqdm import tqdm
 from PoisonedPartitionDataset import PoisonedPartitionDataset
 
 from globalVariable import seed_value
-torch.seed(seed_value)
 torch.manual_seed(seed_value)
 
 

@@ -1,7 +1,6 @@
 import time
 import Utils
 import Server
-import multiprocessing as mp
 import flwr as fl
 import logging
 
@@ -58,7 +57,6 @@ if __name__ == "__main__":
     # start_server()
     
     utils = Utils.Utils('mnist', 10, False,True)
-    time.sleep(15)
     start_server()
    
    
