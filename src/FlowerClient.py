@@ -15,6 +15,7 @@ from collections import OrderedDict
 from tqdm import tqdm
 
 from PoisonedPartitionDataset import PoisonedPartitionDataset
+from globalVariable import blockchainApiPrefix
 
 
 class FlowerClient(fl.client.NumPyClient):
@@ -33,7 +34,7 @@ class FlowerClient(fl.client.NumPyClient):
             self.epochs = 20
             
         if self.utils.blockchain:
-            response = requests.get(f'http://localhost:3000/getBlockchainAddress/{self.cid + 1}')
+            response = requests.get(f'{blockchainApiPrefix}getBlockchainAddress/{self.cid + 1}')
             self.blockchain_adress = response.text
         
     ########################################################################################
@@ -52,12 +53,12 @@ class FlowerClient(fl.client.NumPyClient):
     
     # TODO remove
     def testCode(self):
-        response = requests.get(f'http://localhost:3000/contract/test/getTestString')
+        response = requests.get(f'{blockchainApiPrefix}contract/test/getTestString')
         Utils.printLog('------------------------------------------------------------')
         Utils.printLog(f"string before client {self.cid} set it is: \n{response.text}")
         Utils.printLog('------------------------------------------------------------')
         
-        response = requests.post(f'http://localhost:3000/contract/test/setTestStringSend',
+        response = requests.post(f'{blockchainApiPrefix}contract/test/setTestStringSend',
                                  json=f'client {self.cid} set to new string {self.cid}')
         self.blockchain_adress = response.text
         Utils.printLog('------------------------------------------------------------')

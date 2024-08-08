@@ -4,7 +4,7 @@ import seaborn as sns
 import numpy as np
 import os
 
-import datasetLabelMapping
+from globalVariable import cifar10Label,cifar100FineLabel
 
 from Utils import Utils
 
@@ -55,11 +55,11 @@ class Plotter:
         confusion_matrix_chart.set_ylabel("predicted class")
         sns.heatmap(data, annot=True, cmap="Blues_r", linewidths=2, square=True)
         if 'cifar10' == self.dataset_name:
-            confusion_matrix_chart.xaxis.set_ticklabels(datasetLabelMapping.cifar10Label)
-            confusion_matrix_chart.yaxis.set_ticklabels(datasetLabelMapping.cifar10Label)
+            confusion_matrix_chart.xaxis.set_ticklabels(cifar10Label)
+            confusion_matrix_chart.yaxis.set_ticklabels(cifar10Label)
         if 'cifar100' == self.dataset_name:
-            confusion_matrix_chart.xaxis.set_ticklabels(datasetLabelMapping.cifar100FineLabel)
-            confusion_matrix_chart.yaxis.set_ticklabels(datasetLabelMapping.cifar100FineLabel)
+            confusion_matrix_chart.xaxis.set_ticklabels(cifar100FineLabel)
+            confusion_matrix_chart.yaxis.set_ticklabels(cifar100FineLabel)
         self.save_chart('confusionMatrix')
 
     ########################################################################################

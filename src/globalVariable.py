@@ -102,3 +102,5 @@ cifar100FineLabel = [
     'woman',
     'worm',
 ]
+
+blockchainApiPrefix = 'http://localhost:3000/'

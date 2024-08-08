@@ -13,6 +13,7 @@ import torch
 from torch.utils.data.dataloader import DataLoader
 from collections import OrderedDict
 from FlowerClient import get_client_fn
+from globalVariable import blockchainApiPrefix
 
 class Server:
     ROUNDS_NUMBER = 5
@@ -23,7 +24,8 @@ class Server:
         self.utils = utils
 
         self.model = utils.get_model()
-        self.model_parameters = [val.cpu().numpy() for _, val in self.model.state_dict().items()]
+        # TODO remove
+        # self.model_parameters = [val.cpu().numpy() for _, val in self.model.state_dict().items()]
 
         self.accuracy_data = []
         self.loss_data = []
@@ -31,7 +33,7 @@ class Server:
         self.plotter = Plotter.Plotter(self.utils.dataset_name, Server.ROUNDS_NUMBER, self.utils.poisoning,
                                        self.utils.blockchain)
         if self.utils.blockchain:
-            response = requests.get('http://localhost:3000/getBlockchainAddress/0')
+            response = requests.get(f'{blockchainApiPrefix}getBlockchainAddress/0')
             self.blockchain_adress = response.text
             
 
