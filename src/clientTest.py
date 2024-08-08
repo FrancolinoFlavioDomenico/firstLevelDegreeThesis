@@ -16,6 +16,8 @@ from PoisonedPartitionDataset import PoisonedPartitionDataset
 
 from globalVariable import seed_value
 torch.seed(seed_value)
+torch.manual_seed(seed_value)
+
 
 class FlowerClient(fl.client.NumPyClient):
     BATCH_SIZE = 128

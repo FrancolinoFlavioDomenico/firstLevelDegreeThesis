@@ -5,6 +5,7 @@ from torch.utils.data import Dataset
 from globalVariable import seed_value
 np.random.seed(seed_value)
 torch.seed(seed_value)
+torch.manual_seed(seed_value)
 
 class PoisonedPartitionDataset(Dataset):
     def __init__(self, dataset, possible_label):
