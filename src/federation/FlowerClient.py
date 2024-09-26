@@ -7,15 +7,16 @@ from typing import List
 import numpy as np
 import flwr as fl
 
-from Utils import Utils
+from src.utils.Utils import Utils
 import pickle
 import os
 from collections import OrderedDict
 
 from tqdm import tqdm
 
-from PoisonedPartitionDataset import PoisonedPartitionDataset
-from globalVariable import blockchainApiPrefix
+from src.utils.PoisonedPartitionDataset import PoisonedPartitionDataset
+from src.utils.globalVariable import blockchainApiPrefix
+
 
 
 class FlowerClient(fl.client.NumPyClient):
@@ -36,6 +37,8 @@ class FlowerClient(fl.client.NumPyClient):
         if self.utils.blockchain:
             response = requests.get(f'{blockchainApiPrefix}getBlockchainAddress/{self.cid + 1}')
             self.blockchain_adress = response.text
+            Utils.printLog(f"client {self.cid} has {self.blockchain_adress}")
+
         
     ########################################################################################
     # federated client model fit step.

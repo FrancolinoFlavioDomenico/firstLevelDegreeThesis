@@ -5,22 +5,22 @@ from flwr.common import Metrics
 import requests
 from sklearn.metrics import confusion_matrix
 
-import Plotter
-from Utils import Utils
+from src.plotting import Plotter
+from src.utils.Utils import Utils
 
 from torchvision import datasets
 import torch
 from torch.utils.data.dataloader import DataLoader
 from collections import OrderedDict
-from FlowerClient import get_client_fn
-from globalVariable import blockchainApiPrefix
+from src.federation.FlowerClient import get_client_fn
+from src.utils.globalVariable import blockchainApiPrefix
 
 class Server:
     ROUNDS_NUMBER = 5
     BATCH_SIZE = 64
 
     def __init__(self, utils: Utils) -> None:
-        Utils.printLog('server starting')
+        # Utils.printLog('server starting')
         self.utils = utils
 
         self.model = utils.get_model()
@@ -35,6 +35,7 @@ class Server:
         if self.utils.blockchain:
             response = requests.get(f'{blockchainApiPrefix}getBlockchainAddress/0')
             self.blockchain_adress = response.text
+            Utils.printLog(f"server has {self.blockchain_adress}")
             
         self.strategy = fl.server.strategy.FedAvg(
             min_fit_clients=self.utils.CLIENTS_NUM,

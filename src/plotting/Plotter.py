@@ -4,9 +4,9 @@ import seaborn as sns
 import numpy as np
 import os
 
-from globalVariable import cifar10Label,cifar100FineLabel
+from  src.utils.globalVariable import cifar10Label,cifar100FineLabel
 
-from Utils import Utils
+from src.utils.Utils import Utils
 
 class Plotter:
 

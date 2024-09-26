@@ -2,7 +2,7 @@ import numpy as np
 import torch
 from torch.utils.data import Dataset
 
-from globalVariable import seed_value
+from src.utils.globalVariable import seed_value
 np.random.seed(seed_value)
 torch.manual_seed(seed_value)
 

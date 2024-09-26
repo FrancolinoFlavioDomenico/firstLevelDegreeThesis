@@ -14,7 +14,7 @@ from torchvision import datasets
 from torch.utils.data.dataloader import DataLoader
 import gc 
 
-from globalVariable import seed_value
+from .globalVariable import seed_value
 np.random.seed(seed_value)
 
 class Utils:

@@ -1,13 +1,12 @@
-import time
-import Utils
-import Server
+from utils import Utils
+from federation import Server
 import flwr as fl
 import logging
 
 DEFAULT_FORMATTER = logging.Formatter(
     "%(levelname)s %(name)s %(asctime)s | %(filename)s:%(lineno)d | %(message)s"
 )
-fl.common.logger.configure(identifier="executionLog", filename="log.txt")
+fl.common.logger.configure(identifier="executionLog", filename="log/federation_log.txt")
 
 
 
@@ -56,7 +55,7 @@ if __name__ == "__main__":
     # utils = Utils.Utils('mnist', 10, True, False)
     # start_server()
     
-    utils = Utils.Utils('mnist', 10, False,True)
+    utils = Utils.Utils('mnist', 10, False, True)
     start_server()
    
    
