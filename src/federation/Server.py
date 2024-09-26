@@ -36,8 +36,6 @@ class Server:
             response = requests.get(f'{blockchainApiPrefix}getBlockchainAddress/0')
             self.blockchain_adress = response.text
             
-
-
         self.strategy = fl.server.strategy.FedAvg(
             min_fit_clients=self.utils.CLIENTS_NUM,
             min_evaluate_clients=Utils.CLIENTS_NUM,
