@@ -19,6 +19,7 @@ fastify.get('/web3/version', function (request, reply) {
   reply.send({ web3Version: `${Web3.version}` })
 })
 
+//TODO REMOVE
 /*------------------------
       testContract test
 --------------------------*/
@@ -55,9 +56,12 @@ fastify.get('/web3/version', function (request, reply) {
 
 
 
+
 /*----------------------------------------------------------
                    real used api
 ----------------------------------------------------------*/
+
+//Get blockchain address for selected client
 fastify.get('/getBlockchainAddress/:clientCid', async function (request, reply) {
   const response = await web3.eth.getAccounts();
   reply.send(response[request.params.clientCid])

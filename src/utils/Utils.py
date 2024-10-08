@@ -145,7 +145,7 @@ class Utils:
         return test_data      
 
     ########################################################################################
-    # obtain a model arch
+    # get a model arch
     ########################################################################################
     def get_model(self) -> torch.nn.Module:
         if self.dataset_name == 'mnist':

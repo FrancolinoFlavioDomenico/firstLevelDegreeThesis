@@ -15,6 +15,7 @@ from collections import OrderedDict
 from src.federation.FlowerClient import get_client_fn
 from src.utils.globalVariable import blockchainApiPrefix
 
+
 class Server:
     ROUNDS_NUMBER = 5
     BATCH_SIZE = 64
@@ -36,20 +37,22 @@ class Server:
             response = requests.get(f'{blockchainApiPrefix}getBlockchainAddress/0')
             self.blockchain_adress = response.text
             Utils.printLog(f"server has {self.blockchain_adress}")
-            
+
+        #TODO custom strategy that exted fedavg and overwrite only aggregate_fit for blockchain
+        # (overwrite consists into remove poisoned result and then call overided method)
         self.strategy = fl.server.strategy.FedAvg(
             min_fit_clients=self.utils.CLIENTS_NUM,
-            min_evaluate_clients=Utils.CLIENTS_NUM,
+            min_evaluate_clients=0,
             min_available_clients=self.utils.CLIENTS_NUM,
             evaluate_fn=self.get_evaluate_fn(),
-            fraction_evaluate= 0
+            fraction_evaluate=0
         )
 
     ########################################################################################
     # Return an evaluation function for server-side evaluation.
     ########################################################################################
     def get_evaluate_fn(self):
-        test_data_loader =  DataLoader(self.utils.get_test_data())
+        test_data_loader = DataLoader(self.utils.get_test_data())
 
         # The `evaluate` function will be called after every round
         def evaluate(
@@ -67,10 +70,11 @@ class Server:
             # add chart data
             self.loss_data.append(loss)
             self.accuracy_data.append(accuracy)
-            if server_round == Server.ROUNDS_NUMBER: #last round
+            if server_round == Server.ROUNDS_NUMBER:  #last round
                 self.plotter.line_chart_plot(self.accuracy_data, self.loss_data)
                 self.set_confusion_matrix(test_data_loader)
             return loss, {"accuracy": accuracy}
+
         return evaluate
 
     ########################################################################################
@@ -104,7 +108,6 @@ class Server:
         result = confusion_matrix(y_true, y_pred)
         self.plotter.confusion_matrix_chart_plot(result)
 
-
     #TODO remove?
     ########################################################################################
     # Start Flower server for n rounds of federated learning
@@ -116,8 +119,7 @@ class Server:
     #         config=fl.server.ServerConfig(num_rounds=Server.ROUNDS_NUMBER),
     #         strategy=self.strategy,
     #     )
-        
-        
+
     ########################################################################################
     # start federated simulation
     ########################################################################################

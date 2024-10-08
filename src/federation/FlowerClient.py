@@ -18,9 +18,7 @@ from src.utils.PoisonedPartitionDataset import PoisonedPartitionDataset
 from src.utils.globalVariable import blockchainApiPrefix
 
 
-
 class FlowerClient(fl.client.NumPyClient):
-    
     BATCH_SIZE = 64
 
     def __init__(self, utils: Utils, cid: int) -> None:
@@ -33,13 +31,12 @@ class FlowerClient(fl.client.NumPyClient):
             self.epochs = 12
         if self.utils.dataset_name == 'cifar100':
             self.epochs = 20
-            
+
         if self.utils.blockchain:
             response = requests.get(f'{blockchainApiPrefix}getBlockchainAddress/{self.cid + 1}')
             self.blockchain_adress = response.text
             Utils.printLog(f"client {self.cid} has {self.blockchain_adress}")
 
-        
     ########################################################################################
     # federated client model fit step.
     # return updated model parameters
@@ -53,21 +50,22 @@ class FlowerClient(fl.client.NumPyClient):
         torch.cuda.empty_cache()
         torch.cuda.memory_allocated()
         return self.get_parameters(config={}), len(self.load_train_data_from_file()), {}
-    
+
     # TODO remove
+    #TEST THE TEST CONTTRACT
     def testCode(self):
         response = requests.get(f'{blockchainApiPrefix}contract/test/getTestString')
         Utils.printLog('------------------------------------------------------------')
         Utils.printLog(f"string before client {self.cid} set it is: \n{response.text}")
         Utils.printLog('------------------------------------------------------------')
-        
+
         response = requests.post(f'{blockchainApiPrefix}contract/test/setTestStringSend',
                                  json=f'client {self.cid} set to new string {self.cid}')
         self.blockchain_adress = response.text
         Utils.printLog('------------------------------------------------------------')
         Utils.printLog(f"string after client {self.cid} has set is: \n{response.text}")
         Utils.printLog('------------------------------------------------------------\n\n\n')
-    
+
     ########################################################################################
     # Return model parameters as a list of NumPy ndarrays
     ########################################################################################
@@ -81,31 +79,32 @@ class FlowerClient(fl.client.NumPyClient):
         params_dict = zip(self.model.state_dict().keys(), parameters)
         state_dict = OrderedDict({k: torch.tensor(v) for k, v in params_dict})
         self.model.load_state_dict(state_dict, strict=True)
-    
+
     ########################################################################################
-    # obtain from file a dataset train partition of current client
+    # get from file a dataset train partition of current client
     ########################################################################################
-    def load_train_data_from_file(self,set_transforms = False):
-        train_data: torch.utils.data.dataset.Subset        
-            
+    def load_train_data_from_file(self, set_transforms=False):
+        train_data: torch.utils.data.dataset.Subset
+
         file = open(os.path.join(f"data/partitions/{self.utils.dataset_name}",
-                               f"partition_{self.cid}.pickle"), "rb")
+                                 f"partition_{self.cid}.pickle"), "rb")
         try:
             train_data = pickle.load(file)
         finally:
             file.close()
 
         if set_transforms:
-            stats = ((0.5), (0.5)) if self.utils.dataset_name == 'mnist' else ((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
+            stats = ((0.5), (0.5)) if self.utils.dataset_name == 'mnist' else (
+            (0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
             train_transform = transforms.Compose([
-            transforms.RandomHorizontalFlip(p=0.5),
-            transforms.ToTensor(),
-            transforms.Normalize(*stats),
+                transforms.RandomHorizontalFlip(p=0.5),
+                transforms.ToTensor(),
+                transforms.Normalize(*stats),
 
             ])
             train_data.dataset.transform = train_transform
         return train_data
-    
+
     ########################################################################################
     # obtain a dataloader of dataset train partition of current client
     ########################################################################################
@@ -116,24 +115,24 @@ class FlowerClient(fl.client.NumPyClient):
             PoisonedPartitionDataset(data, self.utils.classes_number) if poisoning else data,
             batch_size=FlowerClient.BATCH_SIZE, shuffle=True)
         return returnValue
-    
+
     ########################################################################################
     # federated client train algorithm
     ########################################################################################
     def train(self):
         Utils.printLog("Starting training...")
-        
+
         device = torch.device(
             "cuda:0" if torch.cuda.is_available() else "cpu"
         )
         data_loader = self.get_train_data_loader()
-        
+
         self.model = self.model.to(device)
 
         criterion = torch.nn.CrossEntropyLoss()
         optimizer = optim.SGD(self.model.parameters(), lr=3e-3, momentum=0.9, weight_decay=5e-4)
         scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.1)
-        train_acces= []
+        train_acces = []
         train_losses = []
         for epoch in range(self.epochs):
             print(f'Epoch {epoch}\n')
@@ -148,9 +147,9 @@ class FlowerClient(fl.client.NumPyClient):
                 inputs = inputs.to(device)
                 labels = labels.to(device)
                 inputs = inputs.float()
-                
+
                 optimizer.zero_grad()
-                
+
                 outputs = self.model(inputs)
                 loss = criterion(outputs, labels)
                 loss.backward()
@@ -164,16 +163,14 @@ class FlowerClient(fl.client.NumPyClient):
                     f'Epoch [{epoch + 1}/{self.epochs}], Train Loss: {running_loss / (batch_idx + 1):.4f}, Train Acc: {100. * running_corrects / total:.2f}%')
             scheduler.step()
 
-
             epoch_loss = running_loss / len(self.load_train_data_from_file())
             epoch_acc = running_corrects.double() / len(self.load_train_data_from_file())
-            
+
             train_acces.append(epoch_acc * 100)
             train_losses.append(epoch_loss)
 
             print(f'\ntrain-loss: {np.mean(train_losses):.4f}, train-acc: {train_acces[-1]:.4f}')
         self.model = self.model.to('cpu')
-        
 
     ########################################################################################
     # federated client model evaluate step.
