@@ -2,20 +2,23 @@ import pickle
 import os
 
 from torchvision.transforms import ToTensor, Normalize, Compose
-from torchvision.models import resnet50,resnet18
+from torchvision.models import resnet50, resnet18
 import torch
 from typing import Tuple
 
 import numpy as np
 import logging
+from flwr.common.logger import log
 
 from torchvision import datasets
 
 from torch.utils.data.dataloader import DataLoader
-import gc 
+import gc
 
 from .globalVariable import seed_value
+
 np.random.seed(seed_value)
+
 
 class Utils:
     CLIENTS_NUM = 10
@@ -30,21 +33,21 @@ class Utils:
 
         self.train_data = self.download_data(True)
         self.test_data = self.download_data(False)
-        
+
         dataset_partition_dir = f"data/partitions/{self.dataset_name}"
         if not os.path.exists(dataset_partition_dir):
             os.makedirs(dataset_partition_dir)
 
         file = open(os.path.join(dataset_partition_dir, f"test_data.pickle"), "wb")
         try:
-            pickle.dump(self.test_data,file)
+            pickle.dump(self.test_data, file)
         finally:
             file.close()
 
-        self.generate_dataset_client_partition()           
-        
-        del(self.train_data)
-        del(self.test_data)
+        self.generate_dataset_client_partition()
+
+        del (self.train_data)
+        del (self.test_data)
         gc.collect()
 
     ########################################################################################
@@ -71,7 +74,8 @@ class Utils:
             )
 
         if not train:
-            stats = ((0.5), (0.5)) if self.dataset_name == 'mnist' else ((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
+            stats = ((0.5), (0.5)) if self.dataset_name == 'mnist' else (
+                (0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
             test_transform = Compose([
                 ToTensor(),
                 Normalize(*stats)
@@ -95,23 +99,23 @@ class Utils:
         for i, partition in enumerate(partitions):
             file = open(os.path.join(dataset_partition_dir, f"partition_{i}.pickle"), "wb")
             try:
-                pickle.dump(partition,file)
+                pickle.dump(partition, file)
             finally:
-                file.close()  
-            
-    ########################################################################################    
+                file.close()
+
+    ########################################################################################
     # Model test funcion used by single client and server
     ########################################################################################
     def test(
-        self,
-        model
+            self,
+            model
     ) -> Tuple[float, float]:
         """Validate the network on the entire test set."""
         device = torch.device(
             "cuda:0" if torch.cuda.is_available() else "cpu"
         )
         testloader = DataLoader(self.get_test_data())
-        
+
         criterion = torch.nn.CrossEntropyLoss()
         correct = 0
         total = 0
@@ -129,20 +133,20 @@ class Utils:
         accuracy = correct / total
         model.to('cpu')
         return loss, accuracy
-            
+
     ########################################################################################
     # function for obtain a dataset test paritition used by server o client into test step
     ########################################################################################
     def get_test_data(self):
-            
+
         file = open(os.path.join(f"data/partitions/{self.dataset_name}",
-                               f"test_data.pickle"), "rb")
+                                 f"test_data.pickle"), "rb")
         try:
             test_data = pickle.load(file)
         finally:
             file.close()
-  
-        return test_data      
+
+        return test_data
 
     ########################################################################################
     # get a model arch
@@ -150,7 +154,7 @@ class Utils:
     def get_model(self) -> torch.nn.Module:
         if self.dataset_name == 'mnist':
             model = resnet18(pretrained=False)
-            model.conv1 = torch.nn.Conv2d(1, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False) 
+            model.conv1 = torch.nn.Conv2d(1, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
             num_ftrs = model.fc.in_features
             model.fc = torch.nn.Linear(num_ftrs, self.classes_number)
             return model
@@ -164,8 +168,8 @@ class Utils:
             )
             return model
 
-
     @classmethod
-    def printLog(cls, msg):
+    def printLog(cls, msg, level=logging.INFO):
         print(msg)
         logging.log(logging.INFO, msg)
+        log(level, msg)

@@ -1,3 +1,5 @@
+import warnings
+
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import seaborn as sns
@@ -7,6 +9,7 @@ import os
 from  src.utils.globalVariable import cifar10Label,cifar100FineLabel
 
 from src.utils.Utils import Utils
+warnings.filterwarnings('ignore')
 
 class Plotter:
 
