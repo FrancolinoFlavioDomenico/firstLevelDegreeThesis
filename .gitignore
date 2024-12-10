@@ -168,3 +168,4 @@ cython_debug/
 data/
 
 node_modules/
+cache/

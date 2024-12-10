@@ -1,3 +1,4 @@
+import warnings
 from typing import Dict, List, Optional, Tuple
 import flwr as fl
 from flwr.common import Metrics
@@ -15,6 +16,7 @@ from collections import OrderedDict
 from src.federation.FlowerClient import get_client_fn
 from src.utils.globalVariable import blockchainApiPrefix
 
+warnings.filterwarnings('ignore')
 
 class Server:
     ROUNDS_NUMBER = 5
@@ -34,9 +36,9 @@ class Server:
         self.plotter = Plotter.Plotter(self.utils.dataset_name, Server.ROUNDS_NUMBER, self.utils.poisoning,
                                        self.utils.blockchain)
         if self.utils.blockchain:
-            response = requests.get(f'{blockchainApiPrefix}getBlockchainAddress/0')
+            response = requests.get(f'{blockchainApiPrefix}address/client/0')
             self.blockchain_adress = response.text
-            Utils.printLog(f"server has {self.blockchain_adress}")
+            Utils.printLog(f"server has blockchain address {self.blockchain_adress}")
 
         #TODO custom strategy that exted fedavg and overwrite only aggregate_fit for blockchain
         # (overwrite consists into remove poisoned result and then call overided method)
@@ -45,8 +47,12 @@ class Server:
             min_evaluate_clients=0,
             min_available_clients=self.utils.CLIENTS_NUM,
             evaluate_fn=self.get_evaluate_fn(),
-            fraction_evaluate=0
+            fraction_evaluate=0,
+            on_fit_config_fn=self.get_fit_config  
         )
+        
+    def get_fit_config(self, server_round:int):
+        return { "currentRound":server_round}
 
     ########################################################################################
     # Return an evaluation function for server-side evaluation.

@@ -1,6 +1,9 @@
+import warnings
+
 import requests
 import torch
 import torch.optim as optim
+from requests import Response
 from torchvision import transforms
 from collections import OrderedDict
 from typing import List
@@ -14,8 +17,14 @@ from collections import OrderedDict
 
 from tqdm import tqdm
 
+import json
+
 from src.utils.PoisonedPartitionDataset import PoisonedPartitionDataset
 from src.utils.globalVariable import blockchainApiPrefix
+
+import time
+
+warnings.filterwarnings('ignore')
 
 
 class FlowerClient(fl.client.NumPyClient):
@@ -27,50 +36,52 @@ class FlowerClient(fl.client.NumPyClient):
         self.utils = utils
         self.model = self.utils.get_model()
         self.epochs = 5
+        self.current_round = 0
         if self.utils.dataset_name == 'cifar10':
             self.epochs = 12
         if self.utils.dataset_name == 'cifar100':
             self.epochs = 20
 
         if self.utils.blockchain:
-            response = requests.get(f'{blockchainApiPrefix}getBlockchainAddress/{self.cid + 1}')
+            response = requests.get(f'{blockchainApiPrefix}address/client/{self.cid + 1}')
             self.blockchain_adress = response.text
-            Utils.printLog(f"client {self.cid} has {self.blockchain_adress}")
+            Utils.printLog(f"client {self.cid} has blockchain address {self.blockchain_adress}")
 
     ########################################################################################
     # federated client model fit step.
     # return updated model parameters
     ########################################################################################
     def fit(self, parameters, config):
+        self.current_round = config['currentRound']
         self.set_parameters(parameters)
-        # TODO remove
-        self.testCode()
-        # TODO decomments
-        # self.train()
+        self.train()
         torch.cuda.empty_cache()
         torch.cuda.memory_allocated()
-        return self.get_parameters(config={}), len(self.load_train_data_from_file()), {}
-
-    # TODO remove
-    #TEST THE TEST CONTTRACT
-    def testCode(self):
-        response = requests.get(f'{blockchainApiPrefix}contract/test/getTestString')
-        Utils.printLog('------------------------------------------------------------')
-        Utils.printLog(f"string before client {self.cid} set it is: \n{response.text}")
-        Utils.printLog('------------------------------------------------------------')
-
-        response = requests.post(f'{blockchainApiPrefix}contract/test/setTestStringSend',
-                                 json=f'client {self.cid} set to new string {self.cid}')
-        self.blockchain_adress = response.text
-        Utils.printLog('------------------------------------------------------------')
-        Utils.printLog(f"string after client {self.cid} has set is: \n{response.text}")
-        Utils.printLog('------------------------------------------------------------\n\n\n')
+        getted_train_parameters =  self.get_parameters(config={})
+        if self.utils.blockchain and self.current_round > 0:
+            self.write_parameters_on_blockchain(getted_train_parameters)
+        return getted_train_parameters, len(self.load_train_data_from_file()), {}
 
     ########################################################################################
     # Return model parameters as a list of NumPy ndarrays
     ########################################################################################
-    def get_parameters(self, config) -> List[np.ndarray]:
+    def get_parameters(self,config) -> List[np.ndarray]:
         return [val.cpu().numpy() for _, val in self.model.state_dict().items()]
+    
+    ########################################################################################
+    # Writes into blockchian the file containing the weights obtained in the current round 
+    # by the current client
+    ########################################################################################
+    def write_parameters_on_blockchain(self,parameters):
+        self.set_parameters(parameters)#updata local model with trained weight
+        path = f"./data/clientParameters/client{self.cid}_round{self.current_round}_parameters.pth"
+        torch.save(self.model.state_dict(),path)
+        with open(path, 'rb') as f:
+            time.sleep(5)
+            r = requests.post(f'{blockchainApiPrefix}/weights/write/{self.cid + 1}/{self.current_round}',
+                              data={'blockchianAddress': self.blockchain_adress},
+                                files={"weights": f})
+
 
     ########################################################################################
     # Set model parameters from a list of NumPy ndarrays
@@ -81,7 +92,7 @@ class FlowerClient(fl.client.NumPyClient):
         self.model.load_state_dict(state_dict, strict=True)
 
     ########################################################################################
-    # get from file a dataset train partition of current client
+    # get a dataset train partition of current client from file
     ########################################################################################
     def load_train_data_from_file(self, set_transforms=False):
         train_data: torch.utils.data.dataset.Subset
@@ -95,7 +106,7 @@ class FlowerClient(fl.client.NumPyClient):
 
         if set_transforms:
             stats = ((0.5), (0.5)) if self.utils.dataset_name == 'mnist' else (
-            (0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
+                (0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
             train_transform = transforms.Compose([
                 transforms.RandomHorizontalFlip(p=0.5),
                 transforms.ToTensor(),

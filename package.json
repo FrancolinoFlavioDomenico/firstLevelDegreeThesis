@@ -4,14 +4,14 @@
   "description": "the project implemented for my first level degree thesis",
   "main": "./src/api/blockchainAPi.js",
   "scripts": {
-    "start-ganache": "npx ganache -d --chain.networkId=100 --database.dbPath='./data/blockchain' -a 11",
-    "start-server": "nodemon ./src/api/blockchainAPi.js"
+    "start-blockchain": "npx hardhat node",
+    "start-server": "nodemon --inspect ./src/api/blockchainAPi.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "fastify": "^5.0.0",
-    "truffle": "^5.11.5",
-    "web3": "^4.13.0"
+    "@fastify/multipart": "^9.0.1",
+    "ethers": "^6.13.4",
+    "fastify": "^5.1.0"
   }
 }
