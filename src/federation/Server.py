@@ -14,7 +14,7 @@ import torch
 from torch.utils.data.dataloader import DataLoader
 from collections import OrderedDict
 from src.federation.FlowerClient import get_client_fn
-from src.utils.globalVariable import blockchainApiPrefix
+from src.utils.globalVariable import blockchainApiPrefix,blockchainPrivateKeys
 
 warnings.filterwarnings('ignore')
 
@@ -36,9 +36,14 @@ class Server:
         self.plotter = Plotter.Plotter(self.utils.dataset_name, Server.ROUNDS_NUMBER, self.utils.poisoning,
                                        self.utils.blockchain)
         if self.utils.blockchain:
-            response = requests.get(f'{blockchainApiPrefix}address/client/0')
-            self.blockchain_adress = response.text
-            Utils.printLog(f"server has blockchain address {self.blockchain_adress}")
+            self.blockchain_credential = blockchainPrivateKeys[0]
+            r = requests.post(f'{blockchainApiPrefix}/deploy/contract',
+                json={'blockchainCredential': self.blockchain_credential})
+
+            #TODO remove?
+            # response = requests.get(f'{blockchainApiPrefix}address/client/0')
+            # self.blockchain_adress = response.text
+            # Utils.printLog(f"server has blockchain address {self.blockchain_adress}")
 
         #TODO custom strategy that exted fedavg and overwrite only aggregate_fit for blockchain
         # (overwrite consists into remove poisoned result and then call overided method)

@@ -20,7 +20,7 @@ from tqdm import tqdm
 import json
 
 from src.utils.PoisonedPartitionDataset import PoisonedPartitionDataset
-from src.utils.globalVariable import blockchainApiPrefix
+from src.utils.globalVariable import blockchainApiPrefix,blockchainPrivateKeys
 
 import time
 
@@ -30,7 +30,7 @@ warnings.filterwarnings('ignore')
 class FlowerClient(fl.client.NumPyClient):
     BATCH_SIZE = 64
 
-    def __init__(self, utils: Utils, cid: int) -> None:
+    def __init__(self, utils: Utils, cid: int,blockchainPrivateKey = None) -> None:
         self.cid = cid
         Utils.printLog(f'initializing client{self.cid}')
         self.utils = utils
@@ -43,9 +43,11 @@ class FlowerClient(fl.client.NumPyClient):
             self.epochs = 20
 
         if self.utils.blockchain:
-            response = requests.get(f'{blockchainApiPrefix}address/client/{self.cid + 1}')
-            self.blockchain_adress = response.text
-            Utils.printLog(f"client {self.cid} has blockchain address {self.blockchain_adress}")
+            self.blockchain_credential = blockchainPrivateKey
+            # TODO REMOVE ?
+            # response = requests.get(f'{blockchainApiPrefix}address/client/{self.cid + 1}')
+            # self.blockchain_adress = response.text
+            # Utils.printLog(f"client {self.cid} has blockchain address {self.blockchain_adress}")
 
     ########################################################################################
     # federated client model fit step.
@@ -77,9 +79,9 @@ class FlowerClient(fl.client.NumPyClient):
         path = f"./data/clientParameters/client{self.cid}_round{self.current_round}_parameters.pth"
         torch.save(self.model.state_dict(),path)
         with open(path, 'rb') as f:
-            time.sleep(5)
-            r = requests.post(f'{blockchainApiPrefix}/weights/write/{self.cid + 1}/{self.current_round}',
-                              data={'blockchianAddress': self.blockchain_adress},
+            time.sleep(10)
+            r = requests.post(f'{blockchainApiPrefix}/write/weights/{self.cid + 1}/{self.current_round}',
+                              data={'blockchainCredential': self.blockchain_credential},
                                 files={"weights": f})
 
 
@@ -200,6 +202,6 @@ class FlowerClient(fl.client.NumPyClient):
 
 def get_client_fn(model_conf):
     def client_fn(cid: str) -> fl.client.Client:
-        return FlowerClient(model_conf, int(cid))
+        return FlowerClient(model_conf, int(cid),blockchainPrivateKeys[int(cid)])
 
     return client_fn
