@@ -44,10 +44,6 @@ class FlowerClient(fl.client.NumPyClient):
 
         if self.utils.blockchain:
             self.blockchain_credential = blockchainPrivateKey
-            # TODO REMOVE ?
-            # response = requests.get(f'{blockchainApiPrefix}address/client/{self.cid + 1}')
-            # self.blockchain_adress = response.text
-            # Utils.printLog(f"client {self.cid} has blockchain address {self.blockchain_adress}")
 
     ########################################################################################
     # federated client model fit step.

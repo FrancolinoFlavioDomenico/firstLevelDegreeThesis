@@ -40,11 +40,6 @@ class Server:
             r = requests.post(f'{blockchainApiPrefix}/deploy/contract',
                 json={'blockchainCredential': self.blockchain_credential})
 
-            #TODO remove?
-            # response = requests.get(f'{blockchainApiPrefix}address/client/0')
-            # self.blockchain_adress = response.text
-            # Utils.printLog(f"server has blockchain address {self.blockchain_adress}")
-
         #TODO custom strategy that exted fedavg and overwrite only aggregate_fit for blockchain
         # (overwrite consists into remove poisoned result and then call overided method)
         self.strategy = fl.server.strategy.FedAvg(

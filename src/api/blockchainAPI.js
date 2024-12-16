@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 import { createHeliaHTTP } from '@helia/http'
 import { unixfs } from '@helia/unixfs'
 import { createRequire } from "module";
+import { spawn } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 
@@ -30,6 +31,25 @@ const contractABI = compiledContract.abi;
 const contractBytecode = compiledContract.bytecode;
 var deployedContractAddress;
 
+function log(msg, type = "debug") {
+    console.log(msg)
+    fastify.log[type](msg);
+}
+
+function catchBlockchainEvent() {
+    const contract = new ethers.Contract(deployedContractAddress, contractABI, provider);
+    contract.on("WroteWeightsOfRoundForClient", (weights, round, federatedCid, event) => {
+        try {
+            const args = [weights,round,federatedCid];
+            spawn('python', ['src/utils/guard.py',weights,round,federatedCid]);//run python script for weight check
+        } catch (error) {
+            log('Error executing Python script: ' + error, "error");
+        }
+
+    }
+    )
+};
+
 /*********************************************************
  blockchain test route
  **********************************************************/
@@ -40,27 +60,20 @@ fastify.get("/isConnected", async function (request, reply) {
     reply.send({ isConnected: isConnected });
 });
 
-
 /*----------------------------------------------------------
                    real used api
 ----------------------------------------------------------*/
 
-//Get blockchain address of selected client {:clientCid}//TODO REMOVE and set address by python array linked to client cid
-fastify.get("/address/client/:clientCid", async function (request, reply) {
-    const response = await provider.listAccounts();
-    return response[request.params.clientCid].address;
-});
-
 //deploy smart contract on blockchain
 fastify.post("/deploy/contract", async function (request, reply) {
     try {
-        console.log(request.body.blockchainCredential)
         const wallet = new ethers.Wallet(request.body.blockchainCredential, provider)
         const contractFactory = new ethers.ContractFactory(contractABI, contractBytecode, wallet);
         const contract = await contractFactory.deploy();
         const deployTransaction = await contract.waitForDeployment();
         deployedContractAddress = deployTransaction.target
         reply.send({ deployTransaction: deployTransaction });
+        catchBlockchainEvent();
     } catch (e) {
         request.log.error({
             e,
@@ -81,7 +94,7 @@ fastify.post("/write/weights/:clientCid/:round", async (request, reply) => {
 
         const wallet = new ethers.Wallet(walletKey, provider)
         const contract = new ethers.Contract(deployedContractAddress, contractABI, wallet);
-        
+
         const weightAddress = await fs.addBytes(weights)
 
         const tx = await contract.storeWeightOfRoundForClient(
@@ -91,11 +104,10 @@ fastify.post("/write/weights/:clientCid/:round", async (request, reply) => {
         )
         const txResult = await tx.wait()
         reply.send({ txResult: txResult })
-        return reply //yer or not?
     } catch (e) {
         request.log.error({
             e,
-            message: "write file on blockchain failed:" + e,
+            message: "write weight on blockchain failed:" + e,
         });
         reply.code(500).send({ error: "Internal Server Error" });
 
@@ -104,36 +116,61 @@ fastify.post("/write/weights/:clientCid/:round", async (request, reply) => {
     }
 });
 
-
-//write weights of client {:clientCid} at round {:round}
-fastify.post("/weights/check/:round/:clientCid", async (request, reply) => {
-    /* if weigth < avgWeitg of previous round
-            add clientCid to blacklist
-            write weigt on blockchain
-            write blacklist on blockchain
-      */
+//write poisoner client {:clientCid}  into blockchain blacklist
+fastify.post("/write/blacklist/:clientCid", async (request, reply) => {
     try {
-        const data = await request.file({
-            limits: { fileSize: 500 * 1024 * 1024 },
-        });
-        const buffer = await data.toBuffer();
-        console.log(JSON.parse(buffer.toString()));
-        return reply.send();
+        let walletKey = request.body.blockchainCredential
+        const wallet = new ethers.Wallet(walletKey, provider)
+        const contract = new ethers.Contract(deployedContractAddress, contractABI, wallet);
+
+        const tx = await contract.addToBlacklist(
+            request.params.clientCid,
+        )
+        const txResult = await tx.wait()
+
+        reply.send({ txResult: txResult })
     } catch (e) {
         request.log.error({
             e,
-            message: "write weight on blockchain failed",
+            message: "write blacklist on blockchain failed:" + e,
         });
-        reply.log.error(e, `failed cid ${request.params.clientCid}`);
+        reply.code(500).send({ error: "Internal Server Error" });
+
     } finally {
         return reply
     }
 });
 
-//Get blockchain blacklist
-fastify.get("/blacklist", async function (request, reply) {
-    return null;
+//get poisoners blacklist
+fastify.get("/blacklist", async (request, reply) => {
+    try {
+        let walletKey = request.body.blockchainCredential
+        const wallet = new ethers.Wallet(walletKey, provider)
+        const contract = new ethers.Contract(deployedContractAddress, contractABI, wallet);
+
+        const tx = await contract.getBlacklist(
+            request.params.clientCid,
+        )
+        const txResult = await tx.wait()
+
+        reply.send({ txResult: txResult })
+    } catch (e) {
+        request.log.error({
+            e,
+            message: "get blacklist failed:" + e,
+        });
+        reply.code(500).send({ error: "Internal Server Error" });
+
+    } finally {
+        return reply
+    }
 });
+
+  /* if weigth < avgWeitg of previous round
+            add clientCid to blacklist
+            write weigt on blockchain
+            write blacklist on blockchain
+      */
 
 /*----------------------------------------------------------
               start server
@@ -144,5 +181,5 @@ fastify.listen({ port: 3000 }, function (err, address) {
         fastify.log.error(err);
         process.exit(1);
     }
-    // Server is now listening on ${address}
+    log(`Server is now listening on ${address}`);
 });
