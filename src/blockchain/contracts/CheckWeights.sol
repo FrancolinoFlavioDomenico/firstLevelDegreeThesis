@@ -3,7 +3,11 @@ pragma solidity ^0.8.0;
 pragma abicoder v2;
 
 contract CheckWeights {
-    mapping(uint => string[]) roundWeightsReference;
+    struct WeightsReferences {
+        uint federatedCid;
+        mapping(uint => string) weightOfRound;
+    }
+    WeightsReferences[] public weightsReferences;
 
     uint[] public blacklist;
 
@@ -22,48 +26,75 @@ contract CheckWeights {
         return owner;
     }
 
-    event WroteWeightsOfRoundForClient(
-        string weightsHash,
-        uint round,
-        uint federatedCid
-    );
+    event WroteWeightsOfRoundForClient(uint round, uint federatedCid);
 
     function addRoundWeightsReference(
-        string memory _weightsHash,
+        string memory _weights,
         uint _round,
         uint _federatedCid
     ) public {
-        // roundWeightsReference[_round] = _weightsHash;
-        roundWeightsReference[_federatedCid].push(_weightsHash);
-        emit WroteWeightsOfRoundForClient(roundWeightsReference[_federatedCid][_round], _round, _federatedCid);//TODO fix event value for weight reference
+        WeightsReferences storage weightRef;
+
+        if (isClientAlreadyExist(_federatedCid)) {
+            weightRef = weightsReferences[findClientIndex(_federatedCid)];
+        } else {
+            uint lastWeightRef = weightsReferences.length;
+            weightsReferences.push();
+            weightRef = weightsReferences[lastWeightRef];
+            weightRef.federatedCid = _federatedCid;
+        }
+
+        if (!isWeightOfRoundAlreadyFilledOf(_round, _federatedCid)) {
+            weightRef.weightOfRound[_round] = _weights;
+            emit WroteWeightsOfRoundForClient(_round, _federatedCid); //throw wrote event for trigger check  of weights
+        } else {
+            revert("Weights already wrote");
+        }
     }
 
+    function getWeightOfRoundOfClient(
+        uint _round,
+        uint _federatedCid
+    ) public view returns (string memory) {
+        WeightsReferences storage weightRef = weightsReferences[
+            findClientIndex(_federatedCid)
+        ];
+        return weightRef.weightOfRound[_round];
+    }
 
+    function isWeightOfRoundAlreadyFilledOf(
+        uint _round,
+        uint _federatedCid
+    ) internal view returns (bool) {
+        WeightsReferences storage weightRef = weightsReferences[
+            findClientIndex(_federatedCid)
+        ];
+        return (keccak256(
+            abi.encodePacked((weightRef.weightOfRound[_round]))
+        ) != keccak256(abi.encodePacked((""))));
+    }
 
+    function findClientIndex(uint _federatedCid) internal view returns (uint) {
+        for (uint i = 0; i < weightsReferences.length; i++) {
+            if (weightsReferences[i].federatedCid == _federatedCid) {
+                return i;
+            }
+        }
+        revert("Client not found");
+    }
 
-    // function findClientIndex(uint _federatedCid) internal view returns (uint) {
-    //     for (uint i = 0; i < clients.length; i++) {
-    //         if (clients[i].federatedCid == _federatedCid) {
-    //             return i;
-    //         }
-    //     }
-    //     revert("Client not found");
-    // }
-
-    // function checkClientExist(uint _federatedCid) internal view returns (bool) {
-    //     for (uint i = 0; i < clients.length; i++) {
-    //         if (clients[i].federatedCid == _federatedCid) {
-    //             return true;
-    //         }
-    //     }
-    //     return false;
-    // }
+    function isClientAlreadyExist(
+        uint _federatedCid
+    ) internal view returns (bool) {
+        for (uint i = 0; i < weightsReferences.length; i++) {
+            if (weightsReferences[i].federatedCid == _federatedCid) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     function addToBlacklist(uint _federatedCid) public {
         blacklist.push(_federatedCid);
-    }
-
-    function getBlacklist() public view onlyOwner returns (uint[] memory) {
-        return blacklist;
     }
 }

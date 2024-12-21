@@ -41,10 +41,9 @@ function log(msg, type = "debug") {
 
 function catchBlockchainEvent() {
     const contract = new ethers.Contract(deployedContractAddress, contractABI, provider);
-    contract.on("WroteWeightsOfRoundForClient", (weightsHash, round, federatedCid, event) => {
+    contract.on("WroteWeightsOfRoundForClient", (round, federatedCid, event) => {
         try {
-            const args = [weightsHash, round, federatedCid];
-            const child = spawn('python', ['src/utils/guard.py', weightsHash, round, federatedCid,datasetName,datasetClassNumber],{shell:true});//run python script for weight check
+            const child = spawn('python', ['src/utils/guard.py', datasetName, datasetClassNumber, round, federatedCid,], { shell: true });//run python script for weight check
             child.stderr.pipe(process.stdout)
         } catch (error) {
             log('Error executing Python script: ' + error, "error");
@@ -112,17 +111,16 @@ fastify.post("/write/weights/:clientCid/:round", async (request, reply) => {
     try {
         const round = request.params.round;
         const clientCid = request.params.clientCid;
-
         const weights = request.body.weights
-        const walletKey = request.body.blockchainCredential
 
+        const walletKey = request.body.blockchainCredential
         const wallet = new ethers.Wallet(walletKey, provider)
         const contract = new ethers.Contract(deployedContractAddress, contractABI, wallet);
 
         const path = `./data/clientParameters/node/client${clientCid}_round${round}_parameters.pth`
-        await fs.writeFile(path,weights,{encoding:"binary"});
+        await fs.writeFile(path, weights, { encoding: "binary" });
         const fileContent = await fs.readFile(path)
-        
+
         const weightHash = crypto.createHash('md5').update(fileContent).digest('hex');
 
         const tx = await contract.addRoundWeightsReference(
@@ -136,6 +134,29 @@ fastify.post("/write/weights/:clientCid/:round", async (request, reply) => {
         request.log.error({
             e,
             message: "write weight on blockchain failed:" + e,
+        });
+        reply.code(500).send({ error: "Internal Server Error" });
+
+    } finally {
+        return reply
+    }
+});
+
+//get weights hash of client {:clientCid} at round {:round} into blockchain
+fastify.get("/checksum/weights/:clientCid/:round", async (request, reply) => {
+
+    try {
+        const round = request.params.round;
+        const clientCid = request.params.clientCid;
+
+        const contract = new ethers.Contract(deployedContractAddress, contractABI, provider);
+        const weightHash = await contract.getWeightOfRoundOfClient(round, clientCid)
+
+        reply.send(weightHash)
+    } catch (e) {
+        request.log.error({
+            e,
+            message: "get weight hash on blockchain failed:" + e,
         });
         reply.code(500).send({ error: "Internal Server Error" });
 

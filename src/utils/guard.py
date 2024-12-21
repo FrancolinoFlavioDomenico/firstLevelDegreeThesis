@@ -1,19 +1,13 @@
-from flask import Flask
 import sys
 from src.utils.globalVariable import blockchainApiPrefix,blockchainPrivateKeys
 from src.utils.Utils import Utils
 import requests
 import torch
-import flwr as fl
-import io
 import warnings
-
+import hashlib
 warnings.filterwarnings('ignore')
 
-
 blockchain_credential = blockchainPrivateKeys[-1]
-
-import hashlib
 
 # Define a function to calculate the SHA-256 hash of a file.
 def calculate_hash(file_path):
@@ -26,20 +20,16 @@ def calculate_hash(file_path):
            md5.update(data)
    return md5.hexdigest()
 
-def get_weights_to_check(weightsHash,round,federated_cid):
-    path = f"./data/clientParameters/node/client{federated_cid}_round{round}_parameters.pth"
-    checksum = calculate_hash(path)
-    with open("checksum.txt", "w") as file:
-        file.write("Checksum python: " + checksum + "\n")
-        file.write("Checksum node: " + weightsHash + "\n")
-    if checksum != weightsHash:
-        print("Checksum mismatch. File may be corrupted or tampered with.")
-        return
-    state_dict = torch.load(path)
+def get_weights_to_check(path):
+    state_dict = torch.load(path,weights_only=True)
     path = f"test.pth"
     model.load_state_dict(state_dict)
-    torch.save(model.state_dict(),path)
 
+def isWeightCorrupted(path,correctedChecksum):
+    checksum = calculate_hash(path)
+    if checksum != correctedChecksum:
+        return True
+    return False
 
 def isPoisoned():
     # TODO implement weight check
@@ -51,17 +41,21 @@ def isPoisoned():
     return False
 
 
-
 if __name__ == '__main__':
-    model = Utils.get_model(str(sys.argv[4]), int(sys.argv[5]))
-    weightsHash = str(sys.argv[1])
-    round = int(sys.argv[2])
-    federated_cid = int(sys.argv[3]) 
+    model = Utils.get_model(str(sys.argv[1]), int(sys.argv[2]))
+    round = int(sys.argv[3])
+    federated_cid = int(sys.argv[4]) 
+    weightPath = f"./data/clientParameters/node/client{federated_cid}_round{round}_parameters.pth"
+    correctedChecksum = requests.get(f'{blockchainApiPrefix}checksum/weights/{federated_cid}/{round}')
+    correctedChecksum = correctedChecksum.text
     
-    get_weights_to_check(weightsHash,round,federated_cid)
+    if not isWeightCorrupted(weightPath,correctedChecksum):
+        get_weights_to_check(weightPath,round,federated_cid)
+    else:
+        requests.post(f'{blockchainApiPrefix}write/blacklist/{federated_cid}',
+            json={'blockchainCredential': blockchain_credential})
+        
+    
     if(isPoisoned()):
         requests.post(f'{blockchainApiPrefix}write/blacklist/{federated_cid}',
             json={'blockchainCredential': blockchain_credential})
-
-
-
