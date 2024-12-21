@@ -26,7 +26,7 @@ class Server:
         # Utils.printLog('server starting')
         self.utils = utils
 
-        self.model = utils.get_model()
+        self.model = Utils.get_model(self.utils.dataset_name,self.utils.classes_number)
         # TODO remove
         # self.model_parameters = [val.cpu().numpy() for _, val in self.model.state_dict().items()]
 
@@ -37,7 +37,7 @@ class Server:
                                        self.utils.blockchain)
         if self.utils.blockchain:
             self.blockchain_credential = blockchainPrivateKeys[0]
-            r = requests.post(f'{blockchainApiPrefix}/deploy/contract',
+            requests.post(f'{blockchainApiPrefix}/deploy/contract',
                 json={'blockchainCredential': self.blockchain_credential})
 
         #TODO custom strategy that exted fedavg and overwrite only aggregate_fit for blockchain

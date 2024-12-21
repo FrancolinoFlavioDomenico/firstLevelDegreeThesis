@@ -1,13 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
+pragma abicoder v2;
 
 contract CheckWeights {
-    struct Client {
-        uint federatedCid;
-        mapping(uint => address) roundWeightsReference;
-    }
+    mapping(uint => string[]) roundWeightsReference;
 
-    Client[] public client;
     uint[] public blacklist;
 
     address private owner;
@@ -26,49 +23,41 @@ contract CheckWeights {
     }
 
     event WroteWeightsOfRoundForClient(
-        address weights,
+        string weightsHash,
         uint round,
         uint federatedCid
     );
 
-    function storeWeightOfRoundForClient(
-        string memory _weights,
+    function addRoundWeightsReference(
+        string memory _weightsHash,
         uint _round,
         uint _federatedCid
     ) public {
-        bool clientExists = checkClientExist(_federatedCid);
-        if (clientExists) {
-            Client storage clientItem = client[findClientIndex(_federatedCid)];
-            clientItem.roundWeightsReference[_round] = address(bytes20(bytes(_weights)));
-        } else {
-            //solidity not support push of item that has mapping => first add empty item and after set its properties
-            uint lastItem = client.length;
-            client.push();
-            Client storage newClient = client[lastItem];
-            newClient.federatedCid = _federatedCid;
-            newClient.roundWeightsReference[_round] = address(bytes20(bytes(_weights)));
-        }
-
-        emit WroteWeightsOfRoundForClient(address(bytes20(bytes(_weights))), _round, _federatedCid); //throw wrote event for trigger check  of weights
+        // roundWeightsReference[_round] = _weightsHash;
+        roundWeightsReference[_federatedCid].push(_weightsHash);
+        emit WroteWeightsOfRoundForClient(roundWeightsReference[_federatedCid][_round], _round, _federatedCid);//TODO fix event value for weight reference
     }
 
-    function findClientIndex(uint _federatedCid) internal view returns (uint) {
-        for (uint i = 0; i < client.length; i++) {
-            if (client[i].federatedCid == _federatedCid) {
-                return i;
-            }
-        }
-        revert("Client not found");
-    }
 
-    function checkClientExist(uint _federatedCid) internal view returns (bool) {
-        for (uint i = 0; i < client.length; i++) {
-            if (client[i].federatedCid == _federatedCid) {
-                return true;
-            }
-        }
-        return false;
-    }
+
+
+    // function findClientIndex(uint _federatedCid) internal view returns (uint) {
+    //     for (uint i = 0; i < clients.length; i++) {
+    //         if (clients[i].federatedCid == _federatedCid) {
+    //             return i;
+    //         }
+    //     }
+    //     revert("Client not found");
+    // }
+
+    // function checkClientExist(uint _federatedCid) internal view returns (bool) {
+    //     for (uint i = 0; i < clients.length; i++) {
+    //         if (clients[i].federatedCid == _federatedCid) {
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // }
 
     function addToBlacklist(uint _federatedCid) public {
         blacklist.push(_federatedCid);

@@ -17,6 +17,9 @@ import gc
 
 from .globalVariable import seed_value
 
+from src.utils.globalVariable import blockchainApiPrefix
+import requests
+
 np.random.seed(seed_value)
 
 
@@ -30,6 +33,10 @@ class Utils:
         self.classes_number = classes_number
         self.poisoning = poisoning
         self.blockchain = blockchain
+        
+        if(self.blockchain):
+            requests.post(f'{blockchainApiPrefix}/configure/dataset',
+                    json={'datasetName': self.dataset_name,'datasetClassNumber':self.classes_number})
 
         self.train_data = self.download_data(True)
         self.test_data = self.download_data(False)
@@ -151,12 +158,13 @@ class Utils:
     ########################################################################################
     # get a model arch
     ########################################################################################
-    def get_model(self) -> torch.nn.Module:
-        if self.dataset_name == 'mnist':
+    @classmethod
+    def get_model(cls,dataset_name,classes_number) -> torch.nn.Module:
+        if dataset_name == 'mnist':
             model = resnet18(pretrained=False)
             model.conv1 = torch.nn.Conv2d(1, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
             num_ftrs = model.fc.in_features
-            model.fc = torch.nn.Linear(num_ftrs, self.classes_number)
+            model.fc = torch.nn.Linear(num_ftrs, classes_number)
             return model
         else:
             model = resnet50(weights='IMAGENET1K_V1')
@@ -164,7 +172,7 @@ class Utils:
             model.fc = torch.nn.Linear(num_ftrs, 256)
             model.fc = torch.nn.Sequential(
                 torch.nn.Dropout(0.5),
-                torch.nn.Linear(num_ftrs, self.classes_number)
+                torch.nn.Linear(num_ftrs, classes_number)
             )
             return model
 

@@ -34,7 +34,7 @@ class FlowerClient(fl.client.NumPyClient):
         self.cid = cid
         Utils.printLog(f'initializing client{self.cid}')
         self.utils = utils
-        self.model = self.utils.get_model()
+        self.model = Utils.get_model(self.utils.dataset_name,self.utils.classes_number)
         self.epochs = 5
         self.current_round = 0
         if self.utils.dataset_name == 'cifar10':
@@ -72,11 +72,11 @@ class FlowerClient(fl.client.NumPyClient):
     ########################################################################################
     def write_parameters_on_blockchain(self,parameters):
         self.set_parameters(parameters)#updata local model with trained weight
-        path = f"./data/clientParameters/client{self.cid}_round{self.current_round}_parameters.pth"
+        path = f"./data/clientParameters/python/client{self.cid}_round{self.current_round}_parameters.pth"
         torch.save(self.model.state_dict(),path)
         with open(path, 'rb') as f:
             time.sleep(10)
-            r = requests.post(f'{blockchainApiPrefix}/write/weights/{self.cid + 1}/{self.current_round}',
+            requests.post(f'{blockchainApiPrefix}/write/weights/{self.cid + 1}/{self.current_round}',
                               data={'blockchainCredential': self.blockchain_credential},
                                 files={"weights": f})
 
