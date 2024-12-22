@@ -10,9 +10,9 @@ warnings.filterwarnings('ignore')
 blockchain_credential = blockchainPrivateKeys[-1]
 
 # Define a function to calculate the SHA-256 hash of a file.
-def calculate_hash(file_path):
+def calculate_hash(path):
    md5 = hashlib.md5()
-   with open(file_path, "rb") as file:
+   with open(path, "rb") as file:
        while True:
            data = file.read(65536)  # Read the file in 64KB chunks.
            if not data:
@@ -20,9 +20,8 @@ def calculate_hash(file_path):
            md5.update(data)
    return md5.hexdigest()
 
-def get_weights_to_check(path):
+def load_weights_to_check(path):
     state_dict = torch.load(path,weights_only=True)
-    path = f"test.pth"
     model.load_state_dict(state_dict)
 
 def isWeightCorrupted(path,correctedChecksum):
@@ -50,7 +49,7 @@ if __name__ == '__main__':
     correctedChecksum = correctedChecksum.text
     
     if not isWeightCorrupted(weightPath,correctedChecksum):
-        get_weights_to_check(weightPath,round,federated_cid)
+        load_weights_to_check(weightPath,round,federated_cid)
     else:
         requests.post(f'{blockchainApiPrefix}write/blacklist/{federated_cid}',
             json={'blockchainCredential': blockchain_credential})
