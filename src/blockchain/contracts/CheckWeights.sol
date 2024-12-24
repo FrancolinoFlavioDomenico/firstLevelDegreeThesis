@@ -97,4 +97,17 @@ contract CheckWeights {
     function addToBlacklist(uint _federatedCid) public {
         blacklist.push(_federatedCid);
     }
+
+       function getBlackList() public view returns (uint[] memory) {
+        return blacklist;
+    }
+
+    function isPoisonerCid(uint _federatedCid) public view returns (bool) {
+    for (uint i = 0; i < blacklist.length; i++) {
+        if (blacklist[i] == _federatedCid) {
+            return true;
+        }
+    }
+    return false;
+}
 }
