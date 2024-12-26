@@ -22,6 +22,8 @@ from flwr.server.client_proxy import ClientProxy
 from src.utils.globalVariable import blockchainApiPrefix,blockchainPrivateKeys
 import requests
 import torch
+from src.utils.Utils import Utils
+
 
 
 class FedAVGcustom(fl.server.strategy.FedAvg):    
@@ -38,7 +40,7 @@ class FedAVGcustom(fl.server.strategy.FedAvg):
             for client_proxy, fit_res in results:
                 is_client_poisoner = requests.get(f'{blockchainApiPrefix}/poisoners/{client_proxy.cid}')
                 if is_client_poisoner.text == 'true':
-                    log.warning(f"Client {client_proxy.cid} is a poisoner")
+                    Utils.printLog(f"Client {client_proxy.cid} is a poisoner...removing it")
                     results.remove((client_proxy,fit_res))
             
         parameters_aggregated, metrics_aggregated = super().aggregate_fit(server_round,results,failures)

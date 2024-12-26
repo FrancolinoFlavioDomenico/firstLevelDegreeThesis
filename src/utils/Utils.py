@@ -179,5 +179,5 @@ class Utils:
     @classmethod
     def printLog(cls, msg, level=logging.INFO):
         print(msg)
-        logging.log(logging.INFO, msg)
+        logging.log(level, msg)
         log(level, msg)

@@ -46,7 +46,8 @@ contract CheckWeights {
 
         if (!isWeightOfRoundAlreadyFilledOf(_round, _federatedCid)) {
             weightRef.weightOfRound[_round] = _weights;
-            emit WroteWeightsOfRoundForClient(_round, _federatedCid); //throw wrote event for trigger check  of weights
+            if ( _federatedCid != 0)//not server weight
+                emit WroteWeightsOfRoundForClient(_round, _federatedCid); //throw wrote event for trigger check  of weights
         } else {
             revert("Weights already wrote");
         }

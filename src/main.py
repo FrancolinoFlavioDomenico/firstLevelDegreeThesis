@@ -55,7 +55,7 @@ if __name__ == "__main__":
     # utils = Utils.Utils('mnist', 10, True, False)
     # start_server()
     
-    utils = Utils.Utils('mnist', 10, False, False)
+    utils = Utils.Utils('mnist', 10, False, True)
     start_server()
    
    

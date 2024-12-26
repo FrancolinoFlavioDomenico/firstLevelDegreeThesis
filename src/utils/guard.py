@@ -7,7 +7,6 @@ import warnings
 import hashlib
 warnings.filterwarnings('ignore')
 
-blockchain_credential = blockchainPrivateKeys[-1]
 
 # Define a function to calculate the SHA-256 hash of a file.
 def calculate_hash(path):
@@ -21,7 +20,7 @@ def calculate_hash(path):
    return md5.hexdigest()
 
 def load_weights_to_check(path):
-    state_dict = torch.load(path,weights_only=True)
+    state_dict = torch.load(path)
     model.load_state_dict(state_dict)
 
 def isWeightCorrupted(path,correctedChecksum):
@@ -32,6 +31,8 @@ def isWeightCorrupted(path,correctedChecksum):
 
 def isPoisoned():
     # TODO implement weight check
+    # load last round server weight
+    # check current client weight
     #  if weigth < avgWeitg of previous round
     #           add clientCid to blacklist
     #           write weigt on blockchain
@@ -41,6 +42,8 @@ def isPoisoned():
 
 
 if __name__ == '__main__':
+    blockchain_credential = blockchainPrivateKeys[-1]
+    
     model = Utils.get_model(str(sys.argv[1]), int(sys.argv[2]))
     round = int(sys.argv[3])
     federated_cid = int(sys.argv[4]) 
@@ -49,7 +52,7 @@ if __name__ == '__main__':
     correctedChecksum = correctedChecksum.text
     
     if not isWeightCorrupted(weightPath,correctedChecksum):
-        load_weights_to_check(weightPath,round,federated_cid)
+        load_weights_to_check(weightPath)
     else:
         requests.post(f'{blockchainApiPrefix}write/blacklist/{federated_cid}',
             json={'blockchainCredential': blockchain_credential})
