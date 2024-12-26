@@ -46,7 +46,8 @@ contract CheckWeights {
 
         if (!isWeightOfRoundAlreadyFilledOf(_round, _federatedCid)) {
             weightRef.weightOfRound[_round] = _weights;
-            emit WroteWeightsOfRoundForClient(_round, _federatedCid); //throw wrote event for trigger check  of weights
+            if ( _federatedCid != 0)//not server weight
+                emit WroteWeightsOfRoundForClient(_round, _federatedCid); //throw wrote event for trigger check  of weights
         } else {
             revert("Weights already wrote");
         }
@@ -97,4 +98,17 @@ contract CheckWeights {
     function addToBlacklist(uint _federatedCid) public {
         blacklist.push(_federatedCid);
     }
+
+       function getBlackList() public view returns (uint[] memory) {
+        return blacklist;
+    }
+
+    function isPoisonerCid(uint _federatedCid) public view returns (bool) {
+    for (uint i = 0; i < blacklist.length; i++) {
+        if (blacklist[i] == _federatedCid) {
+            return true;
+        }
+    }
+    return false;
+}
 }

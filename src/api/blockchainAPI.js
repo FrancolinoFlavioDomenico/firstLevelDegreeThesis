@@ -190,19 +190,15 @@ fastify.post("/write/blacklist/:poisonerCid", async (request, reply) => {
     }
 });
 
-//get poisoners blacklist
-fastify.get("/blacklist", async (request, reply) => {
+//check if client is into blacklist
+fastify.get("/poisoners/:clientCid", async (request, reply) => {
     try {
-        let walletKey = request.body.blockchainCredential
-        const wallet = new ethers.Wallet(walletKey, provider)
-        const contract = new ethers.Contract(deployedContractAddress, contractABI, wallet);
+        const clientCid = request.params.clientCid;
 
-        const tx = await contract.getBlacklist(
-            request.params.clientCid,
-        )
-        const txResult = await tx.wait()
+        const contract = new ethers.Contract(deployedContractAddress, contractABI, provider);
+        const blacklist = await contract.isPoisonerCid(clientCid)
 
-        reply.send({ txResult: txResult })
+        reply.send(blacklist)
     } catch (e) {
         request.log.error({
             e,

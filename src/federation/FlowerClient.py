@@ -72,7 +72,7 @@ class FlowerClient(fl.client.NumPyClient):
     ########################################################################################
     def write_parameters_on_blockchain(self,parameters):
         self.set_parameters(parameters)#updata local model with trained weight
-        path = f"./data/clientParameters/python/client{self.cid}_round{self.current_round}_parameters.pth"
+        path = f"./data/clientParameters/python/client{self.cid + 1}_round{self.current_round}_parameters.pth"
         torch.save(self.model.state_dict(),path)
         with open(path, 'rb') as f:
             time.sleep(10)
