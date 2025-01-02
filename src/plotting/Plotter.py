@@ -33,7 +33,7 @@ class Plotter:
         x_axis = np.arange(self.rounds_number + 1)
         loss_chart.set_xlabel('round')
 
-        accuracy_chart.set_title(f'{self.dataset_name} Accuracy over round {"poisoned" if self.poisoning else ""}')
+        accuracy_chart.set_title(f'{self.dataset_name} Accuracy over round {"poisoned" if self.poisoning else ""} {"blockchain" if self.blockchain else "noBlockchain"}')
         accuracy_chart.set_ylabel(f"Accuracy\n(peak: {round(accuracy_data[len(accuracy_data) - 1], 2)})")
 
         loss_chart.set_title(f'{self.dataset_name} Loss over round {"poisoned" if self.poisoning else ""}')
@@ -53,7 +53,7 @@ class Plotter:
         if 'cifar100' in self.dataset_name:
             confusion_matrix_fig.set_figwidth(50)
             confusion_matrix_fig.set_figheight(50)
-        confusion_matrix_chart.set_title(f'{self.dataset_name} confusion matrix {"poisoned" if self.poisoning else ""}')
+        confusion_matrix_chart.set_title(f'{self.dataset_name} confusion matrix {"poisoned" if self.poisoning else ""}  {"blockchain" if self.blockchain else "noBlockchain"}')
         confusion_matrix_chart.set_xlabel("correct class")
         confusion_matrix_chart.set_ylabel("predicted class")
         sns.heatmap(data, annot=True, cmap="Blues_r", linewidths=2, square=True)

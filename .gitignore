@@ -171,3 +171,6 @@ data/tmp
 data/torchDownload
 node_modules/
 cache/
+
+
+*log*

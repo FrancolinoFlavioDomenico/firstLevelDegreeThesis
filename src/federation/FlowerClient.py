@@ -13,7 +13,6 @@ import flwr as fl
 from src.utils.Utils import Utils
 import pickle
 import os
-from collections import OrderedDict
 
 from tqdm import tqdm
 
@@ -120,9 +119,13 @@ class FlowerClient(fl.client.NumPyClient):
     def get_train_data_loader(self):
         data = self.load_train_data_from_file(set_transforms=True)
         poisoning = self.utils.poisoning and (self.cid in Utils.POISONERS_CLIENTS_CID)
+        if poisoning:
+            Utils.printLog(f'cient cid {self.cid} is  poisoner by running  random extracted cid')
+            data = PoisonedPartitionDataset(data, self.utils.classes_number)
         returnValue = torch.utils.data.DataLoader(
-            PoisonedPartitionDataset(data, self.utils.classes_number) if poisoning else data,
-            batch_size=FlowerClient.BATCH_SIZE, shuffle=True)
+            data,
+            batch_size=FlowerClient.BATCH_SIZE, 
+            shuffle=True)
         return returnValue
 
     ########################################################################################

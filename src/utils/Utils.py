@@ -20,6 +20,17 @@ from .globalVariable import seed_value
 from src.utils.globalVariable import blockchainApiPrefix
 import requests
 
+import logging
+logging.basicConfig(
+    filename="log/simple_python_log.txt",
+    encoding="utf-8",
+    filemode="a",
+    format="{asctime} - {levelname} - {message}",
+    style="{",
+    datefmt="%Y-%m-%d %H:%M",
+)
+
+
 np.random.seed(seed_value)
 
 
@@ -179,5 +190,5 @@ class Utils:
     @classmethod
     def printLog(cls, msg, level=logging.INFO):
         print(msg)
-        logging.log(level, msg)
+        logging.debug(msg)
         log(level, msg)
