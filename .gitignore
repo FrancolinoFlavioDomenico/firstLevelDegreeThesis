@@ -165,5 +165,12 @@ cython_debug/
 .vscode/
 
 # splitted dataset e saved on file
-data/
+*.pth
+*.pickle
+data/tmp
+data/torchDownload
+node_modules/
+cache/
 
+
+*log*

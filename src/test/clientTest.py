@@ -1,3 +1,4 @@
+# TODO remove this class
 import torch
 import torch.optim as optim
 from matplotlib import pyplot as plt
@@ -5,13 +6,16 @@ from torchvision import transforms
 import numpy as np
 import flwr as fl
 
-from Utils import Utils
+from src.utils import Utils
 import pickle
 import os
 from collections import OrderedDict
 
 from tqdm import tqdm
-from PoisonedPartitionDataset import PoisonedPartitionDataset
+from src.utils.PoisonedPartitionDataset import PoisonedPartitionDataset
+
+from src.utils.globalVariable import seed_value
+torch.manual_seed(seed_value)
 
 
 class FlowerClient(fl.client.NumPyClient):
