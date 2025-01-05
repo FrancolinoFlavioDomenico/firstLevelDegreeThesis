@@ -34,7 +34,7 @@ class FlowerClient(fl.client.NumPyClient):
         Utils.printLog(f'initializing client{self.cid}')
         self.utils = utils
         self.model = Utils.get_model(self.utils.dataset_name,self.utils.classes_number)
-        self.epochs = 5
+        self.epochs = 1
         self.current_round = 0
         if self.utils.dataset_name == 'cifar10':
             self.epochs = 12
@@ -51,13 +51,14 @@ class FlowerClient(fl.client.NumPyClient):
     def fit(self, parameters, config):
         self.current_round = config['currentRound']
         self.set_parameters(parameters)
-        self.train()
+        data_loader = self.get_train_data_loader()
+        self.train(data_loader=data_loader)
         torch.cuda.empty_cache()
         torch.cuda.memory_allocated()
         getted_train_parameters =  self.get_parameters(config={})
-        if self.utils.blockchain and self.current_round > 0:
+        if self.utils.blockchain:
             self.write_parameters_on_blockchain(getted_train_parameters)
-        return getted_train_parameters, len(self.load_train_data_from_file()), {}
+        return getted_train_parameters, len(self.get_train_data_loader()), {}
 
     ########################################################################################
     # Return model parameters as a list of NumPy ndarrays
@@ -70,12 +71,12 @@ class FlowerClient(fl.client.NumPyClient):
     # by the current client
     ########################################################################################
     def write_parameters_on_blockchain(self,parameters):
-        self.set_parameters(parameters)#updata local model with trained weight
-        path = f"./data/clientParameters/python/client{self.cid + 1}_round{self.current_round}_parameters.pth"
+        # self.set_parameters(parameters)#updata local model with trained weight
+        path = f"./data/clientParameters/python/client{self.cid}_round{self.current_round}_parameters.pth"
         torch.save(self.model.state_dict(),path)
         with open(path, 'rb') as f:
             time.sleep(10)
-            requests.post(f'{blockchainApiPrefix}/write/weights/{self.cid + 1}/{self.current_round}',
+            requests.post(f'{blockchainApiPrefix}/write/weights/{self.cid}/{self.current_round}',
                               data={'blockchainCredential': self.blockchain_credential},
                                 files={"weights": f})
 
@@ -120,7 +121,6 @@ class FlowerClient(fl.client.NumPyClient):
         data = self.load_train_data_from_file(set_transforms=True)
         poisoning = self.utils.poisoning and (self.cid in Utils.POISONERS_CLIENTS_CID)
         if poisoning:
-            Utils.printLog(f'cient cid {self.cid} is  poisoner by running  random extracted cid')
             data = PoisonedPartitionDataset(data, self.utils.classes_number)
         returnValue = torch.utils.data.DataLoader(
             data,
@@ -131,13 +131,63 @@ class FlowerClient(fl.client.NumPyClient):
     ########################################################################################
     # federated client train algorithm
     ########################################################################################
-    def train(self):
-        Utils.printLog("Starting training...")
+    # def train(self):
+    #     Utils.printLog(f"client {self.cid} starting training...")
+
+    #     device = torch.device(
+    #         "cuda:0" if torch.cuda.is_available() else "cpu"
+    #     )
+    #     data_loader = self.get_train_data_loader()
+
+    #     self.model = self.model.to(device)
+
+    #     criterion = torch.nn.CrossEntropyLoss()
+    #     optimizer = optim.SGD(self.model.parameters(), lr=3e-3, momentum=0.9, weight_decay=5e-4)
+    #     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.1)
+    #     train_acces = []
+    #     train_losses = []
+    #     self.model.train()
+    #     for epoch in range(self.epochs):
+    #         running_loss = 0.0
+    #         running_corrects = 0
+    #         total = 0
+    #         progress_bar = tqdm(enumerate(data_loader), total=len(data_loader))
+
+    #         for batch_idx, (inputs, labels) in progress_bar:
+    #             inputs = inputs.to(device)
+    #             labels = labels.to(device)
+    #             inputs = inputs.float()
+
+    #             optimizer.zero_grad()
+
+    #             outputs = self.model(inputs)
+    #             loss = criterion(outputs, labels)
+    #             loss.backward()
+    #             optimizer.step()
+
+    #             _, preds = torch.max(outputs, 1)
+    #             running_loss += loss.item()
+    #             running_corrects += torch.sum(preds == labels.data)
+    #             total += labels.size(0)
+    #             progress_bar.set_description(
+    #                 f'Epoch [{epoch + 1}/{self.epochs}], Train Loss: {running_loss / (batch_idx + 1):.4f}, Train Acc: {100. * running_corrects / total:.2f}%')
+    #         scheduler.step()
+
+    #         epoch_loss = running_loss / len(self.load_train_data_from_file())
+    #         epoch_acc = running_corrects.double() / len(self.load_train_data_from_file())
+
+    #         train_acces.append(epoch_acc * 100)
+    #         train_losses.append(epoch_loss)
+
+    #         print(f'\ntrain-loss: {np.mean(train_losses):.4f}, train-acc: {train_acces[-1]:.4f}')
+    #     self.model = self.model.to('cpu')
+    
+    def train(self,data_loader):
+        Utils.printLog(f"client {self.cid} starting training...")
 
         device = torch.device(
             "cuda:0" if torch.cuda.is_available() else "cpu"
         )
-        data_loader = self.get_train_data_loader()
 
         self.model = self.model.to(device)
 
@@ -146,14 +196,12 @@ class FlowerClient(fl.client.NumPyClient):
         scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.1)
         train_acces = []
         train_losses = []
+        self.model.train()
         for epoch in range(self.epochs):
-            print(f'Epoch {epoch}\n')
-
             running_loss = 0.0
             running_corrects = 0
             total = 0
             progress_bar = tqdm(enumerate(data_loader), total=len(data_loader))
-            self.model.train()
 
             for batch_idx, (inputs, labels) in progress_bar:
                 inputs = inputs.to(device)
@@ -175,7 +223,7 @@ class FlowerClient(fl.client.NumPyClient):
                     f'Epoch [{epoch + 1}/{self.epochs}], Train Loss: {running_loss / (batch_idx + 1):.4f}, Train Acc: {100. * running_corrects / total:.2f}%')
             scheduler.step()
 
-            epoch_loss = running_loss / len(self.load_train_data_from_file())
+            epoch_loss = running_loss / len(data_loader)
             epoch_acc = running_corrects.double() / len(self.load_train_data_from_file())
 
             train_acces.append(epoch_acc * 100)

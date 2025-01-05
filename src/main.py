@@ -2,6 +2,8 @@ from utils import Utils
 from federation import Server
 import flwr as fl
 import logging
+import numpy as np
+
 
 DEFAULT_FORMATTER = logging.Formatter(
     "%(levelname)s %(name)s %(asctime)s | %(filename)s:%(lineno)d | %(message)s"
@@ -54,14 +56,26 @@ if __name__ == "__main__":
     # time.sleep(15)
     # utils = Utils.Utils('mnist', 10, True, False)
     # start_server()
-    
-    utils = Utils.Utils('mnist', 10, False, True)
+    # utils = Utils.Utils('mnist', 10, False, False)
+    # start_server()
+
+    # utils = Utils.Utils('mnist', 10, True, False)
+    # start_server()
+
+
+    utils = Utils.Utils('cifar10', 10, False, False)
     start_server()
-   
-   
-   
-   
-   
+
+    # utils = Utils.Utils('cifar10', 10, True, False)
+    # start_server()
+
+
+    # utils = Utils.Utils('cifar100', 100, False, False)
+    # start_server()
+
+    # utils = Utils.Utils('cifar100', 100, True, False)
+    # start_server()
+
    
    
    

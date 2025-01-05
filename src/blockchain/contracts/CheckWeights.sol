@@ -44,13 +44,14 @@ contract CheckWeights {
             weightRef.federatedCid = _federatedCid;
         }
 
-        if (!isWeightOfRoundAlreadyFilledOf(_round, _federatedCid)) {
-            weightRef.weightOfRound[_round] = _weights;
-            if ( _federatedCid != 0)//not server weight
-                emit WroteWeightsOfRoundForClient(_round, _federatedCid); //throw wrote event for trigger check  of weights
-        } else {
-            revert("Weights already wrote");
-        }
+        // if (!isWeightOfRoundAlreadyFilledOf(_round, _federatedCid)) {
+        weightRef.weightOfRound[_round] = _weights;
+        if (_round >= 2)
+            //not server weight and round is major of two
+            emit WroteWeightsOfRoundForClient(_round, _federatedCid); //throw wrote event for trigger check  of weights
+        // } else {
+        //     revert("Weights already wrote");
+        // }
     }
 
     function getWeightOfRoundOfClient(
@@ -63,17 +64,17 @@ contract CheckWeights {
         return weightRef.weightOfRound[_round];
     }
 
-    function isWeightOfRoundAlreadyFilledOf(
-        uint _round,
-        uint _federatedCid
-    ) internal view returns (bool) {
-        WeightsReferences storage weightRef = weightsReferences[
-            findClientIndex(_federatedCid)
-        ];
-        return (keccak256(
-            abi.encodePacked((weightRef.weightOfRound[_round]))
-        ) != keccak256(abi.encodePacked((""))));
-    }
+    // function isWeightOfRoundAlreadyFilledOf(
+    //     uint _round,
+    //     uint _federatedCid
+    // ) internal view returns (bool) {
+    //     WeightsReferences storage weightRef = weightsReferences[
+    //         findClientIndex(_federatedCid)
+    //     ];
+    //     return (keccak256(
+    //         abi.encodePacked((weightRef.weightOfRound[_round]))
+    //     ) != keccak256(abi.encodePacked((""))));
+    // }
 
     function findClientIndex(uint _federatedCid) internal view returns (uint) {
         for (uint i = 0; i < weightsReferences.length; i++) {
@@ -99,16 +100,12 @@ contract CheckWeights {
         blacklist.push(_federatedCid);
     }
 
-       function getBlackList() public view returns (uint[] memory) {
-        return blacklist;
-    }
-
     function isPoisonerCid(uint _federatedCid) public view returns (bool) {
-    for (uint i = 0; i < blacklist.length; i++) {
-        if (blacklist[i] == _federatedCid) {
-            return true;
+        for (uint i = 0; i < blacklist.length; i++) {
+            if (blacklist[i] == _federatedCid) {
+                return true;
+            }
         }
+        return false;
     }
-    return false;
-}
 }

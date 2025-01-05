@@ -6,7 +6,7 @@ module.exports = {
     hardhat:{
       accounts:{
         count:11,
-        accountsBalance:"50000000000000000000000"
+        accountsBalance:"100000000000000000000000"
       },
       mining:{
         auto: false,
@@ -15,8 +15,10 @@ module.exports = {
           order:"fifo"
         }
       },
-      blockGasLimit:50000000,
-      gas:"auto",
+      blockGasLimit:10000000,
+      gas:10000000,
+      gasPrice:1,
+      initialBaseFeePerGas: "100"
     }
   },
   paths:{

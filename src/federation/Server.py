@@ -16,6 +16,9 @@ from collections import OrderedDict
 from src.federation.FlowerClient import get_client_fn
 from src.utils.globalVariable import blockchainApiPrefix,blockchainPrivateKeys
 from src.federation.FedAVGcustom import FedAVGcustom
+from src.plotting.Plotter import Plotter as plt
+
+
 
 warnings.filterwarnings('ignore')
 
@@ -34,10 +37,12 @@ class Server:
         self.accuracy_data = []
         self.loss_data = []
 
-        self.plotter = Plotter.Plotter(self.utils.dataset_name, Server.ROUNDS_NUMBER, self.utils.poisoning,
-                                       self.utils.blockchain)
+        # self.plotter = plt.configure_plotter(self.utils.dataset_name, Utils.ROUNDS_NUMBER, self.utils.poisoning,
+        #                                self.utils.blockchain)
         if self.utils.blockchain:
-            self.blockchain_credential = blockchainPrivateKeys[0]
+            requests.post(f'{blockchainApiPrefix}/configure/dataset',
+                    json={'datasetName': self.utils.dataset_name,'datasetClassNumber':self.utils.classes_number,'maxRound':Utils.ROUNDS_NUMBER,'clientsNum':Utils.CLIENTS_NUM})
+            self.blockchain_credential = blockchainPrivateKeys[-1]
             requests.post(f'{blockchainApiPrefix}/deploy/contract',
                 json={'blockchainCredential': self.blockchain_credential})
             self.strategy = FedAVGcustom(
@@ -46,7 +51,9 @@ class Server:
                     min_available_clients=self.utils.CLIENTS_NUM,
                     evaluate_fn=self.get_evaluate_fn(),
                     fraction_evaluate=0,
-                    on_fit_config_fn=self.get_fit_config  
+                    on_fit_config_fn=self.get_fit_config,
+                    dataset_name = self.utils.dataset_name,  
+                    classes_number = self.utils.classes_number  
                 )
         else:
             self.strategy = fl.server.strategy.FedAvg(
@@ -83,8 +90,8 @@ class Server:
             # add chart data
             self.loss_data.append(loss)
             self.accuracy_data.append(accuracy)
-            if server_round == Server.ROUNDS_NUMBER:  #last round
-                self.plotter.line_chart_plot(self.accuracy_data, self.loss_data)
+            if server_round == Utils.ROUNDS_NUMBER:  #last round
+                plt.line_chart_plot(self.accuracy_data, self.loss_data)
                 self.set_confusion_matrix(test_data_loader)
             return loss, {"accuracy": accuracy}
 
@@ -119,7 +126,7 @@ class Server:
             y_true.extend(labels)  # Save Truth
 
         result = confusion_matrix(y_true, y_pred)
-        self.plotter.confusion_matrix_chart_plot(result)
+        plt.confusion_matrix_chart_plot(result)
 
     #TODO remove?
     ########################################################################################
@@ -129,7 +136,7 @@ class Server:
     #     print("Starting server flower...")
     #     fl.server.start_server(
     #         server_address="0.0.0.0:8080",
-    #         config=fl.server.ServerConfig(num_rounds=Server.ROUNDS_NUMBER),
+    #         config=fl.server.ServerConfig(num_rounds=Utils.ROUNDS_NUMBER),
     #         strategy=self.strategy,
     #     )
 
@@ -141,7 +148,7 @@ class Server:
         fl.simulation.start_simulation(
             client_fn=get_client_fn(self.utils),
             num_clients=Utils.CLIENTS_NUM,
-            config=fl.server.ServerConfig(num_rounds=Server.ROUNDS_NUMBER),
+            config=fl.server.ServerConfig(num_rounds=Utils.ROUNDS_NUMBER),
             strategy=self.strategy,
             client_resources=client_resources,
         )

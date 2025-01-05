@@ -1,12 +1,10 @@
 import Fastify from "fastify";
 import { ethers } from "ethers";
-import { createHeliaHTTP } from '@helia/http'
-import { unixfs } from '@helia/unixfs'
+import { ErrorDecoder } from 'ethers-decode-error';
 import { createRequire } from "module";
 import { spawn } from 'node:child_process';
 import * as fs from 'node:fs/promises';
 import * as crypto from 'node:crypto';
-
 const require = createRequire(import.meta.url);
 
 const fastify = Fastify({
@@ -33,7 +31,8 @@ var deployedContractAddress;
 
 var datasetName = 'mnist'
 var datasetClassNumber = 10
-
+var maxRound = 5
+var clientsNum = 10
 function log(msg, type = "debug") {
     console.log(msg)
     fastify.log[type](msg);
@@ -43,7 +42,7 @@ function catchBlockchainEvent() {
     const contract = new ethers.Contract(deployedContractAddress, contractABI, provider);
     contract.on("WroteWeightsOfRoundForClient", (round, federatedCid, event) => {
         try {
-            const child = spawn('python', ['src/utils/guard.py', datasetName, datasetClassNumber, round, federatedCid,], { shell: true });//run python script for weight check
+            const child = spawn('python', ['src/utils/guard.py', datasetName, datasetClassNumber, round, federatedCid, maxRound], { shell: true });//run python script for weight check
             child.stderr.pipe(process.stdout)
         } catch (error) {
             log('Error executing Python script: ' + error, "error");
@@ -71,6 +70,8 @@ fastify.post("/configure/dataset", async function (request, reply) {
     try {
         datasetName = request.body.datasetName;
         datasetClassNumber = request.body.datasetClassNumber;
+        maxRound = request.body.maxRound;
+        clientsNum = request.body.clientsNum;
         reply.send();
     } catch (e) {
         request.log.error({
@@ -91,6 +92,7 @@ fastify.post("/deploy/contract", async function (request, reply) {
         const contract = await contractFactory.deploy();
         const deployTransaction = await contract.waitForDeployment();
         deployedContractAddress = deployTransaction.target
+
         reply.send({ deployTransaction: deployTransaction });
         catchBlockchainEvent();
     } catch (e) {
@@ -117,20 +119,40 @@ fastify.post("/write/weights/:clientCid/:round", async (request, reply) => {
         const wallet = new ethers.Wallet(walletKey, provider)
         const contract = new ethers.Contract(deployedContractAddress, contractABI, wallet);
 
-        const path = `./data/clientParameters/node/client${clientCid}_round${round}_parameters.pth`
-        await fs.writeFile(path, weights, { encoding: "binary" });
-        const fileContent = await fs.readFile(path)
+        let blacklist = false
+        if (clientCid != 'server')
+            blacklist = await contract.isPoisonerCid(clientCid)
 
-        const weightHash = crypto.createHash('md5').update(fileContent).digest('hex');
+        if (!blacklist) {
+            const path = `./data/clientParameters/node/${clientCid == 'server' ? 'server' : 'client' + clientCid}_round${round}_parameters.pth`
+            await fs.writeFile(path, weights, { encoding: "binary" });
+            const fileContent = await fs.readFile(path)
 
-        const tx = await contract.addRoundWeightsReference(
-            weightHash,
-            round,
-            clientCid,
-        )
-        const txResult = await tx.wait()
-        reply.send({ txResult: txResult, weightsHash: weightHash })
+            const weightHash = crypto.createHash('md5').update(fileContent).digest('hex');
+
+            const gastEstimated = await contract.addRoundWeightsReference.estimateGas(
+                weightHash,
+                round,
+                clientCid == 'server' ? -1 : clientCid
+            );
+            const tx = await contract.addRoundWeightsReference(
+                weightHash,
+                round,
+                clientCid == 'server' ? -1 : clientCid,
+                { gasLimit: gastEstimated }
+            )
+            const txResult = await tx.wait()
+            reply.send({ txResult: txResult, weightsHash: weightHash })
+        } else {
+            reply.send()
+
+        }
     } catch (e) {
+        // const { name } = await errorDecoder.decode(e)
+        // request.log.error({
+        //     e,
+        //     message: "write weight on blockchain failed (transaction failed):" + name,
+        // });
         request.log.error({
             e,
             message: "write weight on blockchain failed:" + e,
@@ -168,16 +190,25 @@ fastify.get("/checksum/weights/:clientCid/:round", async (request, reply) => {
 //write poisoner client {:poisonerCid}  into blockchain blacklist
 fastify.post("/write/blacklist/:poisonerCid", async (request, reply) => {
     try {
+        const poisonerCid = request.params.poisonerCid;
         let walletKey = request.body.blockchainCredential
         const wallet = new ethers.Wallet(walletKey, provider)
         const contract = new ethers.Contract(deployedContractAddress, contractABI, wallet);
 
-        const tx = await contract.addToBlacklist(
-            request.params.poisonerCid,
-        )
-        const txResult = await tx.wait()
+        const blacklist = await contract.isPoisonerCid(poisonerCid)
 
-        reply.send({ txResult: txResult })
+        if (!blacklist) {
+            const gastEstimated = await contract.addToBlacklist.estimateGas(poisonerCid);
+            const tx = await contract.addToBlacklist(
+                poisonerCid,
+                { gasLimit: gastEstimated }
+            )
+            const txResult = await tx.wait()
+
+            reply.send({ txResult: txResult })
+        } else {
+            reply.send()
+        }
     } catch (e) {
         request.log.error({
             e,
