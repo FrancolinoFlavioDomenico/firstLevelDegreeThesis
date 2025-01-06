@@ -20,7 +20,6 @@ class Plotter:
     
     @classmethod
     def configure_plotter(cls, dataset_name,rounds_number, poisoning, blockchain):
-        # Utils.printLog("plotter initialization")
         cls.poisoning = poisoning
         cls.blockchain = blockchain
         cls.dataset_name = dataset_name
@@ -90,7 +89,7 @@ class Plotter:
         for client, cls in data.items():
             filled_data[client] = {item: cls.get(item, 0) for item in np.arange(classes_num)}  
 
-        #TODO review gor whowing legend
+        #TODO review for showing legend
         fig, ax = plt.subplots()
         width = 0.8
         for client in filled_data.keys():
@@ -111,9 +110,6 @@ class Plotter:
         ax.set_xlabel("clients")
         ax.set_ylabel("classes")
         ax.set_title(f"{dataset_name} Class-client distribution")
-        # fig.legend(loc="upper right")
-        # fig.set_figwidth(15)
-        # fig.set_figheight(15)
 
         output_plot_dir = f"outputPlot/"
         output_plot_dir = os.path.join(output_plot_dir,f"{dataset_name}_class_client_distribution.png")

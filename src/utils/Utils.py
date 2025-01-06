@@ -15,13 +15,11 @@ from torchvision import datasets
 from torch.utils.data.dataloader import DataLoader
 import gc
 
-from src.utils.globalVariable  import seed_value,cifar10Label,cifar100FineLabel
+from src.utils.globalVariable  import seed_value
 from src.plotting.Plotter import Plotter as plt
 
-from src.utils.globalVariable import blockchainApiPrefix
-import requests
-
 import logging
+
 logging.basicConfig(
     filename="log/simple_python_log.txt",
     encoding="utf-8",
@@ -110,8 +108,6 @@ class Utils:
     def generate_dataset_client_partition(self):
         partition_lenght = np.random.multinomial(len(self.train_data.data), np.random.dirichlet(np.ones(Utils.CLIENTS_NUM) * 42)).astype(
             int).tolist()
-        # partition_lenght = np.full(Utils.CLIENTS_NUM, len(self.train_data.data) / Utils.CLIENTS_NUM).astype(
-        #     int).tolist()
         partitions = torch.utils.data.random_split(self.train_data, partition_lenght)
 
         dataset_partition_dir = f"data/partitions/{self.dataset_name}"
@@ -137,37 +133,6 @@ class Utils:
                 
         plt.stacked_bar_chart_plot(Utils.CLIENTS_NUM,self.classes_number,class_client_distribution,self.dataset_name)
                 
-
-    ########################################################################################
-    # Model test funcion used by single client and server
-    ########################################################################################
-    # def test(
-    #         self,
-    #         model
-    # ) -> Tuple[float, float]:
-    #     """Validate the network on the entire test set."""
-    #     device = torch.device(
-    #         "cuda:0" if torch.cuda.is_available() else "cpu"
-    #     )
-    #     testloader = DataLoader(self.get_test_data())
-
-    #     criterion = torch.nn.CrossEntropyLoss()
-    #     correct = 0
-    #     total = 0
-    #     loss = 0.0
-    #     model.to(device)
-    #     with torch.no_grad():
-    #         model.eval()
-    #         for data in testloader:
-    #             images, labels = data[0].to(device), data[1].to(device)
-    #             outputs = model(images)
-    #             loss += criterion(outputs, labels).item()
-    #             _, predicted = torch.max(outputs.data, 1)
-    #             total += labels.size(0)
-    #             correct += (predicted == labels).sum().item()
-    #     accuracy = correct / total
-    #     model.to('cpu')
-    #     return loss, accuracy
     def test(
             self,
             model
@@ -180,7 +145,6 @@ class Utils:
 
         criterion = torch.nn.CrossEntropyLoss()
         correct = 0
-        total = 0
         loss = 0.0
         model.to(device)
         with torch.no_grad():
@@ -232,7 +196,5 @@ class Utils:
 
     @classmethod
     def printLog(cls, msg, level=logging.INFO):
-        # print(msg)
         logging.log(level, msg)
-        # logging.debug(msg)
         log(level, msg)

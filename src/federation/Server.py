@@ -27,18 +27,13 @@ class Server:
     BATCH_SIZE = 64
 
     def __init__(self, utils: Utils) -> None:
-        # Utils.printLog('server starting')
         self.utils = utils
 
         self.model = Utils.get_model(self.utils.dataset_name,self.utils.classes_number)
-        # TODO remove
-        # self.model_parameters = [val.cpu().numpy() for _, val in self.model.state_dict().items()]
 
         self.accuracy_data = []
         self.loss_data = []
 
-        # self.plotter = plt.configure_plotter(self.utils.dataset_name, Utils.ROUNDS_NUMBER, self.utils.poisoning,
-        #                                self.utils.blockchain)
         if self.utils.blockchain:
             requests.post(f'{blockchainApiPrefix}/configure/dataset',
                     json={'datasetName': self.utils.dataset_name,'datasetClassNumber':self.utils.classes_number,'maxRound':Utils.ROUNDS_NUMBER,'clientsNum':Utils.CLIENTS_NUM})
@@ -127,18 +122,6 @@ class Server:
 
         result = confusion_matrix(y_true, y_pred)
         plt.confusion_matrix_chart_plot(result)
-
-    #TODO remove?
-    ########################################################################################
-    # Start Flower server for n rounds of federated learning
-    ########################################################################################
-    # def start_server(self):
-    #     print("Starting server flower...")
-    #     fl.server.start_server(
-    #         server_address="0.0.0.0:8080",
-    #         config=fl.server.ServerConfig(num_rounds=Utils.ROUNDS_NUMBER),
-    #         strategy=self.strategy,
-    #     )
 
     ########################################################################################
     # start federated simulation

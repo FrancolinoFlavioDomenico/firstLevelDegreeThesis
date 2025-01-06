@@ -65,7 +65,7 @@ fastify.get("/isConnected", async function (request, reply) {
 /*----------------------------------------------------------
                    real used api
 ----------------------------------------------------------*/
-//deploy smart contract on blockchain
+//configure federated train
 fastify.post("/configure/dataset", async function (request, reply) {
     try {
         datasetName = request.body.datasetName;
@@ -148,11 +148,6 @@ fastify.post("/write/weights/:clientCid/:round", async (request, reply) => {
 
         }
     } catch (e) {
-        // const { name } = await errorDecoder.decode(e)
-        // request.log.error({
-        //     e,
-        //     message: "write weight on blockchain failed (transaction failed):" + name,
-        // });
         request.log.error({
             e,
             message: "write weight on blockchain failed:" + e,
@@ -246,7 +241,6 @@ fastify.get("/poisoners/:clientCid", async (request, reply) => {
 /*----------------------------------------------------------
               start server
 ----------------------------------------------------------*/
-// Run the server!
 fastify.listen({ port: 3000 }, function (err, address) {
     if (err) {
         fastify.log.error(err);

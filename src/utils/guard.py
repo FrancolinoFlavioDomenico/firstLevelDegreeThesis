@@ -8,19 +8,6 @@ import torch
 import warnings
 import hashlib
 import numpy as np
-from sklearn.preprocessing import MinMaxScaler
-from flwr.common import (
-    EvaluateIns,
-    EvaluateRes,
-    FitIns,
-    FitRes,
-    MetricsAggregationFn,
-    NDArrays,
-    Parameters,
-    Scalar,
-    ndarrays_to_parameters,
-    parameters_to_ndarrays,
-)
 import scipy
 warnings.filterwarnings('ignore')
 
@@ -39,11 +26,6 @@ def calculate_hash():
 def load_client_model(model,path):
     state_dict = torch.load(path)
     model.load_state_dict(state_dict)
-    # state_dict_ndarrays = [v.cpu().numpy() for v in model.state_dict().values()]
-    # parameters = ndarrays_to_parameters(state_dict_ndarrays)
-    # return state_dict,state_dict_ndarrays,parameters
-
-
 
 def isWeightCorrupted():
     corrected_checksum = requests.get(f'{blockchainApiPrefix}/checksum/weights/{federated_cid}/{round}')
@@ -58,17 +40,6 @@ def isWeightCorrupted():
 
 
 def isPoisoned():
-    # flattened_weights_server = np.concatenate([
-    #     param.detach().cpu().numpy().ravel() for param in server_model.parameters()
-    # ])
-    # flattened_weights_client = np.concatenate([
-    #     param.detach().cpu().numpy().ravel() for param in client_model.parameters()
-    # ])
-    # diff_nom = np.linalg.norm(flattened_weights_server - flattened_weights_client)#se queste distanca aument troppop cliente avvelenato
-    # Utils.printLog(f"client {federated_cid} round {round} dif_nomr {diff_nom}")
-    
-    
-    
     level_counter = 0
     poisoned_level_counter = 0
     for (server_param_name,server_param_value), (client_param_name,client_param_value) in zip(server_model.state_dict().items(), client_model.state_dict().items()):
@@ -87,8 +58,6 @@ def isPoisoned():
             client_min_val = np.min(client_param_value)
             client_param_value = (client_param_value - client_min_val) / (client_max_val - client_min_val)
             
-            # if (((np.abs(server_param_value - client_param_value)) * 100) > percentage_accept_threshold).any():
-            #     return True
             if (((np.abs(server_param_value - client_param_value)) * 100) > percentage_accept_threshold).any():
                 poisoned_level_counter = poisoned_level_counter + 1 
     
@@ -100,13 +69,11 @@ def isPoisoned():
     
 
 if __name__ == '__main__':
-    # istantiate model and load state dict on model
     blockchain_credential = blockchainPrivateKeys[-1]
     
     round = int(sys.argv[3])
     federated_cid = int(sys.argv[4]) 
     
-    # percentage_accept_threshold = 100 - (5 * (round - 1))
     percentage = 80 - (100 / int(sys.argv[5])  * (round - 1))
     percentage_accept_threshold = percentage if percentage >= 25 else 25
     

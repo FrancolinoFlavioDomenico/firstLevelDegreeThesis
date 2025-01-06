@@ -1,18 +1,13 @@
 import flwr as fl
 
-from logging import WARNING
 from typing import Callable, Dict, List, Optional, Tuple, Union
 
 from flwr.common import (
-    EvaluateIns,
-    EvaluateRes,
-    FitIns,
     FitRes,
     MetricsAggregationFn,
     NDArrays,
     Parameters,
     Scalar,
-    ndarrays_to_parameters,
     parameters_to_ndarrays,
 )
 from flwr.common.logger import log
@@ -53,7 +48,6 @@ class FedAVGcustom(fl.server.strategy.FedAvg):
         dataset_name = 'mnist',
         classes_number = 10
         ):
-        # Initialize the parent class
         super().__init__(
                 min_fit_clients=min_fit_clients,
                 min_evaluate_clients=min_evaluate_clients,
@@ -62,7 +56,6 @@ class FedAVGcustom(fl.server.strategy.FedAvg):
                 fraction_evaluate=fraction_evaluate,
                 on_fit_config_fn=on_fit_config_fn
                 )
-        # Add your custom initialization here
         self.dataset_name = dataset_name
         self.classes_number = classes_number
     
