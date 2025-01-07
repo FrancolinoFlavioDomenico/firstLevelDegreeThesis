@@ -168,7 +168,9 @@ cython_debug/
 *.pth
 *.pickle
 data/tmp
-data/partitions/*
+data/partitions/mnist/
+data/partitions/cifar10/
+data/partitions/cifar100/
 data/torchDownload
 node_modules/
 cache/
