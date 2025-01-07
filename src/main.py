@@ -1,8 +1,8 @@
-from utils import Utils
 from federation import Server
 import flwr as fl
 import logging
-import argparse
+import time
+from utils import Configuration
 
 
 DEFAULT_FORMATTER = logging.Formatter(
@@ -10,34 +10,24 @@ DEFAULT_FORMATTER = logging.Formatter(
 )
 fl.common.logger.configure(identifier="executionLog", filename="log/federation_log.txt")
 
-def start_server():
-    server = Server.Server(utils)
+def start_server(configuration):
+    server = Server.Server(configuration)
     server.start_simulation()
 
+
+def start(dataset_name,classes_number,poisoning,blockchian):
+    configuration = Configuration.Configuration(dataset_name, classes_number, poisoning, blockchian)
+    time.sleep(5) # waiting for partition writing
+    start_server(configuration)
+    
+
 if __name__ == "__main__":
-    utils = Utils.Utils('mnist', 10, False, False)
-    start_server()
-
-    utils = Utils.Utils('mnist', 10, True, False)
-    start_server()
+    # start('mnist', 10, False, False)
+    # start('mnist', 10, True, False)
+    start('mnist', 10, True, True)
     
-    # utils = Utils.Utils('mnist', 10, True, True)
-    # start_server()
-
-    # utils = Utils.Utils('cifar10', 10, False, False)
-    # start_server()
-
-    # utils = Utils.Utils('cifar10', 10, True, False)
-    # start_server()
+    # start('cifar10', 10, False, False)
+    # start('cifar10', 10, False, False)
     
-    # utils = Utils.Utils('cifar10', 10, True, True)
-    # start_server()
-
-    # utils = Utils.Utils('cifar100', 100, False, False)
-    # start_server()
-
-    # utils = Utils.Utils('cifar100', 100, True, False)
-    # start_server()
-    
-    # utils = Utils.Utils('cifar100', 100, True, True)
-    # start_server()
+    # start('cifar100', 100, False, False)
+    # start('cifar100', 100, False, False)

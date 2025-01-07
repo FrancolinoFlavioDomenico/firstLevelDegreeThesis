@@ -11,7 +11,6 @@ from flwr.common import (
     parameters_to_ndarrays,
 )
 from flwr.common.logger import log
-from flwr.server.client_manager import ClientManager
 from flwr.server.client_proxy import ClientProxy
 
 from src.utils.globalVariable import blockchainApiPrefix,blockchainPrivateKeys
@@ -66,6 +65,9 @@ class FedAVGcustom(fl.server.strategy.FedAvg):
         failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]],
     ) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
         
+        # server_is_corrupted = requests.get(f'{blockchainApiPrefix}/server/isCorrupted')
+        # if server_is_corrupted.text == 'false':#TODO review for check server weight by hash
+        
         time.sleep(5)
         
         Utils.printLog(f"\n\nstarting custom aggregration for round {server_round}")
@@ -94,8 +96,11 @@ class FedAVGcustom(fl.server.strategy.FedAvg):
         torch.save(model.state_dict(),path)
         with open(path, 'rb') as f:
             requests.post(f'{blockchainApiPrefix}/write/weights/server/{server_round}',
-                              data={'blockchainCredential': blockchainPrivateKeys[-1]},
+                            data={'blockchainCredential': blockchainPrivateKeys[-1]},
                                 files={"weights": f})
             
         Utils.printLog(f"\n\nfinish custom aggregration for round {server_round}")
         return parameters_aggregated, metrics_aggregated
+        
+        # else:
+        #     raise Exception(f'Server previous round weight result corrupted! Skipped {server_round} aggregation.')

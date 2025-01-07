@@ -1,5 +1,4 @@
 import warnings
-
 import requests
 import torch
 import torch.optim as optim
@@ -8,11 +7,10 @@ from collections import OrderedDict
 from typing import List
 import numpy as np
 import flwr as fl
-
+from src.utils.Configuration import Configuration
 from src.utils.Utils import Utils
 import pickle
 import os
-
 from tqdm import tqdm
 
 
@@ -27,20 +25,20 @@ warnings.filterwarnings('ignore')
 class FlowerClient(fl.client.NumPyClient):
     BATCH_SIZE = 64
 
-    def __init__(self, utils: Utils, cid: int,blockchainPrivateKey = None) -> None:
+    def __init__(self, configuration: Configuration, cid: int,blockchainPrivateKey = None) -> None:
         self.cid = cid
         Utils.printLog(f'initializing client{self.cid}')
-        self.utils = utils
-        self.model = Utils.get_model(self.utils.dataset_name,self.utils.classes_number)
+        self.configuration = configuration
+        self.model = Utils.get_model(self.configuration.dataset_name,self.configuration.classes_number)
         self.epochs = 1
         self.current_round = 0
-        if self.utils.dataset_name == 'cifar10':
+        if self.configuration.dataset_name == 'cifar10':
             self.epochs = 12
-        if self.utils.dataset_name == 'cifar100':
+        if self.configuration.dataset_name == 'cifar100':
             self.epochs = 20
 
-        if self.utils.blockchain:
-            self.blockchain_credential = blockchainPrivateKey
+        if self.configuration.blockchain:
+            self.blockchain_credential = blockchainPrivateKeys[self.cid]
 
     ########################################################################################
     # federated client model fit step.
@@ -49,13 +47,17 @@ class FlowerClient(fl.client.NumPyClient):
     def fit(self, parameters, config):
         self.current_round = config['currentRound']
         self.set_parameters(parameters)
+        
         data_loader = self.get_train_data_loader()
         self.train(data_loader=data_loader)
+        
         torch.cuda.empty_cache()
         torch.cuda.memory_allocated()
+        
+        if self.configuration.blockchain:
+            self.write_parameters_on_blockchain()
+            
         getted_train_parameters =  self.get_parameters(config={})
-        if self.utils.blockchain:
-            self.write_parameters_on_blockchain(getted_train_parameters)
         return getted_train_parameters, len(self.get_train_data_loader()), {}
 
     ########################################################################################
@@ -68,7 +70,7 @@ class FlowerClient(fl.client.NumPyClient):
     # Writes into blockchian the file containing the weights obtained in the current round 
     # by the current client
     ########################################################################################
-    def write_parameters_on_blockchain(self,parameters):
+    def write_parameters_on_blockchain(self):
         path = f"./data/clientParameters/python/client{self.cid}_round{self.current_round}_parameters.pth"
         torch.save(self.model.state_dict(),path)
         with open(path, 'rb') as f:
@@ -92,7 +94,7 @@ class FlowerClient(fl.client.NumPyClient):
     def load_train_data_from_file(self, set_transforms=False):
         train_data: torch.utils.data.dataset.Subset
 
-        file = open(os.path.join(f"data/partitions/{self.utils.dataset_name}",
+        file = open(os.path.join(f"data/partitions/{self.configuration.dataset_name}",
                                  f"partition_{self.cid}.pickle"), "rb")
         try:
             train_data = pickle.load(file)
@@ -100,7 +102,7 @@ class FlowerClient(fl.client.NumPyClient):
             file.close()
 
         if set_transforms:
-            stats = ((0.5), (0.5)) if self.utils.dataset_name == 'mnist' else (
+            stats = ((0.5), (0.5)) if self.configuration.dataset_name == 'mnist' else (
                 (0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
             train_transform = transforms.Compose([
                 transforms.RandomHorizontalFlip(p=0.5),
@@ -116,9 +118,9 @@ class FlowerClient(fl.client.NumPyClient):
     ########################################################################################
     def get_train_data_loader(self):
         data = self.load_train_data_from_file(set_transforms=True)
-        poisoning = self.utils.poisoning and (self.cid in Utils.POISONERS_CLIENTS_CID)
+        poisoning = self.configuration.poisoning and (self.cid in Configuration.POISONERS_CLIENTS_CID)
         if poisoning:
-            data = PoisonedPartitionDataset(data, self.utils.classes_number)
+            data = PoisonedPartitionDataset(data, self.configuration.classes_number)
         returnValue = torch.utils.data.DataLoader(
             data,
             batch_size=FlowerClient.BATCH_SIZE, 
@@ -167,6 +169,7 @@ class FlowerClient(fl.client.NumPyClient):
                 total += labels.size(0)
                 progress_bar.set_description(
                     f'Epoch [{epoch + 1}/{self.epochs}], Train Loss: {running_loss / (batch_idx + 1):.4f}, Train Acc: {100. * running_corrects / total:.2f}%')
+            
             scheduler.step()
 
             epoch_loss = running_loss / len(data_loader)
@@ -176,6 +179,7 @@ class FlowerClient(fl.client.NumPyClient):
             train_losses.append(epoch_loss)
 
             print(f'\ntrain-loss: {np.mean(train_losses):.4f}, train-acc: {train_acces[-1]:.4f}')
+       
         self.model = self.model.to('cpu')
 
     ########################################################################################
@@ -183,14 +187,12 @@ class FlowerClient(fl.client.NumPyClient):
     # return result of evaluate
     ########################################################################################
     def evaluate(self, parameters, config):
-        Utils.printLog(f'client {self.cid} evaluating model')
-        self.set_parameters(parameters)
-        loss, accuracy = self.utils.test(self.model)
-        return float(loss), len(self.utils.get_test_data()), {"accuracy": float(accuracy)}
+        # Not implemented because only centralized evaluation is used
+        pass
 
 
-def get_client_fn(model_conf):
+def get_client_fn(configuration):
     def client_fn(cid: str) -> fl.client.Client:
-        return FlowerClient(model_conf, int(cid),blockchainPrivateKeys[int(cid)])
+        return FlowerClient(configuration, int(cid))
 
     return client_fn

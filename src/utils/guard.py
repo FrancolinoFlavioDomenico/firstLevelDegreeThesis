@@ -1,6 +1,5 @@
 import sys
 
-import scipy.stats
 from src.utils.globalVariable import blockchainApiPrefix,blockchainPrivateKeys
 from src.utils.Utils import Utils
 import requests
@@ -8,14 +7,14 @@ import torch
 import warnings
 import hashlib
 import numpy as np
-import scipy
+
 warnings.filterwarnings('ignore')
 
 
 # Define a function to calculate the SHA-256 hash of a file.
-def calculate_hash():
+def calculate_hash(path):
    md5 = hashlib.md5()
-   with open(client_weight_path, "rb") as file:
+   with open(path, "rb") as file:
        while True:
            data = file.read(65536)  # Read the file in 64KB chunks.
            if not data:
@@ -27,11 +26,11 @@ def load_client_model(model,path):
     state_dict = torch.load(path)
     model.load_state_dict(state_dict)
 
-def isWeightCorrupted():
+def isWeightCorrupted(federated_cid,round,path):
     corrected_checksum = requests.get(f'{blockchainApiPrefix}/checksum/weights/{federated_cid}/{round}')
     corrected_checksum = corrected_checksum.text
     
-    checksum = calculate_hash()
+    checksum = calculate_hash(path)
     
     if checksum != corrected_checksum:
         return True
@@ -39,7 +38,7 @@ def isWeightCorrupted():
 
 
 
-def isPoisoned():
+def isPoisoned():      
     level_counter = 0
     poisoned_level_counter = 0
     for (server_param_name,server_param_value), (client_param_name,client_param_value) in zip(server_model.state_dict().items(), client_model.state_dict().items()):
@@ -69,29 +68,35 @@ def isPoisoned():
     
 
 if __name__ == '__main__':
-    blockchain_credential = blockchainPrivateKeys[-1]
+    dataset_name = str(sys.argv[1])
+    classes_count = int(sys.argv[2])
+    total_round_count = int(sys.argv[3])
+    total_client_count = int(sys.argv[4])
+    round = int(sys.argv[5])
+    federated_cid = int(sys.argv[6]) 
     
-    round = int(sys.argv[3])
-    federated_cid = int(sys.argv[4]) 
+    blockchain_credential = blockchainPrivateKeys[total_client_count]
     
-    percentage = 80 - (100 / int(sys.argv[5])  * (round - 1))
+    
+    percentage = 80 - (100 / total_round_count  * (round - 1))
     percentage_accept_threshold = percentage if percentage >= 25 else 25
     
     
     Utils.printLog(f'starting client {federated_cid} check at round {round}')
     
-    server_model = Utils.get_model(str(sys.argv[1]), int(sys.argv[2]))
+    server_model = Utils.get_model(dataset_name, classes_count)
     server_weight_path = f"./data/clientParameters/node/server_round{round - 1}_parameters.pth"
+    # if not isWeightCorrupted(total_client_count,round - 1 if round > 1 else round,server_weight_path):#TODO review for check server weight by hash
     load_client_model(server_model,server_weight_path)
 
-    client_model = Utils.get_model(str(sys.argv[1]), int(sys.argv[2]))
+    client_model = Utils.get_model(dataset_name, classes_count)
     client_weight_path = f"./data/clientParameters/node/client{federated_cid}_round{round}_parameters.pth"
     
     client_already_detected = requests.get(f'{blockchainApiPrefix}/poisoners/{federated_cid}')
     if client_already_detected.text == 'true':
         pass
     else:
-        if not isWeightCorrupted():
+        if not isWeightCorrupted(federated_cid,round,client_weight_path):
             load_client_model(client_model,client_weight_path)
             if(isPoisoned()):
                 Utils.printLog(f'by blockchain script cid {federated_cid} result poisoner at round {round} with threshold {percentage_accept_threshold}%')
@@ -101,6 +106,10 @@ if __name__ == '__main__':
             Utils.printLog(f'by blockchain script cid {federated_cid} result poisoner at round {round} by corrupted weight hash')
             requests.post(f'{blockchainApiPrefix}/write/blacklist/{federated_cid}',
                 json={'blockchainCredential': blockchain_credential})
+    # else:
+    #     requests.post(f'{blockchainApiPrefix}/server/corrupted/true',
+    #         json={'blockchainCredential': blockchain_credential})
+        
     
     Utils.printLog(f'finish client {federated_cid} check at round {round}')
 

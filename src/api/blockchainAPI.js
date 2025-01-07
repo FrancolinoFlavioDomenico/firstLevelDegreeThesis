@@ -42,7 +42,7 @@ function catchBlockchainEvent() {
     const contract = new ethers.Contract(deployedContractAddress, contractABI, provider);
     contract.on("WroteWeightsOfRoundForClient", (round, federatedCid, event) => {
         try {
-            const child = spawn('python', ['src/utils/guard.py', datasetName, datasetClassNumber, round, federatedCid, maxRound], { shell: true });//run python script for weight check
+            const child = spawn('python', ['src/utils/guard.py', datasetName, datasetClassNumber, maxRound, clientsNum, round, federatedCid], { shell: true });//run python script for weight check
             child.stderr.pipe(process.stdout)
         } catch (error) {
             log('Error executing Python script: ' + error, "error");
@@ -66,7 +66,7 @@ fastify.get("/isConnected", async function (request, reply) {
                    real used api
 ----------------------------------------------------------*/
 //configure federated train
-fastify.post("/configure/dataset", async function (request, reply) {
+fastify.post("/configure/training", async function (request, reply) {
     try {
         datasetName = request.body.datasetName;
         datasetClassNumber = request.body.datasetClassNumber;
@@ -112,7 +112,7 @@ fastify.post("/write/weights/:clientCid/:round", async (request, reply) => {
 
     try {
         const round = request.params.round;
-        const clientCid = request.params.clientCid;
+        const clientCid = request.params.clientCid == 'server' ? clientsNum : request.params.clientCid;
         const weights = request.body.weights
 
         const walletKey = request.body.blockchainCredential
@@ -120,11 +120,12 @@ fastify.post("/write/weights/:clientCid/:round", async (request, reply) => {
         const contract = new ethers.Contract(deployedContractAddress, contractABI, wallet);
 
         let blacklist = false
-        if (clientCid != 'server')
+        if (clientCid != clientsNum) //cid not equal to server. Server has cid equal to last client cid + 1
             blacklist = await contract.isPoisonerCid(clientCid)
 
         if (!blacklist) {
-            const path = `./data/clientParameters/node/${clientCid == 'server' ? 'server' : 'client' + clientCid}_round${round}_parameters.pth`
+            //clientCid == clientsNum beacause server has cid equal to last client cid + 1
+            const path = `./data/clientParameters/node/${clientCid == clientsNum ? 'server' : 'client' + clientCid}_round${round}_parameters.pth`
             await fs.writeFile(path, weights, { encoding: "binary" });
             const fileContent = await fs.readFile(path)
 
@@ -133,12 +134,12 @@ fastify.post("/write/weights/:clientCid/:round", async (request, reply) => {
             const gastEstimated = await contract.addRoundWeightsReference.estimateGas(
                 weightHash,
                 round,
-                clientCid == 'server' ? -1 : clientCid
+                clientCid
             );
             const tx = await contract.addRoundWeightsReference(
                 weightHash,
                 round,
-                clientCid == 'server' ? -1 : clientCid,
+                clientCid,
                 { gasLimit: gastEstimated }
             )
             const txResult = await tx.wait()
@@ -229,6 +230,51 @@ fastify.get("/poisoners/:clientCid", async (request, reply) => {
         request.log.error({
             e,
             message: "get blacklist failed:" + e,
+        });
+        reply.code(500).send({ error: "Internal Server Error" });
+
+    } finally {
+        return reply
+    }
+});
+
+
+//check if server is corrupted
+fastify.get("/server/isCorrupted", async (request, reply) => {
+    try {
+        const contract = new ethers.Contract(deployedContractAddress, contractABI, provider);
+        const serverIsCorrupted = await contract.serverCorrupted(clientCid)
+
+        reply.send(serverIsCorrupted);
+    } catch (e) {
+        request.log.error({
+            e,
+            message: "Internal Server Error:" + e,
+        });
+        reply.code(500).send({ error: "Internal Server Error" });
+
+    } finally {
+        return reply
+    }
+});
+
+
+//write flag that server result corrupted
+fastify.post("/server/corrupted/:isCorrupted", async (request, reply) => {
+
+    try {
+        const walletKey = request.body.blockchainCredential
+        const wallet = new ethers.Wallet(walletKey, provider)
+        const contract = new ethers.Contract(deployedContractAddress, contractABI, wallet);
+
+        const tx = await contract.setServerCorrupted(request.params.isCorrupted == 'true')
+        const txResult = tx.wait()
+
+        reply.send(txResult)
+    } catch (e) {
+        request.log.error({
+            e,
+            message: "write flag on blockchain failed:" + e,
         });
         reply.code(500).send({ error: "Internal Server Error" });
 

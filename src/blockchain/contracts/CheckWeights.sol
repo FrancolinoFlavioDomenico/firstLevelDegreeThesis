@@ -13,6 +13,8 @@ contract CheckWeights {
 
     address private owner;
 
+    bool serverCorrupted;
+
     constructor() {
         owner = msg.sender;
     }
@@ -45,7 +47,7 @@ contract CheckWeights {
         }
 
         weightRef.weightOfRound[_round] = _weights;
-        if (_round >= 2)
+        if (_round >= 2 && msg.sender != owner)
             emit WroteWeightsOfRoundForClient(_round, _federatedCid); //throw wrote event for trigger check  of weights
 
     }
@@ -82,6 +84,10 @@ contract CheckWeights {
 
     function addToBlacklist(uint _federatedCid) public {
         blacklist.push(_federatedCid);
+    }
+
+    function setServerCorrupted(bool _serverCorrupted) public {
+        serverCorrupted = _serverCorrupted;
     }
 
     function isPoisonerCid(uint _federatedCid) public view returns (bool) {
