@@ -39,31 +39,57 @@ def isWeightCorrupted(federated_cid,round,path):
 
 
 def isPoisoned():      
-    level_counter = 0
-    poisoned_level_counter = 0
+    
+    #initial method
+    # level_counter = 0
+    # poisoned_level_counter = 0
+    # for (server_param_name,server_param_value), (client_param_name,client_param_value) in zip(server_model.state_dict().items(), client_model.state_dict().items()):
+    #     if 'bias' in server_param_name:
+    #         pass
+    #     else:
+    #         level_counter = level_counter + 1
+    #         server_param_value = np.array(server_param_value)
+    #         client_param_value = np.array(client_param_value)
+
+    #         server_max_val = np.max(server_param_value)
+    #         server_min_val = np.min(server_param_value)
+    #         server_param_value = (server_param_value - server_min_val) / (server_max_val - server_min_val)
+            
+    #         client_max_val = np.max(client_param_value)
+    #         client_min_val = np.min(client_param_value)
+    #         client_param_value = (client_param_value - client_min_val) / (client_max_val - client_min_val)
+            
+    #         if (((np.abs(server_param_value - client_param_value)) * 100) > percentage_accept_threshold).any():
+    #             poisoned_level_counter = poisoned_level_counter + 1 
+    
+                
+    # if poisoned_level_counter > (0.30 * level_counter):
+    #     return True
+    
+    
+    
+    
+    
+    
+    # norm difference method
+    flattened_weights_server = np.empty(1)
+    flattened_weights_client = np.empty(1)
     for (server_param_name,server_param_value), (client_param_name,client_param_value) in zip(server_model.state_dict().items(), client_model.state_dict().items()):
         if 'bias' in server_param_name:
             pass
         else:
-            level_counter = level_counter + 1
-            server_param_value = np.array(server_param_value)
-            client_param_value = np.array(client_param_value)
-
-            server_max_val = np.max(server_param_value)
-            server_min_val = np.min(server_param_value)
-            server_param_value = (server_param_value - server_min_val) / (server_max_val - server_min_val)
-            
-            client_max_val = np.max(client_param_value)
-            client_min_val = np.min(client_param_value)
-            client_param_value = (client_param_value - client_min_val) / (client_max_val - client_min_val)
-            
-            if (((np.abs(server_param_value - client_param_value)) * 100) > percentage_accept_threshold).any():
-                poisoned_level_counter = poisoned_level_counter + 1 
+            flattened_weights_server = np.concatenate((flattened_weights_server,np.array(server_param_value).flatten()))
+            flattened_weights_client = np.concatenate((flattened_weights_client,np.array(client_param_value).flatten()))
     
-                
-    if poisoned_level_counter > (0.30 * level_counter):
+    server_nom = np.linalg.norm(flattened_weights_server)
+    client_nom = np.linalg.norm(flattened_weights_client)
+    
+    diff_nom = client_nom  - server_nom
+    difference_percentage = (diff_nom / server_nom)  * 100
+    Utils.printLog(f"\n client: {federated_cid}\n round: {round} \n dif_nomr: {diff_nom}\n percentage: {difference_percentage}\n current threshold: {percentage_accept_threshold}")
+    if difference_percentage > percentage_accept_threshold or difference_percentage < (0 - percentage_accept_threshold):
         return True
-
+    
     return False
     
 
@@ -77,12 +103,12 @@ if __name__ == '__main__':
     
     blockchain_credential = blockchainPrivateKeys[total_client_count]
     
-    
-    percentage = 80 - (100 / total_round_count  * (round - 1))
-    percentage_accept_threshold = percentage if percentage >= 25 else 25
-    
-    
-    Utils.printLog(f'starting client {federated_cid} check at round {round}')
+    percentage_tollerance = 10 - (10 / total_round_count * (round - 1))
+    percentage_tollerance = percentage_tollerance if percentage_tollerance >= 0 else 0
+    percentage_to_remove = ((100) - ((100 + percentage_tollerance) / total_round_count  * (round - 1))) + percentage_tollerance
+    if round == 2:#first check
+        percentage_to_remove = 100 + percentage_tollerance
+    percentage_accept_threshold = percentage_to_remove if percentage_to_remove >= 30 else 30
     
     server_model = Utils.get_model(dataset_name, classes_count)
     server_weight_path = f"./data/clientParameters/node/server_round{round - 1}_parameters.pth"
@@ -111,8 +137,6 @@ if __name__ == '__main__':
     #         json={'blockchainCredential': blockchain_credential})
         
     
-    Utils.printLog(f'finish client {federated_cid} check at round {round}')
-
     
         
     
