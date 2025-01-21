@@ -1,6 +1,5 @@
 import Fastify from "fastify";
 import { ethers } from "ethers";
-import { ErrorDecoder } from 'ethers-decode-error';
 import { createRequire } from "module";
 import { spawn } from 'node:child_process';
 import * as fs from 'node:fs/promises';
@@ -119,35 +118,25 @@ fastify.post("/write/weights/:clientCid/:round", async (request, reply) => {
         const wallet = new ethers.Wallet(walletKey, provider)
         const contract = new ethers.Contract(deployedContractAddress, contractABI, wallet);
 
-        let blacklist = false
-        if (clientCid != clientsNum) //cid not equal to server. Server has cid equal to last client cid + 1
-            blacklist = await contract.isPoisonerCid(clientCid)
+        const path = `./data/clientParameters/node/${clientCid == clientsNum ? 'server' : 'client' + clientCid}_round${round}_parameters.pth`
+        await fs.writeFile(path, weights, { encoding: "binary" });
+        const fileContent = await fs.readFile(path)
 
-        if (!blacklist) {
-            //clientCid == clientsNum beacause server has cid equal to last client cid + 1
-            const path = `./data/clientParameters/node/${clientCid == clientsNum ? 'server' : 'client' + clientCid}_round${round}_parameters.pth`
-            await fs.writeFile(path, weights, { encoding: "binary" });
-            const fileContent = await fs.readFile(path)
+        const weightHash = crypto.createHash('md5').update(fileContent).digest('hex');
 
-            const weightHash = crypto.createHash('md5').update(fileContent).digest('hex');
-
-            const gastEstimated = await contract.addRoundWeightsReference.estimateGas(
-                weightHash,
-                round,
-                clientCid
-            );
-            const tx = await contract.addRoundWeightsReference(
-                weightHash,
-                round,
-                clientCid,
-                { gasLimit: gastEstimated }
-            )
-            const txResult = await tx.wait()
-            reply.send({ txResult: txResult, weightsHash: weightHash })
-        } else {
-            reply.send()
-
-        }
+        const gastEstimated = await contract.addRoundWeightsReference.estimateGas(
+            weightHash,
+            round,
+            clientCid
+        );
+        const tx = await contract.addRoundWeightsReference(
+            weightHash,
+            round,
+            clientCid,
+            { gasLimit: gastEstimated }
+        )
+        const txResult = await tx.wait()
+        reply.send({ txResult: txResult, weightsHash: weightHash })
     } catch (e) {
         request.log.error({
             e,
