@@ -28,8 +28,8 @@ if __name__ == "__main__":
     
     # start('cifar10', 10, False, False)
     # start('cifar10', 10, True, False)
-    # start('cifar10', 10, True, True)
+    start('cifar10', 10, True, True)
     
     # start('cifar100', 100, False, False)
     # start('cifar100', 100, True, False)
-    start('cifar100', 100, True, True)
+    # start('cifar100', 100, True, True)

@@ -35,6 +35,10 @@ contract CheckWeights {
         uint _round,
         uint _federatedCid
     ) public {
+        if(isClientInBlacklist(_federatedCid) && msg.sender != owner){
+            revert("Client is in blacklist");
+        }
+
         WeightsReferences storage weightRef;
 
         if (isClientAlreadyExist(_federatedCid)) {
@@ -51,6 +55,16 @@ contract CheckWeights {
             emit WroteWeightsOfRoundForClient(_round, _federatedCid); //throw wrote event for trigger check  of weights
 
     }
+
+    function isClientInBlacklist(uint _federatedCid) public view returns (bool) {
+            for (uint j = 0; j < blacklist.length; j++) {
+                if (blacklist[j] == _federatedCid) {
+                    return true;
+                }
+            }
+            return false;
+    
+}
 
     function getWeightOfRoundOfClient(
         uint _round,
