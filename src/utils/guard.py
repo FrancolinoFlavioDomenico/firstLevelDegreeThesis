@@ -39,38 +39,6 @@ def isWeightCorrupted(federated_cid,round,path):
 
 
 def isPoisoned():      
-    
-    #initial method
-    # level_counter = 0
-    # poisoned_level_counter = 0
-    # for (server_param_name,server_param_value), (client_param_name,client_param_value) in zip(server_model.state_dict().items(), client_model.state_dict().items()):
-    #     if 'bias' in server_param_name:
-    #         pass
-    #     else:
-    #         level_counter = level_counter + 1
-    #         server_param_value = np.array(server_param_value)
-    #         client_param_value = np.array(client_param_value)
-
-    #         server_max_val = np.max(server_param_value)
-    #         server_min_val = np.min(server_param_value)
-    #         server_param_value = (server_param_value - server_min_val) / (server_max_val - server_min_val)
-            
-    #         client_max_val = np.max(client_param_value)
-    #         client_min_val = np.min(client_param_value)
-    #         client_param_value = (client_param_value - client_min_val) / (client_max_val - client_min_val)
-            
-    #         if (((np.abs(server_param_value - client_param_value)) * 100) > percentage_accept_threshold).any():
-    #             poisoned_level_counter = poisoned_level_counter + 1 
-    
-                
-    # if poisoned_level_counter > (0.30 * level_counter):
-    #     return True
-    
-    
-    
-    
-    
-    
     # norm difference method
     flattened_weights_server = np.empty(1)
     flattened_weights_client = np.empty(1)
