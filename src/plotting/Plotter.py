@@ -8,7 +8,6 @@ import os
 
 from  src.utils.globalVariable import cifar10Label,cifar100FineLabel
 
-# from src.utils.Utils import Utils
 warnings.filterwarnings('ignore')
 
 class Plotter:
@@ -18,6 +17,9 @@ class Plotter:
     dataset_name = None
     rounds_number = None
     
+    accuracy_data_grouped_line = []
+    loss_data_grouped_line = []
+    
     @classmethod
     def configure_plotter(cls, dataset_name,rounds_number, poisoning, blockchain):
         cls.poisoning = poisoning
@@ -26,7 +28,44 @@ class Plotter:
         cls.rounds_number = rounds_number
 
     ########################################################################################
-    # build a line chart accuracy chart
+    # build a line chart accuracy chart  for grouped dataset experiments
+    ########################################################################################
+    @classmethod
+    def line_chart_plot_grouped(cls, accuracy_data, loss_data,server_round):
+        cls.accuracy_data_grouped_line.append(accuracy_data)
+        cls.loss_data_grouped_line.append(loss_data)
+        
+        if len(cls.accuracy_data_grouped_line) == 3:
+                
+            line_chart_fig, (accuracy_chart, loss_chart) = plt.subplots(nrows=2, ncols=1, sharex=True)
+            accuracy_chart.grid(True)
+            loss_chart.grid(True)
+            accuracy_chart.yaxis.set_major_formatter(ticker.PercentFormatter(1.0))
+            loss_chart.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:.2f}'))
+
+            x_axis = np.arange(cls.rounds_number + 1)
+            loss_chart.set_xlabel('round')
+
+            accuracy_chart.set_title(f'{cls.dataset_name} Accuracy over round')
+
+            loss_chart.set_title(f'{cls.dataset_name} Loss over round')
+        
+            for accuracy_data,loss_data in zip(cls.accuracy_data_grouped_line,cls.loss_data_grouped_line):
+                accuracy_chart.plot(accuracy_data)
+                loss_chart.plot(loss_data)
+                
+            accuracy_chart.legend(['pure','poisoned','poisoning mitigation'],loc="lower right")
+            loss_chart.legend(['pure','poisoned','poisoning mitigation'],loc="upper right")
+            
+            
+            output_plot_dir = f"outputPlot/"
+            output_plot_dir = os.path.join(output_plot_dir,
+                                        f"{cls.dataset_name}_accuracy_and_loss.png")
+            plt.savefig(output_plot_dir)
+
+
+    ########################################################################################
+    # build a line chart accuracy chart for  single experiments
     ########################################################################################
     @classmethod
     def line_chart_plot(cls, accuracy_data, loss_data):
@@ -89,24 +128,17 @@ class Plotter:
         for client, cls in data.items():
             filled_data[client] = {item: cls.get(item, 0) for item in np.arange(classes_num)}  
 
-        #TODO review for showing legend
         fig, ax = plt.subplots()
         width = 0.8
         for client in filled_data.keys():
             bottom = np.zeros(3)
             for cls,cls_counter in list(filled_data[client].items()):
-                # label = cls
-                # if(dataset_name == 'cifar10'):
-                #     label = cifar10Label[label]
-                # elif(dataset_name == 'cifar100'):
-                #     label = None
-                    
-                # bar = ax.bar(client,cls_counter,width,label=label,bottom=bottom)
                 bar = ax.bar(client,cls_counter,width,bottom=bottom)
                 bottom += cls_counter
                 if(dataset_name != 'cifar100'):
                     ax.bar_label(bar,label_type='center')
 
+        ax.set_xticks(np.arange(clients_num))
         ax.set_xlabel("clients")
         ax.set_ylabel("classes")
         ax.set_title(f"{dataset_name} Class-client distribution")

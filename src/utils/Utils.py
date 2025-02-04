@@ -30,7 +30,6 @@ class Utils:
         device = torch.device(
             "cuda:0" if torch.cuda.is_available() else "cpu"
         )
-        # test_loader = DataLoader(Utils.get_test_data(dataset_name))
 
         criterion = torch.nn.CrossEntropyLoss()
         correct = 0

@@ -64,10 +64,6 @@ class FedAVGcustom(fl.server.strategy.FedAvg):
         results: List[Tuple[ClientProxy, FitRes]],
         failures: List[Union[Tuple[ClientProxy, FitRes], BaseException]],
     ) -> Tuple[Optional[Parameters], Dict[str, Scalar]]:
-        
-        # server_is_corrupted = requests.get(f'{blockchainApiPrefix}/server/isCorrupted')
-        # if server_is_corrupted.text == 'false':#TODO review for check server weight by hash
-        
         time.sleep(5)
         
         Utils.printLog(f"\n\nstarting custom aggregration for round {server_round}")
@@ -101,6 +97,3 @@ class FedAVGcustom(fl.server.strategy.FedAvg):
             
         Utils.printLog(f"\n\nfinish custom aggregration for round {server_round}")
         return parameters_aggregated, metrics_aggregated
-        
-        # else:
-        #     raise Exception(f'Server previous round weight result corrupted! Skipped {server_round} aggregation.')
