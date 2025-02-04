@@ -38,8 +38,6 @@ class Configuration:
         if self.blockchain:
             requests.post(f'{blockchainApiPrefix}/configure/training',
                 json={'datasetName': self.dataset_name,'datasetClassNumber':self.classes_number,'maxRound':Configuration.ROUNDS_NUMBER,'clientsNum':Configuration.CLIENTS_NUM})
-            # requests.post(f'{blockchainApiPrefix}/server/corrupted/false',
-            # json={'blockchainCredential': blockchainPrivateKeys[-1]})#TODO review for check server weight by hash
         gc.collect()
         
     ########################################################################################

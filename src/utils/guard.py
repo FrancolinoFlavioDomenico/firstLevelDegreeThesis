@@ -112,7 +112,6 @@ if __name__ == '__main__':
     
     server_model = Utils.get_model(dataset_name, classes_count)
     server_weight_path = f"./data/clientParameters/node/server_round{round - 1}_parameters.pth"
-    # if not isWeightCorrupted(total_client_count,round - 1 if round > 1 else round,server_weight_path):#TODO review for check server weight by hash
     load_client_model(server_model,server_weight_path)
 
     client_model = Utils.get_model(dataset_name, classes_count)
@@ -132,11 +131,3 @@ if __name__ == '__main__':
             Utils.printLog(f'by blockchain script cid {federated_cid} result poisoner at round {round} by corrupted weight hash')
             requests.post(f'{blockchainApiPrefix}/write/blacklist/{federated_cid}',
                 json={'blockchainCredential': blockchain_credential})
-    # else:
-    #     requests.post(f'{blockchainApiPrefix}/server/corrupted/true',
-    #         json={'blockchainCredential': blockchain_credential})
-        
-    
-    
-        
-    

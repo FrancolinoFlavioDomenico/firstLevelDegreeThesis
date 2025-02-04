@@ -77,6 +77,7 @@ class Server:
             self.accuracy_data.append(accuracy)
             if server_round == Configuration.ROUNDS_NUMBER:  #last round
                 plt.line_chart_plot(self.accuracy_data, self.loss_data)
+                plt.line_chart_plot_grouped(self.accuracy_data, self.loss_data,server_round)
                 self.set_confusion_matrix(test_data_loader)
             return loss, {"accuracy": accuracy}
 
