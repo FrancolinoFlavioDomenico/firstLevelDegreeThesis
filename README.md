@@ -52,7 +52,7 @@ Da powershell:
     - controllare che la variabile PYTHONPATH sia gia aggiunta alla variabile di sistema PATH
     - rieseguire da un terminale pulito con ambiente virtuale attivo
     
-    **NB:** aggiungere la root del progetto direttamente alla variabile di ambiente PATH non funzionera
+    **NB:** Aggiungere la root del progetto direttamente alla variabile di ambiente PATH non funzionera. In oltre anche python globale dovvrebbe essere aggiunto alla variabile PATH passando per PYTHONPATH e non con immissione diretta sulla variabile PATH
 
 # Configurazione ed esecuzione per OS unix like
 Il sistema finale non è stato testato su OS unix like, tuttavia, al di fuori del passo 3 il  cui comando descritto dovrebbe essere sostituito con "source env/bin/activate", i restanti requisiti e i passi esposti per Windows dovrebbero rimanere immutati.
