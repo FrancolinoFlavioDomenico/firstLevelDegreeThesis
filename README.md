@@ -46,9 +46,13 @@ Da powershell:
     
 
     **NB:** In caso di toolkit cuda diverso dalla verisone 12.1 il parametro --index-url deve essere sostituito con l'apposita versione. Per tanto lo script batch andrebbe adattato. In oltre, non tutte le versioni di pytorch supportano tutte le versioni cuda.Per maggiori info riferire alla pagine ufficiali [Toolkit cuda](https://developer.nvidia.com/cuda-toolkit) e [Pytorch](https://pytorch.org/)
-- Se durante l'esecuzione si rivece un errore simile a <<ModuleNotFoundError: No module named "src">> e le dipendenze dette al passo 4 sono state installate correttamente, allora, aggiungere la root del progetto alla variabile di ambiente PATH e rieseguire da terminale.  
-
-
+- Se durante l'esecuzione si rivece un errore simile a <<ModuleNotFoundError: No module named "src">> e le dipendenze dette al passo 4 sono state installate correttamente, allora, procedere come segue:
+    - chiudere tutti i terminali
+    - aggiungere la root del progetto alla variabile di ambiente PYTHONPATH
+    - controllare che la variabile PYTHONPATH sia gia aggiunta alla variabile di sistema PATH
+    - rieseguire da un terminale pulito con ambiente virtuale attivo
+    
+    **NB:** aggiungere la root del progetto direttamente alla variabile di ambiente PATH non funzionera
 
 # Configurazione ed esecuzione per OS unix like
 Il sistema finale non è stato testato su OS unix like, tuttavia, al di fuori del passo 3 il  cui comando descritto dovrebbe essere sostituito con "source env/bin/activate", i restanti requisiti e i passi esposti per Windows dovrebbero rimanere immutati.
