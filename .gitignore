@@ -176,4 +176,4 @@ node_modules/
 cache/
 
 
-*log*
+*log*.txt
