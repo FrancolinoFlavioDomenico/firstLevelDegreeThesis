@@ -6,7 +6,7 @@ Questo progetto è stato eseguito su un ambiente target avente le seguenti speci
 Hardware:
 - processore i9 di 13 generazione
 - 16 giga ram
-- scheda grafica RTX 4050 con memora dedicata di 6 giga
+- scheda grafica RTX 4050 con memoria dedicata di 6 giga
 
 Software:
 - sistema operativo Windows 11
@@ -33,7 +33,7 @@ Da powershell:
 ## Note sull'esecuzione
 - La stringa "datasetNameToTest" deve essere sostituita con il nome di uno dei dataset supportati (mnist,cifar10 e cifar100).
 - Se il nome del dataset non viene specificato, di default, verranno eseguite le sperimentazioni con il dataset mnist.
-- I passi descritti sono validi solo per la prima esecuzione. Dalla seconda esecuzione in poi è sufficiente eseguire solo il passo 5. 
+- I passi descritti sono validi solo per la prima esecuzione. Dalla seconda esecuzione in poi è sufficiente eseguire solo i passi 3 e 5. 
 
 
 ## Possibili problemi
