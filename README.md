@@ -52,7 +52,8 @@ Da powershell:
     - controllare che la variabile PYTHONPATH sia gia aggiunta alla variabile di sistema PATH
     - rieseguire da un terminale pulito con ambiente virtuale attivo
     
-    **NB:** Aggiungere la root del progetto direttamente alla variabile di ambiente PATH non funzionera. In oltre anche python globale dovvrebbe essere aggiunto alla variabile PATH passando per PYTHONPATH e non con immissione diretta sulla variabile PATH
+    **NB:** Aggiungere la root del progetto direttamente alla variabile di ambiente PATH non funzionera. In oltre anche python globale dovvrebbe essere aggiunto alla variabile PATH passando per PYTHONPATH e non con immissione diretta sulla variabile PATH.
+- Il framework hardhat,usato per lo sviluppo blockchain, con annessa rete blockchain locale (hardhat network) al primo avvio puo presentare [errori noti](https://hardhat.org/hardhat-runner/docs/errors) non dipendeti dal progetto in se. Conseguenza di questi errori è purtroppo il fatto che al primo avvio del progetto la blockchain potrebbe rifiutare le richieste in arrivo e quindi far fallire lo scenario sperimentale di applicazione del sistema di mitigazione. Se questo problema dovesse presentarsi rilanciare semplicemente l'esecuzione eseguendo il passo 5.
 
 # Configurazione ed esecuzione per OS unix like
 Il sistema finale non è stato testato su OS unix like, tuttavia, al di fuori del passo 3 il  cui comando descritto dovrebbe essere sostituito con "source env/bin/activate", i restanti requisiti e i passi esposti per Windows dovrebbero rimanere immutati.

@@ -25,7 +25,7 @@ def start(dataset_name,classes_number,poisoning,blockchian):
     
 def start_blockchain():
     subprocess.run("start npm run start-blockchain",shell=True) 
-    time.sleep(15) # waiting blockchain starting
+    time.sleep(25) # waiting blockchain starting
     subprocess.run("start npm run start-server",shell=True) 
     time.sleep(5) # waiting server starting
     
