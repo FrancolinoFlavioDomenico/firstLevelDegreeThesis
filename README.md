@@ -12,14 +12,13 @@ Software:
 - sistema operativo Windows 11
 - driver cuda installati
 - python 3.10 
-- nodejs 18.20.3 con annesso package nodemon 
+- nodejs 18.20.3
 
 ## Note sui requisiti
 - Ambienti con specifiche hardware minori potrebbero comunque eseguire correttamente il progetto a scapito delle prestazioni. Non è tuttavia garantito.
 - Ambienti con OS diversi o driver cuda non installati potrebbero comunque eseguire correttamente il progetto a scapito delle prestazioni. Non è tuttavia garantito.
 - Versioni node diverse potrebbero comunque eseguire correttamente il progetto a scapito delle prestazioni. Non è tuttavia garantito.
 - Versioni python superiori, ma non minori, potrebbero comunque eseguire correttamente il progetto a scapito delle prestazioni. Non è tuttavia garantito.
-- Il package nodemon per node è requisito fondamentale per il corretto funzionamento (npm install nodemon -g)
 
 
 ## **Esecuzione**

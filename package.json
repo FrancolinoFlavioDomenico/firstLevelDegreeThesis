@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start-blockchain": "npx hardhat node",
-    "start-server": "nodemon --inspect ./src/api/blockchainAPi.js"
+    "start-server": "npx nodemon --inspect ./src/api/blockchainAPi.js"
   },
   "author": "",
   "license": "ISC",
@@ -24,6 +24,7 @@
     "helia": "^5.1.1"
   },
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^5.0.0"
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "nodemon": "^3.1.9"
   }
 }
